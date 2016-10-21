@@ -1,0 +1,168 @@
+﻿@model Fanex.IncidentManagementReport.Service.Model.IncidentReportViewModel
+<style type="text/css">
+    .datagrid table {
+        border-collapse: collapse;
+        text-align: left;
+        width: 100%;
+    }
+
+    .datagrid {
+        font: normal 12px/150% Arial, Helvetica, sans-serif;
+        background: #fff;
+        overflow: hidden;
+        border: 1px solid #006699;
+        -webkit-border-radius: 3px;
+        -moz-border-radius: 3px;
+        border-radius: 3px;
+    }
+
+        .datagrid table td,
+        .datagrid table th {
+            padding: 3px 10px;
+        }
+
+        .datagrid table thead th {
+            background: -webkit-gradient( linear, left top, left bottom, color-stop(0.05, #006699), color-stop(1, #00557F) );
+            background: -moz-linear-gradient( center top, #006699 5%, #00557F 100% );
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#006699', endColorstr='#00557F');
+            background-color: #006699;
+            color: #FFFFFF;
+            font-size: 15px;
+            font-weight: bold;
+            border-left: 1px solid #0070A8;
+        }
+
+            .datagrid table thead th:first-child {
+                border: none;
+            }
+
+        .datagrid table tbody td {
+            color: #000000;
+            border-left: 1px solid #E1EEF4;
+            font-size: 12px;
+            font-weight: normal;
+        }
+
+        .datagrid table tbody td a {
+           text-decoration:none;
+        }
+
+        .datagrid table tbody td a:hover {
+           text-decoration:underline;
+        }
+
+        .datagrid table tbody .alt td {
+            background: #fff;
+            color: #00557F;
+            border: 1px solid #00557F;
+        }
+
+        .datagrid table tbody .title td {
+            background: #d2d2d2;
+            color: #000;
+            border: 1px solid #00557F;
+            font-weight: bold;
+        }
+
+        .datagrid table tbody td:first-child {
+            border-left: none;
+        }
+
+        .datagrid table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+    div.dhtmlx_window_active, div.dhx_modal_cover_dv {
+        position: fixed !important;
+    }
+
+</style>
+Dear All
+<br />
+<br />
+Please see the bellow table for more detail about the new created incident, updated incident and pending Incident within today
+<br />
+<br />
+<div class="datagrid">
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Category</th>
+                <th>Incindent Title</th>
+                <th>Priority</th>
+                <th>Status</th>
+                <th>Creator</th>
+                <th>Assignee</th>
+                <th>Incident Date</th>
+                <th>Resolved Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.CreateNewIncidentReport != null)
+            {
+                <tr class="title">
+                    <td colspan="9"> New created Incident Report(@Model.CreateNewIncidentReport.Count) </td>
+                </tr>
+           
+                foreach (var item in Model.CreateNewIncidentReport)
+                {
+                    <tr class="alt">
+                        <td>@item.IncidentId</td>
+                        <td> @item.CategoryName</td>
+                        <td><a href="@(Model.RedmineUrl + item.IncidentId)">@item.IncidentTitle</a></td>
+                        <td>@item.Priority</td>
+                        <td>@item.Status</td>
+                        <td>@item.Creator</td>
+                        <td>@item.Assignee</td>
+                        <td>@item.IncidentDate.ToString("MM/dd/yyyy")</td>
+                        <td>@item.UpdatedDate</td>
+                    </tr>
+                }
+            }
+              
+            @if (Model.ChangedIncidentReport != null)
+            {          
+                <tr class="title">
+                    <td colspan="9"> Changed Incident(@Model.ChangedIncidentReport.Count) </td>
+                </tr>
+            
+                foreach (var item in Model.ChangedIncidentReport)
+                {
+                    <tr class="alt">
+                        <td>@item.IncidentId</td>
+                        <td>@item.CategoryName</td>
+                        <td><a href="@(Model.RedmineUrl + item.IncidentId)">@item.IncidentTitle</a></td>
+                        <td>@item.Priority</td>
+                        <td>@item.Status</td>
+                        <td>@item.Creator</td>
+                        <td>@item.Assignee</td>
+                        <td>@item.IncidentDate.ToString("MM/dd/yyyy")</td>
+                        <td>@item.UpdatedDate</td>
+                    </tr>
+                }
+            }
+
+            @if (Model.PendingIncidentReport != null)
+            {
+                <tr class="title">
+                    <td colspan="9"> Pending Incident(@Model.PendingIncidentReport.Count) </td>
+                </tr>
+                foreach (var item in Model.PendingIncidentReport)
+                {
+                    <tr class="alt">
+                        <td>@item.IncidentId</td>
+                        <td>@item.CategoryName</td>
+                        <td><a href="@(Model.RedmineUrl + item.IncidentId)">@item.IncidentTitle</a></td>
+                        <td>@item.Priority</td>
+                        <td>@item.Status</td>
+                        <td>@item.Creator</td>
+                        <td>@item.Assignee</td>
+                        <td>@item.IncidentDate.ToString("MM/dd/yyyy")</td>
+                        <td>@item.UpdatedDate</td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>

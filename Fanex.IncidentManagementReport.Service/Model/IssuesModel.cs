@@ -1,0 +1,20 @@
+﻿using System.Collections.Generic;
+using Newtonsoft.Json;
+
+namespace Fanex.IncidentManagementReport.Service.Model
+{
+    public class IssuesModel
+    {
+        [JsonProperty(PropertyName = "issues")]
+        public List<IssuesViewModel> Issues { get; set; }
+
+        [JsonProperty(PropertyName = "total_count")]
+        public int TotalCount { get; set; }
+
+        [JsonProperty(PropertyName = "offset")]
+        public int Offset { get; set; }
+
+        [JsonProperty(PropertyName = "limit")]
+        public int Limit { get; set; }
+    }
+}

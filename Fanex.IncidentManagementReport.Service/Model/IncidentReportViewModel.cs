@@ -1,0 +1,16 @@
+﻿using System.Collections.Generic;
+
+namespace Fanex.IncidentManagementReport.Service.Model
+{
+    public class IncidentReportViewModel
+    {
+        public IList<IncidentReportModel> CreateNewIncidentReport { get; set; }            
+
+        public IList<IncidentReportModel> ChangedIncidentReport { get; set; }
+      
+        public IList<IncidentReportModel> PendingIncidentReport { get; set; }
+
+        public string RedmineUrl { get; set; }
+
+    }
+}
