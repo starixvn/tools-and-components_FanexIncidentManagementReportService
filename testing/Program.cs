@@ -14,7 +14,7 @@ namespace testing
         static void Main(string[] args)
         {
             Utilities.RazorEngineConfig();
-            // MailClientHandler.Start();
+             MailClientHandler.Start();
 
             //var _service = new UsersService();
             //var _status = new StatusService();
@@ -24,10 +24,10 @@ namespace testing
 
             //var project = _project.Project;
 
-           var result =  Core.Encrypt("!Q@W#E$R%Tasdfg");
+           //var result =  Core.Encrypt("!Q@W#E$R%Tasdfg");
 
-           var a = Core.Decrypt("Cn8hdjvyaLd9gmMrw0+XWw==");
-            Console.WriteLine(a);
+           //var a = Core.Decrypt("Cn8hdjvyaLd9gmMrw0+XWw==");
+           // Console.WriteLine(a);
             Console.ReadKey();
         }
     }

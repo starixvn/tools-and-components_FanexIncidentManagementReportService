@@ -57,20 +57,25 @@ namespace Fanex.IncidentManagementReport.Service.Services
 
         private IList<IncidentReportModel> GenerateIncidentModel(IList<IssuesViewModel> Issues)
         {
-            var query = Issues.Select(iss => new IncidentReportModel
+            if (Issues != null)
             {
-                IncidentId = iss.Id,
-                IncidentTitle = iss.Subject,
-                CategoryName = (_projectService.GetParentProjectById(iss.Project.Id) != null ? _projectService.GetParentProjectById(iss.Project.Id).Name + " - " : string.Empty) + iss.Project.Name,
-                Assignee = iss.Assignee != null ? iss.Assignee.Name : string.Empty,
-                IncidentDate = iss.IncidentDate,
-                Creator = iss.Creator.Name,
-                Priority = iss.Priority.Name,
-                Status = iss.Status.Name,
-                UpdatedDate = iss.UpdatedDate
-            });
+                var query = Issues.Select(iss => new IncidentReportModel
+                {
+                    IncidentId = iss.Id,
+                    IncidentTitle = iss.Subject,
+                    CategoryName = (_projectService.GetParentProjectById(iss.Project.Id) != null ? _projectService.GetParentProjectById(iss.Project.Id).Name + " - " : string.Empty) + iss.Project.Name,
+                    Assignee = iss.Assignee != null ? iss.Assignee.Name : string.Empty,
+                    IncidentDate = iss.IncidentDate,
+                    Creator = iss.Creator.Name,
+                    Priority = iss.Priority.Name,
+                    Status = iss.Status.Name,
+                    UpdatedDate = iss.UpdatedDate
+                });
 
-            return query.ToList();
+                return query.ToList();
+            }
+            else
+                return null;
         }
     }
 }

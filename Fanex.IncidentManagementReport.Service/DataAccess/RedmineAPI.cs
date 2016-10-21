@@ -1,4 +1,5 @@
 ﻿using System;
+using Fanex.IncidentManagementReport.Service.Core;
 using Newtonsoft.Json;
 using RestSharp;
 using RestSharp.Authenticators;
@@ -14,7 +15,7 @@ namespace Fanex.IncidentManagementReport.Service.DataAccess
         public RedmineAPI(string accountSid, string secretKey, string redmineUrl)
         {
             _accountSid = accountSid;
-            _secretKey = secretKey;
+            _secretKey = Utilities.Decrypt(secretKey);
             BaseUrl = new Uri(redmineUrl);
         }
 
