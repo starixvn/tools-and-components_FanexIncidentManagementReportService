@@ -16,8 +16,8 @@ namespace Fanex.IncidentManagementReport.Service.Job
             return new JobResultMessage {
                 Mail = new Mail
                 {
-                    Subject = "Daily Incident Report on " + DateTime.Now.ToShortDateString(),
-                    Title = "Auto mail Daily Incident Report ",
+                    Subject = "Weekly Incident Report from " + DateTime.Now.AddDays(-8).ToShortDateString() + " to " + DateTime.Now.AddDays(-1).ToShortDateString(),
+                    Title = "Auto mail Weekly Incident Report ",
                     Body = body
                 },
                 JobStatus = MailDelivery.Client.Enumerations.JobStatus.Success,

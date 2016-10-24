@@ -99,6 +99,29 @@ Please see the bellow table for more detail about the new created incident, upda
             </tr>
         </thead>
         <tbody>
+
+            @if (Model.P1IncidentReport != null)
+            {
+                <tr class="title">
+                    <td colspan="9"> P1 Incident Report(@Model.P1IncidentReport.Count) </td>
+                </tr>
+
+                foreach (var item in Model.P1IncidentReport)
+                {
+                    <tr class="alt">
+                        <td>@item.IncidentId</td>
+                        <td> @item.CategoryName</td>
+                        <td><a href="@(Model.RedmineUrl + item.IncidentId)">@item.IncidentTitle</a></td>
+                        <td>@item.Priority</td>
+                        <td>@item.Status</td>
+                        <td>@item.Creator</td>
+                        <td>@item.Assignee</td>
+                        <td>@item.IncidentDate.ToString("MM/dd/yyyy")</td>
+                        <td>@item.UpdatedDate</td>
+                    </tr>
+                }
+            }
+
             @if (Model.CreateNewIncidentReport != null)
             {
                 <tr class="title">
@@ -121,13 +144,13 @@ Please see the bellow table for more detail about the new created incident, upda
                 }
             }
               
-            @if (Model.ChangedIncidentReport != null)
+            @if (Model.ClosedIncidentReport != null)
             {          
                 <tr class="title">
-                    <td colspan="9"> Changed Incident(@Model.ChangedIncidentReport.Count) </td>
+                    <td colspan="9"> Closed Incident(@Model.ClosedIncidentReport.Count) </td>
                 </tr>
             
-                foreach (var item in Model.ChangedIncidentReport)
+                foreach (var item in Model.ClosedIncidentReport)
                 {
                     <tr class="alt">
                         <td>@item.IncidentId</td>

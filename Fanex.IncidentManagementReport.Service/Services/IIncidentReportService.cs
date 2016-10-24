@@ -5,11 +5,13 @@ namespace Fanex.IncidentManagementReport.Service.Services
 {
     public interface IIncidentReportService
     {
-        IList<IncidentReportModel> GetIncidentDailyCreateNewReport();
+        IList<IncidentReportModel> GetIncidentWeeklyCreateNewReport();
 
-        IList<IncidentReportModel> GetIncidentDailyUpdateReport();
+        IList<IncidentReportModel> GetIncidentWeeklyClosedReport();
 
-        IList<IncidentReportModel> GetIncidentDailyPendingReport();
+        IList<IncidentReportModel> GetIncidentWeeklyPendingReport();
+
+        IList<IncidentReportModel> GetIncidentWeeklyP1Report();
 
         string GetRedmineUrl();
     }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Fanex.IncidentManagementReport.Service.Model;
 
@@ -16,7 +17,7 @@ namespace Fanex.IncidentManagementReport.Service.Services
             _issuesService = issuesService ?? new IssuesService();
             _projectService = projectService ?? new ProjectService();
         }
-        public IList<IncidentReportModel> GetIncidentDailyCreateNewReport()
+        public IList<IncidentReportModel> GetIncidentWeeklyCreateNewReport()
         {
             var issues = _issuesService.CreateNewIssue;
 
@@ -28,9 +29,9 @@ namespace Fanex.IncidentManagementReport.Service.Services
             return null;
         }
 
-        public IList<IncidentReportModel> GetIncidentDailyUpdateReport()
+        public IList<IncidentReportModel> GetIncidentWeeklyClosedReport()
         {
-            var issues = _issuesService.ChangedIssue;
+            var issues = _issuesService.CloseIssue;
             if (issues != null)
             {
                 return GenerateIncidentModel(issues);
@@ -39,9 +40,19 @@ namespace Fanex.IncidentManagementReport.Service.Services
             return null;
         }
 
-        public IList<IncidentReportModel> GetIncidentDailyPendingReport()
+        public IList<IncidentReportModel> GetIncidentWeeklyPendingReport()
         {
             var issues = _issuesService.PendingIssue;
+            if (issues != null)
+            {
+                return GenerateIncidentModel(issues);
+            }
+
+            return null;
+        }
+        public IList<IncidentReportModel> GetIncidentWeeklyP1Report()
+        {
+            var issues = _issuesService.P1Issue;
             if (issues != null)
             {
                 return GenerateIncidentModel(issues);
@@ -76,6 +87,6 @@ namespace Fanex.IncidentManagementReport.Service.Services
             }
             else
                 return null;
-        }
+        }       
     }
 }

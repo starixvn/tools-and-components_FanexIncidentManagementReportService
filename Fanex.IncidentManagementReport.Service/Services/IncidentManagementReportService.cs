@@ -19,15 +19,17 @@ namespace Fanex.IncidentManagementReport.Service
         {
             try
             {
-                var getIncidentDailyCreateNewReport = _incidentReportService.GetIncidentDailyCreateNewReport();
-                var getIncidentDailyUpdateReport = _incidentReportService.GetIncidentDailyUpdateReport();
-                var getIncidentDailyPendingReport = _incidentReportService.GetIncidentDailyPendingReport();
+                var getIncidentWeeklyCreateNewReport = _incidentReportService.GetIncidentWeeklyCreateNewReport();
+                var getIncidentWeeklyClosedReport = _incidentReportService.GetIncidentWeeklyClosedReport();
+                var getIncidentWeeklyPendingReport = _incidentReportService.GetIncidentWeeklyPendingReport();
+                var getIncidentWeeklyP1Report = _incidentReportService.GetIncidentWeeklyP1Report();
                 var getRedmineUrl = _incidentReportService.GetRedmineUrl();
                 var model = new IncidentReportViewModel()
                 {
-                    CreateNewIncidentReport = getIncidentDailyCreateNewReport,
-                    ChangedIncidentReport = getIncidentDailyUpdateReport,
-                    PendingIncidentReport = getIncidentDailyPendingReport,
+                    CreateNewIncidentReport = getIncidentWeeklyCreateNewReport,
+                    ClosedIncidentReport = getIncidentWeeklyClosedReport,
+                    PendingIncidentReport = getIncidentWeeklyPendingReport,
+                    P1IncidentReport = getIncidentWeeklyP1Report,
                     RedmineUrl = getRedmineUrl + "/issues/"
 
                 };
@@ -35,7 +37,7 @@ namespace Fanex.IncidentManagementReport.Service
                 var templateFolderPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "EmailTemplates/IncidentDailyReportTemplate.html");
                 var emailTemplate = File.ReadAllText(templateFolderPath);
 
-                var content = Engine.Razor.RunCompile(emailTemplate, "key", typeof(IncidentReportViewModel), model);
+                var content = Engine.Razor.RunCompile(emailTemplate, "mykey", typeof(IncidentReportViewModel), model);
 
                 return content;
             }

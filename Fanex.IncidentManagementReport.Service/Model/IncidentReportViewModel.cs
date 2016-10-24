@@ -6,9 +6,11 @@ namespace Fanex.IncidentManagementReport.Service.Model
     {
         public IList<IncidentReportModel> CreateNewIncidentReport { get; set; }            
 
-        public IList<IncidentReportModel> ChangedIncidentReport { get; set; }
+        public IList<IncidentReportModel> ClosedIncidentReport { get; set; }
       
         public IList<IncidentReportModel> PendingIncidentReport { get; set; }
+
+        public IList<IncidentReportModel> P1IncidentReport { get; set; }
 
         public string RedmineUrl { get; set; }
 
