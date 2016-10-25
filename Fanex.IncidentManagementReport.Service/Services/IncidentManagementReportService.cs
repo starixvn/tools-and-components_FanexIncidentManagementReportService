@@ -37,7 +37,7 @@ namespace Fanex.IncidentManagementReport.Service
                 var templateFolderPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "EmailTemplates/IncidentDailyReportTemplate.html");
                 var emailTemplate = File.ReadAllText(templateFolderPath);
 
-                var content = Engine.Razor.RunCompile(emailTemplate, "mykey", typeof(IncidentReportViewModel), model);
+                var content = Engine.Razor.RunCompile(emailTemplate, "templateKey", typeof(IncidentReportViewModel), model);
 
                 return content;
             }

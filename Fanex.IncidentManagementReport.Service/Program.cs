@@ -21,6 +21,11 @@ namespace Fanex.IncidentManagementReport.Service
                 new Service()
             };
             ServiceBase.Run(ServicesToRun);
+
+            //var incidentManagementReportService = new IncidentManagementReportService();
+            //var body = incidentManagementReportService.incidentReportEmailTemplate();
+            //Console.WriteLine(body);
+            //Console.ReadKey();
         }
     }
 }

@@ -13,7 +13,7 @@ namespace Fanex.IncidentManagementReport.Service.Services
             {
                 var request = new RestRequest(Method.GET);
 
-                request.Resource = "issues.json?start_date=" + FromDate + "|" + ToDate;
+                request.Resource = "issues.json?start_date=" + FromDate + "|" + ToDate + "&limit=100";
                 request.AddHeader("Content-type", "application/json");
                 request.RequestFormat = DataFormat.Json;
 
@@ -28,7 +28,7 @@ namespace Fanex.IncidentManagementReport.Service.Services
             get
             {
                 var request = new RestRequest(Method.GET);
-                request.Resource = "issues.json?updated_on=" + FromDate + "|" + ToDate + "&status_id = 5" ; 
+                request.Resource = "issues.json?updated_on=" + FromDate + "|" + ToDate + "&status_id=5&limit=100"; 
                 request.AddHeader("Content-type", "application/json");
                 request.RequestFormat = DataFormat.Json;
 
@@ -43,7 +43,7 @@ namespace Fanex.IncidentManagementReport.Service.Services
             get
             {
                 var request = new RestRequest(Method.GET);
-                request.Resource = "issues.json?start_date < " + NowDate + "&status_id =1|4|7";
+                request.Resource = "issues.json?start_date=%3C%3D" + FromDate + "&status_id =1|4|7&limit=100";
                 request.AddHeader("Content-type", "application/json");
                 request.RequestFormat = DataFormat.Json;
 
@@ -59,7 +59,7 @@ namespace Fanex.IncidentManagementReport.Service.Services
             {
                 var request = new RestRequest(Method.GET);
 
-                request.Resource = "issues.json?start_date=" + FromDate + "|" + ToDate + "&priority=1";
+                request.Resource = "issues.json?start_date=" + FromDate + "|" + ToDate + "&priority=1&limit=100";
                 request.AddHeader("Content-type", "application/json");
                 request.RequestFormat = DataFormat.Json;
 

@@ -13,7 +13,7 @@ namespace Fanex.IncidentManagementReport.Service.Services
             get
             {
                 var request = new RestRequest(Method.GET);
-                request.Resource = "projects.json";
+                request.Resource = "projects.json?limit=100";
                 request.AddHeader("Content-type", "application/json");
                 request.RequestFormat = DataFormat.Json;
 
