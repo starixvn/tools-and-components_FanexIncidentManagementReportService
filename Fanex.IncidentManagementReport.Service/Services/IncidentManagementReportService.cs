@@ -15,36 +15,64 @@ namespace Fanex.IncidentManagementReport.Service
             _incidentReportService = new IncidentReportService();
         }
 
-        public string incidentReportEmailTemplate()
+        public string IncidentWeeklyReportEmailTemplate()
         {
             try
             {
-                var getIncidentWeeklyCreateNewReport = _incidentReportService.GetIncidentWeeklyCreateNewReport();
-                var getIncidentWeeklyClosedReport = _incidentReportService.GetIncidentWeeklyClosedReport();
-                var getIncidentWeeklyPendingReport = _incidentReportService.GetIncidentWeeklyPendingReport();
-                var getIncidentWeeklyP1Report = _incidentReportService.GetIncidentWeeklyP1Report();
-                var getRedmineUrl = _incidentReportService.GetRedmineUrl();
-                var model = new IncidentReportViewModel()
-                {
-                    CreateNewIncidentReport = getIncidentWeeklyCreateNewReport,
-                    ClosedIncidentReport = getIncidentWeeklyClosedReport,
-                    PendingIncidentReport = getIncidentWeeklyPendingReport,
-                    P1IncidentReport = getIncidentWeeklyP1Report,
-                    RedmineUrl = getRedmineUrl + "/issues/"
+                var nowDate = DateTime.Now;
 
-                };
+                var fromDate = nowDate.AddDays(-1);
+                var toDate = nowDate.AddDays(-8);
 
-                var templateFolderPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "EmailTemplates/IncidentDailyReportTemplate.html");
-                var emailTemplate = File.ReadAllText(templateFolderPath);
 
-                var content = Engine.Razor.RunCompile(emailTemplate, "templateKey", typeof(IncidentReportViewModel), model);
-
-                return content;
+                return IncidentReportGeneration(fromDate, toDate, "EmailTemplates/IncidentWeeklyReportTemplate.html");
             }
             catch (Exception ex)
             {
                 return ex.Message;
-            }            
+            }
+        }
+
+        public string IncidentDailyReportEmailTemplate()
+        {
+            try
+            {
+                var nowDate = DateTime.Now;
+
+                var fromDate = nowDate.AddDays(-1);
+                var toDate = nowDate.AddDays(-1);
+
+                return IncidentReportGeneration(fromDate, toDate, "EmailTemplates/IncidentDailyReportTemplate.html");
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+
+        private string IncidentReportGeneration(DateTime fromDate, DateTime toDate, string emailTemplatePath)
+        {
+            var getIncidentWeeklyCreateNewReport = _incidentReportService.GetIncidentCreateNewReport(fromDate, toDate);
+            var getIncidentWeeklyClosedReport = _incidentReportService.GetIncidentClosedReport(fromDate, toDate);
+            var getIncidentWeeklyPendingReport = _incidentReportService.GetIncidentPendingReport(fromDate, toDate);
+            var getIncidentWeeklyP1Report = _incidentReportService.GetIncidentP1Report(fromDate, toDate);
+            var getRedmineUrl = _incidentReportService.GetRedmineUrl();
+            var model = new IncidentReportViewModel()
+            {
+                CreateNewIncidentReport = getIncidentWeeklyCreateNewReport,
+                ClosedIncidentReport = getIncidentWeeklyClosedReport,
+                PendingIncidentReport = getIncidentWeeklyPendingReport,
+                P1IncidentReport = getIncidentWeeklyP1Report,
+                RedmineUrl = getRedmineUrl + "/issues/"
+
+            };
+
+            var templateFolderPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, emailTemplatePath);
+            var emailTemplate = File.ReadAllText(templateFolderPath);
+
+            var content = Engine.Razor.RunCompile(emailTemplate, Path.GetFileName(emailTemplatePath), typeof(IncidentReportViewModel), model);
+
+            return content;
         }
     }
 }

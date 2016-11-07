@@ -1,4 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Fanex.MailDelivery.Client.Jobs;
 using Fanex.MailDelivery.Client.Messages;
 using Fanex.MailDelivery.Client.Models;
@@ -11,13 +15,14 @@ namespace Fanex.IncidentManagementReport.Service.Job
         protected override JobResultMessage Run(Schedule schedule, IJobExecutionContext jobContext)
         {
             var incidentManagementReportService = new IncidentManagementReportService();
-            var body = incidentManagementReportService.incidentReportEmailTemplate();
+            var body = incidentManagementReportService.IncidentDailyReportEmailTemplate();
 
-            return new JobResultMessage {
+            return new JobResultMessage
+            {
                 Mail = new Mail
                 {
-                    Subject = "Weekly Incident Report from " + DateTime.Now.AddDays(-8).ToShortDateString() + " to " + DateTime.Now.AddDays(-1).ToShortDateString(),
-                    Title = "Auto mail Weekly Incident Report ",
+                    Subject = "Daily Incident Report on " + DateTime.Now.AddDays(-1).ToShortDateString(),
+                    Title = "Auto Mail Daily Incident Report ",
                     Body = body
                 },
                 JobStatus = MailDelivery.Client.Enumerations.JobStatus.Success,

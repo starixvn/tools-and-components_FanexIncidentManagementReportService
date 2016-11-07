@@ -7,13 +7,14 @@ namespace Fanex.IncidentManagementReport.Service.Services
 {
     public class IssuesService : BaseService, IIssuesService
     {
+        private DateTime _fromDate, _toDate;
         public IList<IssuesViewModel> CreateNewIssue
         {
             get
             {
                 var request = new RestRequest(Method.GET);
 
-                request.Resource = "issues.json?start_date=" + FromDate + "|" + ToDate + "&limit=100";
+                request.Resource = "issues.json?start_date=" + FromDate.ToString("yyyy-MM-dd") + "|" + ToDate.ToString("yyyy-MM-dd") + "&limit=100";
                 request.AddHeader("Content-type", "application/json");
                 request.RequestFormat = DataFormat.Json;
 
@@ -28,7 +29,7 @@ namespace Fanex.IncidentManagementReport.Service.Services
             get
             {
                 var request = new RestRequest(Method.GET);
-                request.Resource = "issues.json?updated_on=" + FromDate + "|" + ToDate + "&status_id=5&limit=100"; 
+                request.Resource = "issues.json?updated_on=" + FromDate.ToString("yyyy-MM-dd") + "|" + ToDate.ToString("yyyy-MM-dd") + "&status_id=5&limit=100";
                 request.AddHeader("Content-type", "application/json");
                 request.RequestFormat = DataFormat.Json;
 
@@ -43,7 +44,7 @@ namespace Fanex.IncidentManagementReport.Service.Services
             get
             {
                 var request = new RestRequest(Method.GET);
-                request.Resource = "issues.json?start_date=%3C%3D" + FromDate + "&status_id =1|4|7&limit=100";
+                request.Resource = "issues.json?start_date=%3C%3D" + FromDate.ToString("yyyy-MM-dd") + "&status_id =1|4|7&limit=100";
                 request.AddHeader("Content-type", "application/json");
                 request.RequestFormat = DataFormat.Json;
 
@@ -59,7 +60,7 @@ namespace Fanex.IncidentManagementReport.Service.Services
             {
                 var request = new RestRequest(Method.GET);
 
-                request.Resource = "issues.json?start_date=" + FromDate + "|" + ToDate + "&priority=1&limit=100";
+                request.Resource = "issues.json?start_date=" + FromDate.ToString("yyyy-MM-dd") + "|" + ToDate.ToString("yyyy-MM-dd") + "&priority=1&limit=100";
                 request.AddHeader("Content-type", "application/json");
                 request.RequestFormat = DataFormat.Json;
 
@@ -69,28 +70,30 @@ namespace Fanex.IncidentManagementReport.Service.Services
             }
         }
 
-        public string FromDate
+        public DateTime FromDate
         {
             get
             {
-                return DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd");
+                return _fromDate;
+            }
+
+            set
+            {
+                _fromDate = value;
             }
         }
 
-        public string ToDate
+        public DateTime ToDate
         {
             get
             {
-                return DateTime.Now.AddDays(-8).ToString("yyyy-MM-dd");
+                return _toDate;
             }
-        }
 
-        public string NowDate
-        {
-            get
+            set
             {
-               return DateTime.Now.ToString("yyyy-MM-dd");
+                _toDate = value;
             }
-        }        
+        }     
     }
 }

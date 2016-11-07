@@ -24,10 +24,10 @@ namespace testing
 
             //var project = _project.Project;
 
-           //var result =  Core.Encrypt("!Q@W#E$R%Tasdfg");
+         // var result =  Core.Encrypt("chuotnhat");
 
            //var a = Core.Decrypt("Cn8hdjvyaLd9gmMrw0+XWw==");
-           // Console.WriteLine(a);
+           // Console.WriteLine(result);
             Console.ReadKey();
         }
     }

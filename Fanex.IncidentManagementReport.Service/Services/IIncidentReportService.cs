@@ -1,17 +1,18 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Fanex.IncidentManagementReport.Service.Model;
 
 namespace Fanex.IncidentManagementReport.Service.Services
 {
     public interface IIncidentReportService
     {
-        IList<IncidentReportModel> GetIncidentWeeklyCreateNewReport();
+        IList<IncidentReportModel> GetIncidentCreateNewReport(DateTime fromDate, DateTime toDate);
 
-        IList<IncidentReportModel> GetIncidentWeeklyClosedReport();
+        IList<IncidentReportModel> GetIncidentClosedReport(DateTime fromDate, DateTime toDate);
 
-        IList<IncidentReportModel> GetIncidentWeeklyPendingReport();
+        IList<IncidentReportModel> GetIncidentPendingReport(DateTime fromDate, DateTime toDate);
 
-        IList<IncidentReportModel> GetIncidentWeeklyP1Report();
+        IList<IncidentReportModel> GetIncidentP1Report(DateTime fromDate, DateTime toDate);
 
         string GetRedmineUrl();
     }

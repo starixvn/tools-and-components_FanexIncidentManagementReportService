@@ -9,7 +9,7 @@ namespace Fanex.IncidentManagementReport.Service.Services
     public class IncidentReportService : BaseService, IIncidentReportService
     {
         private IIssuesService _issuesService;
-        private IProjectService _projectService;
+        private IProjectService _projectService;       
 
         public IncidentReportService() : this(null, null) { }
         public IncidentReportService(IIssuesService issuesService, IProjectService projectService)
@@ -17,8 +17,11 @@ namespace Fanex.IncidentManagementReport.Service.Services
             _issuesService = issuesService ?? new IssuesService();
             _projectService = projectService ?? new ProjectService();
         }
-        public IList<IncidentReportModel> GetIncidentWeeklyCreateNewReport()
+        public IList<IncidentReportModel> GetIncidentCreateNewReport(DateTime fromDate, DateTime toDate)
         {
+            _issuesService.FromDate = fromDate;
+            _issuesService.ToDate = toDate;
+
             var issues = _issuesService.CreateNewIssue;
 
             if (issues != null)
@@ -29,8 +32,11 @@ namespace Fanex.IncidentManagementReport.Service.Services
             return null;
         }
 
-        public IList<IncidentReportModel> GetIncidentWeeklyClosedReport()
+        public IList<IncidentReportModel> GetIncidentClosedReport(DateTime fromDate, DateTime toDate)
         {
+            _issuesService.FromDate = fromDate;
+            _issuesService.ToDate = toDate;
+
             var issues = _issuesService.CloseIssue;
             if (issues != null)
             {
@@ -40,8 +46,11 @@ namespace Fanex.IncidentManagementReport.Service.Services
             return null;
         }
 
-        public IList<IncidentReportModel> GetIncidentWeeklyPendingReport()
+        public IList<IncidentReportModel> GetIncidentPendingReport(DateTime fromDate, DateTime toDate)
         {
+            _issuesService.FromDate = fromDate;
+            _issuesService.ToDate = toDate;
+
             var issues = _issuesService.PendingIssue;
             if (issues != null)
             {
@@ -50,8 +59,11 @@ namespace Fanex.IncidentManagementReport.Service.Services
 
             return null;
         }
-        public IList<IncidentReportModel> GetIncidentWeeklyP1Report()
+        public IList<IncidentReportModel> GetIncidentP1Report(DateTime fromDate, DateTime toDate)
         {
+            _issuesService.FromDate = fromDate;
+            _issuesService.ToDate = toDate;
+
             var issues = _issuesService.P1Issue;
             if (issues != null)
             {
@@ -59,7 +71,7 @@ namespace Fanex.IncidentManagementReport.Service.Services
             }
 
             return null;
-        }
+        }       
 
         public string GetRedmineUrl()
         {

@@ -14,10 +14,8 @@ namespace Fanex.IncidentManagementReport.Service.Services
 
         IList<IssuesViewModel> P1Issue { get; }
 
-        string FromDate { get; }
+        DateTime FromDate { get; set; }
 
-        string ToDate { get; }
-
-        string NowDate { get; }
+        DateTime ToDate { get; set; }
     }
 }
