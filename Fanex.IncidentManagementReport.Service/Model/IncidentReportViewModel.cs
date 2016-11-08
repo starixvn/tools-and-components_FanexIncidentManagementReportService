@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Fanex.IncidentManagementReport.Service.Model
 {
@@ -13,6 +14,10 @@ namespace Fanex.IncidentManagementReport.Service.Model
         public IList<IncidentReportModel> P1IncidentReport { get; set; }
 
         public string RedmineUrl { get; set; }
+
+        public DateTime FromDate { get; set; }
+
+        public DateTime ToDate { get; set; }
 
     }
 }

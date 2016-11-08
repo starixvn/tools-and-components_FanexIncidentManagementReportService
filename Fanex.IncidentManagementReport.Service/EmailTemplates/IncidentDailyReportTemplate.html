@@ -80,7 +80,7 @@
 Dear All
 <br />
 <br />
-Please see the bellow table for more detail about the P1,  New created, Closed and Pending issue in yesterday until now.
+Please see the bellow table for more detail about the P1,  New created, Closed and Pending issue in yesterday.
 <br />
 <br />
 <div class="datagrid">
@@ -93,7 +93,8 @@ Please see the bellow table for more detail about the P1,  New created, Closed a
                 <th>Priority</th>
                 <th>Status</th>
                 <th>Creator</th>
-                <th>Assignee</th>
+                <th>Assignee</th>                
+                <th>Created Date</th>
                 <th>Incident Date</th>
                 <th>Resolved Date</th>
             </tr>
@@ -103,7 +104,7 @@ Please see the bellow table for more detail about the P1,  New created, Closed a
             @if (Model.P1IncidentReport != null)
             {
                 <tr class="title">
-                    <td colspan="9"> P1 Incident Report(@Model.P1IncidentReport.Count) </td>
+                    <td colspan="10"> P1 Incident Report(@Model.P1IncidentReport.Count) </td>
                 </tr>
 
                 foreach (var item in Model.P1IncidentReport)
@@ -116,8 +117,9 @@ Please see the bellow table for more detail about the P1,  New created, Closed a
                         <td>@item.Status</td>
                         <td>@item.Creator</td>
                         <td>@item.Assignee</td>
-                        <td>@item.IncidentDate.ToString("MM/dd/yyyy")</td>
-                        <td>@item.UpdatedDate</td>
+                        <td>@item.CreatedDate</td>
+                        <td>@item.IncidentDate.ToString("MM/dd/yyyy")</td>                        
+                        <td>@item.ResolvedDate</td>
                     </tr>
                 }
             }
@@ -125,7 +127,7 @@ Please see the bellow table for more detail about the P1,  New created, Closed a
             @if (Model.CreateNewIncidentReport != null)
             {
                 <tr class="title">
-                    <td colspan="9"> New created Incident Report(@Model.CreateNewIncidentReport.Count) </td>
+                    <td colspan="10"> New created Incident Report(@Model.CreateNewIncidentReport.Count) </td>
                 </tr>
            
                 foreach (var item in Model.CreateNewIncidentReport)
@@ -138,8 +140,9 @@ Please see the bellow table for more detail about the P1,  New created, Closed a
                         <td>@item.Status</td>
                         <td>@item.Creator</td>
                         <td>@item.Assignee</td>
-                        <td>@item.IncidentDate.ToString("MM/dd/yyyy")</td>
-                        <td>@item.UpdatedDate</td>
+                        <td>@item.CreatedDate</td>
+                        <td>@item.IncidentDate.ToString("MM/dd/yyyy")</td>                        
+                        <td>@item.ResolvedDate</td>
                     </tr>
                 }
             }
@@ -147,7 +150,7 @@ Please see the bellow table for more detail about the P1,  New created, Closed a
             @if (Model.ClosedIncidentReport != null)
             {          
                 <tr class="title">
-                    <td colspan="9"> Closed Incident(@Model.ClosedIncidentReport.Count) </td>
+                    <td colspan="10"> Closed Incident(@Model.ClosedIncidentReport.Count) </td>
                 </tr>
             
                 foreach (var item in Model.ClosedIncidentReport)
@@ -160,8 +163,9 @@ Please see the bellow table for more detail about the P1,  New created, Closed a
                         <td>@item.Status</td>
                         <td>@item.Creator</td>
                         <td>@item.Assignee</td>
-                        <td>@item.IncidentDate.ToString("MM/dd/yyyy")</td>
-                        <td>@item.UpdatedDate</td>
+                        <td>@item.CreatedDate</td>
+                        <td>@item.IncidentDate.ToString("MM/dd/yyyy")</td>                        
+                        <td>@item.ResolvedDate</td>
                     </tr>
                 }
             }
@@ -169,7 +173,7 @@ Please see the bellow table for more detail about the P1,  New created, Closed a
             @if (Model.PendingIncidentReport != null)
             {
                 <tr class="title">
-                    <td colspan="9"> Pending Incident(@Model.PendingIncidentReport.Count) </td>
+                    <td colspan="10"> Pending Incident(@Model.PendingIncidentReport.Count) </td>
                 </tr>
                 foreach (var item in Model.PendingIncidentReport)
                 {
@@ -181,8 +185,9 @@ Please see the bellow table for more detail about the P1,  New created, Closed a
                         <td>@item.Status</td>
                         <td>@item.Creator</td>
                         <td>@item.Assignee</td>
-                        <td>@item.IncidentDate.ToString("MM/dd/yyyy")</td>
-                        <td>@item.UpdatedDate</td>
+                        <td>@item.CreatedDate</td>
+                        <td>@item.IncidentDate.ToString("MM/dd/yyyy")</td>                        
+                        <td>@item.ResolvedDate</td>
                     </tr>
                 }
             }

@@ -14,7 +14,7 @@ namespace Fanex.IncidentManagementReport.Service.Services
             {
                 var request = new RestRequest(Method.GET);
 
-                request.Resource = "issues.json?start_date=" + FromDate.ToString("yyyy-MM-dd") + "|" + ToDate.ToString("yyyy-MM-dd") + "&limit=100";
+                request.Resource = "issues.json?created_on=><" + FromDate.ToString("yyyy-MM-dd") + "|" + ToDate.ToString("yyyy-MM-dd") + "&status_id=*&limit=100";
                 request.AddHeader("Content-type", "application/json");
                 request.RequestFormat = DataFormat.Json;
 
@@ -29,7 +29,7 @@ namespace Fanex.IncidentManagementReport.Service.Services
             get
             {
                 var request = new RestRequest(Method.GET);
-                request.Resource = "issues.json?updated_on=" + FromDate.ToString("yyyy-MM-dd") + "|" + ToDate.ToString("yyyy-MM-dd") + "&status_id=5&limit=100";
+                request.Resource = "issues.json?closed_on=><" + FromDate.ToString("yyyy-MM-dd") + "|" + ToDate.ToString("yyyy-MM-dd") + "&status_id=5&limit=100";
                 request.AddHeader("Content-type", "application/json");
                 request.RequestFormat = DataFormat.Json;
 
@@ -44,7 +44,7 @@ namespace Fanex.IncidentManagementReport.Service.Services
             get
             {
                 var request = new RestRequest(Method.GET);
-                request.Resource = "issues.json?start_date=%3C%3D" + FromDate.ToString("yyyy-MM-dd") + "&status_id =1|4|7&limit=100";
+                request.Resource = "issues.json?created_on=><" + FromDate.ToString("yyyy-MM-dd") + "|" + ToDate.ToString("yyyy-MM-dd") + "&status_id =1|4|7&limit=100";
                 request.AddHeader("Content-type", "application/json");
                 request.RequestFormat = DataFormat.Json;
 
@@ -60,7 +60,7 @@ namespace Fanex.IncidentManagementReport.Service.Services
             {
                 var request = new RestRequest(Method.GET);
 
-                request.Resource = "issues.json?start_date=" + FromDate.ToString("yyyy-MM-dd") + "|" + ToDate.ToString("yyyy-MM-dd") + "&priority=1&limit=100";
+                request.Resource = "issues.json?created_on=><" + FromDate.ToString("yyyy-MM-dd") + "|" + ToDate.ToString("yyyy-MM-dd") + "&status_id=*&priority_id=1&limit=100";
                 request.AddHeader("Content-type", "application/json");
                 request.RequestFormat = DataFormat.Json;
 

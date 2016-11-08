@@ -92,7 +92,9 @@ namespace Fanex.IncidentManagementReport.Service.Services
                     Creator = iss.Creator.Name,
                     Priority = iss.Priority.Name,
                     Status = iss.Status.Name,
-                    UpdatedDate = iss.UpdatedDate
+                    UpdatedDate = iss.UpdatedDate,
+                    CreatedDate = iss.CreatedDate,
+                    ResolvedDate = iss.ResolvedDate.Year == 0001 ? "N/A" : iss.ResolvedDate.ToShortDateString()
                 });
 
                 return query.ToList();

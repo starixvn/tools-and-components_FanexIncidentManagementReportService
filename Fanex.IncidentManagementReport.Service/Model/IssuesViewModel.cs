@@ -37,5 +37,11 @@ namespace Fanex.IncidentManagementReport.Service.Model
 
         [JsonProperty(PropertyName = "updated_on")]
         public DateTime UpdatedDate { get; set; }
+
+        [JsonProperty(PropertyName = "created_on")]
+        public DateTime CreatedDate { get; set; }
+
+        [JsonProperty(PropertyName = "due_date")]
+        public DateTime ResolvedDate { get; set; }
     }
 }

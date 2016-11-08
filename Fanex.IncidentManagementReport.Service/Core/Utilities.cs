@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using FluentDateTime;
 using RazorEngine;
 using RazorEngine.Configuration;
 using RazorEngine.Templating;
@@ -10,6 +12,7 @@ namespace Fanex.IncidentManagementReport.Service.Core
     public static class Utilities
     {
         private const string PassPhrase = "Fanex.IncidentMangementReport.Service";
+
         public static void RazorEngineConfig()
         {
             var config = new TemplateServiceConfiguration();
@@ -69,6 +72,23 @@ namespace Fanex.IncidentManagementReport.Service.Core
             tdes.Clear();
 
             return UTF8Encoding.UTF8.GetString(resultArray);
+        }
+
+        public static DateTime DateOfPreviousWeek(this DateTime dt, DayOfWeek startOfWeek)
+        {
+            var dateTime = dt.WeekEarlier();
+            var firstDayOfWeek = dateTime.FirstDayOfWeek().AddDays(1);
+            var lastDayOfWeek = dateTime.LastDayOfWeek().AddDays(1);
+
+            for (var i = firstDayOfWeek; i <= lastDayOfWeek; i = i.AddDays(1))
+            {
+                if (i.DayOfWeek == startOfWeek)
+                {
+                    return i;
+                }
+            }
+
+            return dateTime;
         }
     }
 }

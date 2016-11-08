@@ -21,5 +21,9 @@ namespace Fanex.IncidentManagementReport.Service.Model
         public DateTime UpdatedDate { get; set; }
 
         public DateTime IncidentDate { get; set; }
+
+        public DateTime  CreatedDate { get; set; }
+
+        public string ResolvedDate { get; set; }
     }
 }

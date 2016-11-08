@@ -1,7 +1,9 @@
 ﻿using System;
 using System.IO;
+using Fanex.IncidentManagementReport.Service.Core;
 using Fanex.IncidentManagementReport.Service.Model;
 using Fanex.IncidentManagementReport.Service.Services;
+using FluentDateTime;
 using RazorEngine;
 using RazorEngine.Templating;
 
@@ -19,11 +21,8 @@ namespace Fanex.IncidentManagementReport.Service
         {
             try
             {
-                var nowDate = DateTime.Now;
-
-                var fromDate = nowDate.AddDays(-1);
-                var toDate = nowDate.AddDays(-8);
-
+                var fromDate = Utilities.DateOfPreviousWeek(DateTime.Now, DayOfWeek.Monday);
+                var toDate = Utilities.DateOfPreviousWeek(DateTime.Now, DayOfWeek.Sunday);
 
                 return IncidentReportGeneration(fromDate, toDate, "EmailTemplates/IncidentWeeklyReportTemplate.html");
             }
@@ -39,8 +38,8 @@ namespace Fanex.IncidentManagementReport.Service
             {
                 var nowDate = DateTime.Now;
 
-                var fromDate = nowDate.AddDays(-1);
-                var toDate = nowDate.AddDays(-1);
+                var toDate = nowDate.PreviousDay();
+                var fromDate = toDate;
 
                 return IncidentReportGeneration(fromDate, toDate, "EmailTemplates/IncidentDailyReportTemplate.html");
             }
@@ -63,14 +62,15 @@ namespace Fanex.IncidentManagementReport.Service
                 ClosedIncidentReport = getIncidentWeeklyClosedReport,
                 PendingIncidentReport = getIncidentWeeklyPendingReport,
                 P1IncidentReport = getIncidentWeeklyP1Report,
-                RedmineUrl = getRedmineUrl + "/issues/"
-
+                RedmineUrl = getRedmineUrl + "/issues/",
+                FromDate = fromDate,
+                ToDate = toDate
             };
 
             var templateFolderPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, emailTemplatePath);
             var emailTemplate = File.ReadAllText(templateFolderPath);
 
-            var content = Engine.Razor.RunCompile(emailTemplate, Path.GetFileName(emailTemplatePath), typeof(IncidentReportViewModel), model);
+            var content = Engine.Razor.RunCompile(emailTemplate, Path.GetFileName(emailTemplatePath) + "v6", typeof(IncidentReportViewModel), model);
 
             return content;
         }
