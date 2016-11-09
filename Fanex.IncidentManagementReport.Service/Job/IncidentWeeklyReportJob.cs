@@ -22,7 +22,7 @@ namespace Fanex.IncidentManagementReport.Service.Job
             {
                 Mail = new Mail
                 {
-                    Subject = "Weekly Incident Report from " + fromDate.ToShortDateString() + " to " + toDate.ToShortDateString(),
+                    Subject = "[IMS] Weekly Incident Report from " + fromDate.ToShortDateString() + " to " + toDate.ToShortDateString(),
                     Title = "Auto Mail Weekly Incident Report ",
                     Body = body
                 },
