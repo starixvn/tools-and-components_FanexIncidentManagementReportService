@@ -21,7 +21,7 @@ namespace Fanex.IncidentManagementReport.Service.Job
             {
                 Mail = new Mail
                 {
-                    Subject = "[IMS] Daily Incident Report on " + DateTime.Now.AddDays(-1).ToShortDateString(),
+                    Subject = "[IMS] Daily Incident Report on " + DateTime.Now.ToShortDateString(),
                     Title = "Auto Mail Daily Incident Report ",
                     Body = body
                 },

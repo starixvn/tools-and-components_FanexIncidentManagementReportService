@@ -10,7 +10,9 @@ namespace Fanex.IncidentManagementReport.Service.Services
 
         IList<IncidentReportModel> GetIncidentClosedReport(DateTime fromDate, DateTime toDate);
 
-        IList<IncidentReportModel> GetIncidentPendingReport(DateTime fromDate, DateTime toDate);
+        IList<IncidentReportModel> GetIncidentPendingReport();
+
+        IList<IncidentReportModel> GetWeeklyIncidentPendingReport(DateTime toDate);
 
         IList<IncidentReportModel> GetIncidentP1Report(DateTime fromDate, DateTime toDate);
 

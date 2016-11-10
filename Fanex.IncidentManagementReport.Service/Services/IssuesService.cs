@@ -44,7 +44,7 @@ namespace Fanex.IncidentManagementReport.Service.Services
             get
             {
                 var request = new RestRequest(Method.GET);
-                request.Resource = "issues.json?created_on=><" + FromDate.ToString("yyyy-MM-dd") + "|" + ToDate.ToString("yyyy-MM-dd") + "&status_id =1|4|7&limit=100";
+                request.Resource = "issues.json?status_id=!5|6&limit=100";
                 request.AddHeader("Content-type", "application/json");
                 request.RequestFormat = DataFormat.Json;
 

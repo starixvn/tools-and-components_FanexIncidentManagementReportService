@@ -9,7 +9,7 @@ namespace Fanex.IncidentManagementReport.Service.Services
     public class IncidentReportService : BaseService, IIncidentReportService
     {
         private IIssuesService _issuesService;
-        private IProjectService _projectService;       
+        private IProjectService _projectService;
 
         public IncidentReportService() : this(null, null) { }
         public IncidentReportService(IIssuesService issuesService, IProjectService projectService)
@@ -46,19 +46,6 @@ namespace Fanex.IncidentManagementReport.Service.Services
             return null;
         }
 
-        public IList<IncidentReportModel> GetIncidentPendingReport(DateTime fromDate, DateTime toDate)
-        {
-            _issuesService.FromDate = fromDate;
-            _issuesService.ToDate = toDate;
-
-            var issues = _issuesService.PendingIssue;
-            if (issues != null)
-            {
-                return GenerateIncidentModel(issues);
-            }
-
-            return null;
-        }
         public IList<IncidentReportModel> GetIncidentP1Report(DateTime fromDate, DateTime toDate)
         {
             _issuesService.FromDate = fromDate;
@@ -71,7 +58,7 @@ namespace Fanex.IncidentManagementReport.Service.Services
             }
 
             return null;
-        }       
+        }
 
         public string GetRedmineUrl()
         {
@@ -101,6 +88,30 @@ namespace Fanex.IncidentManagementReport.Service.Services
             }
             else
                 return null;
-        }       
+        }
+
+        public IList<IncidentReportModel> GetIncidentPendingReport()
+        {
+            var issues = _issuesService.PendingIssue;
+            if (issues != null)
+            {
+                return GenerateIncidentModel(issues);
+            }
+
+            return null;
+        }
+
+        public IList<IncidentReportModel> GetWeeklyIncidentPendingReport(DateTime toDate)
+        {
+            var issues = _issuesService.PendingIssue;
+            if (issues != null)
+            {
+                var incidentModel = GenerateIncidentModel(issues);
+
+                return incidentModel.Where(x => x.CreatedDate <= toDate).ToList();
+            }
+
+            return null;
+        }
     }
 }

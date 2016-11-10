@@ -24,7 +24,7 @@ namespace Fanex.IncidentManagementReport.Service
                 var fromDate = Utilities.DateOfPreviousWeek(DateTime.Now, DayOfWeek.Monday);
                 var toDate = Utilities.DateOfPreviousWeek(DateTime.Now, DayOfWeek.Sunday);
 
-                return IncidentReportGeneration(fromDate, toDate, "EmailTemplates/IncidentWeeklyReportTemplate.html");
+                return IncidentReportGeneration(fromDate, toDate, "EmailTemplates/IncidentWeeklyReportTemplate.html", true);
             }
             catch (Exception ex)
             {
@@ -49,19 +49,19 @@ namespace Fanex.IncidentManagementReport.Service
             }
         }
 
-        private string IncidentReportGeneration(DateTime fromDate, DateTime toDate, string emailTemplatePath)
+        private string IncidentReportGeneration(DateTime fromDate, DateTime toDate, string emailTemplatePath, bool isWeekly = false)
         {
-            var getIncidentWeeklyCreateNewReport = _incidentReportService.GetIncidentCreateNewReport(fromDate, toDate);
-            var getIncidentWeeklyClosedReport = _incidentReportService.GetIncidentClosedReport(fromDate, toDate);
-            var getIncidentWeeklyPendingReport = _incidentReportService.GetIncidentPendingReport(fromDate, toDate);
-            var getIncidentWeeklyP1Report = _incidentReportService.GetIncidentP1Report(fromDate, toDate);
+            var getIncidentCreateNewReport = _incidentReportService.GetIncidentCreateNewReport(fromDate, toDate);
+            var getIncidentClosedReport = _incidentReportService.GetIncidentClosedReport(fromDate, toDate);
+            var getIncidentPendingReport = isWeekly ? _incidentReportService.GetWeeklyIncidentPendingReport(toDate) : _incidentReportService.GetIncidentPendingReport();
+            var getIncidentP1Report = _incidentReportService.GetIncidentP1Report(fromDate, toDate);
             var getRedmineUrl = _incidentReportService.GetRedmineUrl();
             var model = new IncidentReportViewModel()
             {
-                CreateNewIncidentReport = getIncidentWeeklyCreateNewReport,
-                ClosedIncidentReport = getIncidentWeeklyClosedReport,
-                PendingIncidentReport = getIncidentWeeklyPendingReport,
-                P1IncidentReport = getIncidentWeeklyP1Report,
+                CreateNewIncidentReport = getIncidentCreateNewReport,
+                ClosedIncidentReport = getIncidentClosedReport,
+                PendingIncidentReport = getIncidentPendingReport,
+                P1IncidentReport = getIncidentP1Report,
                 RedmineUrl = getRedmineUrl + "/issues/",
                 FromDate = fromDate,
                 ToDate = toDate
