@@ -25,11 +25,11 @@
     </timestamps>
     <violations />
   </sourcecode>
-  <sourcecode name="Program.cs" parser="StyleCop.CSharp.CsParser">
+  <sourcecode name="Core.cs" parser="StyleCop.CSharp.CsParser">
     <timestamps>
       <styleCop>2016/07/28 17:02:46.266</styleCop>
       <settingsFile>2016/07/28 17:02:46.242</settingsFile>
-      <sourceFile>2016/11/18 08:59:12.656</sourceFile>
+      <sourceFile>2016/11/18 09:05:45.966</sourceFile>
       <parser>2016/07/28 17:02:46.266</parser>
       <StyleCop.CSharp.DocumentationRules>2016/07/28 17:02:46.266</StyleCop.CSharp.DocumentationRules>
       <StyleCop.CSharp.DocumentationRules.FilesHashCode>-2126253741</StyleCop.CSharp.DocumentationRules.FilesHashCode>
@@ -50,11 +50,11 @@
     </timestamps>
     <violations />
   </sourcecode>
-  <sourcecode name="Core.cs" parser="StyleCop.CSharp.CsParser">
+  <sourcecode name="Program.cs" parser="StyleCop.CSharp.CsParser">
     <timestamps>
       <styleCop>2016/07/28 17:02:46.266</styleCop>
       <settingsFile>2016/07/28 17:02:46.242</settingsFile>
-      <sourceFile>2016/11/18 09:05:45.966</sourceFile>
+      <sourceFile>2016/11/18 09:24:02.780</sourceFile>
       <parser>2016/07/28 17:02:46.266</parser>
       <StyleCop.CSharp.DocumentationRules>2016/07/28 17:02:46.266</StyleCop.CSharp.DocumentationRules>
       <StyleCop.CSharp.DocumentationRules.FilesHashCode>-2126253741</StyleCop.CSharp.DocumentationRules.FilesHashCode>

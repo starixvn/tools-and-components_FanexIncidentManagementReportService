@@ -32,7 +32,7 @@
                 var fromDate = Utilities.DateOfPreviousWeek(DateTime.Now, DayOfWeek.Monday);
                 var toDate = Utilities.DateOfPreviousWeek(DateTime.Now, DayOfWeek.Sunday);
 
-                return IncidentReportGeneration(fromDate, toDate, "EmailTemplates/IncidentWeeklyReportTemplate.html", true);
+                return IncidentReportGeneration(fromDate, toDate, "EmailTemplates/IncidentWeeklyReportTemplate.html");
             }
             catch (Exception ex)
             {
@@ -74,7 +74,7 @@
 
         private IList<IncidentGroup> GetP1IncidentCategory(DateTime fromDate, DateTime toDate)
         {
-            var priority1Incidents = incidentReportService.GetIncidentP1Report(fromDate, toDate);
+            var priority1Incidents = incidentReportService.GetDailyIncidentP1Report(fromDate, toDate);
             IList<IncidentReportModel> priority1GroupByCategory = priority1Incidents.GroupBy(t => t.CategoryName).Select(grp => grp.First()).ToList();
             IList<IncidentGroup> priority1IncidentGroups = priority1GroupByCategory.Select(t => new IncidentGroup()
             {
@@ -87,7 +87,7 @@
 
         private IList<IncidentGroup> GetPendingIncidentCategory(DateTime fromDate, DateTime toDate)
         {
-            var pendingIncidents = incidentReportService.GetIncidentPendingReport();
+            var pendingIncidents = incidentReportService.GetDailyIncidentPendingReport();
             IList<IncidentReportModel> pendingIncidentGroupByCategory = pendingIncidents.GroupBy(t => t.CategoryName).Select(grp => grp.First()).ToList();
             IList<IncidentGroup> pendingIncidentGroups = pendingIncidentGroupByCategory.Select(t => new IncidentGroup()
             {
@@ -98,12 +98,12 @@
             return pendingIncidentGroups;
         }
 
-        private string IncidentReportGeneration(DateTime fromDate, DateTime toDate, string emailTemplatePath, bool isWeekly = false)
+        private string IncidentReportGeneration(DateTime fromDate, DateTime toDate, string emailTemplatePath)
         {
             var getIncidentCreateNewReport = incidentReportService.GetIncidentCreateNewReport(fromDate, toDate);
             var getIncidentClosedReport = incidentReportService.GetIncidentClosedReport(fromDate, toDate);
-            var getIncidentPendingReport = isWeekly ? incidentReportService.GetWeeklyIncidentPendingReport(toDate) : incidentReportService.GetIncidentPendingReport();
-            var getIncidentP1Report = incidentReportService.GetIncidentP1Report(fromDate, toDate);
+            var getIncidentPendingReport = incidentReportService.GetWeeklyIncidentPendingReport(toDate);
+            var getIncidentP1Report = incidentReportService.GetWeeklyIncidentP1Report(fromDate, toDate);
             var getRedmineUrl = incidentReportService.GetRedmineUrl();
             var model = new IncidentReportViewModel()
             {

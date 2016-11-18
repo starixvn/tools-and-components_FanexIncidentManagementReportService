@@ -40,21 +40,6 @@
             }
         }
 
-        ////public IList<IssuesViewModel> PendingIssue
-        ////{
-        ////    get
-        ////    {
-        ////        var request = new RestRequest(Method.GET);
-        ////        request.Resource = "issues.json?status_id=*&limit=100";
-        ////        request.AddHeader("Content-type", "application/json");
-        ////        request.RequestFormat = DataFormat.Json;
-
-        ////        var responeResult = RedmineAPI.Execute<IssuesModel>(request);
-
-        ////        return responeResult.Issues;
-        ////    }
-        ////}
-
         public IList<IssuesViewModel> PendingIssue
         {
             get
@@ -92,6 +77,23 @@
               var request = new RestRequest(Method.GET);
 
                 request.Resource = "issues.json?created_on=><" + FromDate.ToString("yyyy-MM-dd") + "|" + ToDate.ToString("yyyy-MM-dd") + "&status_id=*&priority_id=1&limit=100";
+                request.AddHeader("Content-type", "application/json");
+                request.RequestFormat = DataFormat.Json;
+
+                var responeResult = RedmineAPI.Execute<IssuesModel>(request);
+
+                return responeResult.Issues;
+            }
+        }
+
+        public IList<IssuesViewModel> P1IssueDaily
+        {
+            get
+            {
+                var request = new RestRequest(Method.GET);
+
+                request.Resource = "issues.json?created_on=><" + FromDate.ToString("yyyy-MM-dd") + "|" + ToDate.ToString("yyyy-MM-dd") 
+                    + "&status_id=*&priority_id=1&limit=100";
                 request.AddHeader("Content-type", "application/json");
                 request.RequestFormat = DataFormat.Json;
 
