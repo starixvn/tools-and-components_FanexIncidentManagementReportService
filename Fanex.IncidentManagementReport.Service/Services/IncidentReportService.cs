@@ -1,22 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Fanex.IncidentManagementReport.Service.Model;
-
-
-namespace Fanex.IncidentManagementReport.Service.Services
+﻿namespace Fanex.IncidentManagementReport.Service.Services
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using Fanex.IncidentManagementReport.Service.Model;
+
     public class IncidentReportService : BaseService, IIncidentReportService
     {
         private IIssuesService _issuesService;
         private IProjectService _projectService;
 
-        public IncidentReportService() : this(null, null) { }
+        public IncidentReportService() : this(null, null) 
+        { 
+        }
+
         public IncidentReportService(IIssuesService issuesService, IProjectService projectService)
         {
             _issuesService = issuesService ?? new IssuesService();
             _projectService = projectService ?? new ProjectService();
         }
+
         public IList<IncidentReportModel> GetIncidentCreateNewReport(DateTime fromDate, DateTime toDate)
         {
             _issuesService.FromDate = fromDate;
@@ -65,15 +68,17 @@ namespace Fanex.IncidentManagementReport.Service.Services
             return RedmineUrl;
         }
 
-        private IList<IncidentReportModel> GenerateIncidentModel(IList<IssuesViewModel> Issues)
+        private IList<IncidentReportModel> GenerateIncidentModel(IList<IssuesViewModel> issues)
         {
-            if (Issues != null)
+            if (issues != null)
             {
-                var query = Issues.Select(iss => new IncidentReportModel
+                var query = issues.Select(iss => new IncidentReportModel
                 {
                     IncidentId = iss.Id,
                     IncidentTitle = iss.Subject,
-                    CategoryName = (_projectService.GetParentProjectById(iss.Project.Id) != null ? _projectService.GetParentProjectById(iss.Project.Id).Name + " - " : string.Empty) + iss.Project.Name,
+                    CategoryName = (_projectService.GetParentProjectById(iss.Project.Id) != null 
+                        ? _projectService.GetParentProjectById(iss.Project.Id).Name + " - " 
+                        : string.Empty) + iss.Project.Name,
                     Assignee = iss.Assignee != null ? iss.Assignee.Name : string.Empty,
                     IncidentDate = iss.IncidentDate,
                     Creator = iss.Creator.Name,
@@ -87,14 +92,17 @@ namespace Fanex.IncidentManagementReport.Service.Services
                 return query.ToList();
             }
             else
+            {
                 return null;
+            }
         }
 
         public IList<IncidentReportModel> GetIncidentPendingReport()
         {
-            var issues = _issuesService.PendingIssue;
+            var issues = _issuesService.PendingIssueDaily;
             if (issues != null)
             {
+                issues = issues.Where(t => !((t.CreatedDate - DateTime.Now.Date.AddDays(-1)).Days == 0 && t.Priority.Id == 1)).ToList();
                 return GenerateIncidentModel(issues);
             }
 

@@ -39,11 +39,9 @@ namespace Fanex.IncidentManagementReport.Service.Core
             tdes.Mode = CipherMode.ECB;
             tdes.Padding = PaddingMode.PKCS7;
 
-            ICryptoTransform cTransform = tdes.CreateEncryptor();
+            ICryptoTransform transform = tdes.CreateEncryptor();
 
-            byte[] resultArray =
-              cTransform.TransformFinalBlock(toEncryptArray, 0,
-              toEncryptArray.Length);
+            byte[] resultArray = transform.TransformFinalBlock(toEncryptArray, 0, toEncryptArray.Length);
 
             tdes.Clear();
 
@@ -65,8 +63,8 @@ namespace Fanex.IncidentManagementReport.Service.Core
             tdes.Mode = CipherMode.ECB;
             tdes.Padding = PaddingMode.PKCS7;
 
-            ICryptoTransform cTransform = tdes.CreateDecryptor();
-            byte[] resultArray = cTransform.TransformFinalBlock(
+            ICryptoTransform transform = tdes.CreateDecryptor();
+            byte[] resultArray = transform.TransformFinalBlock(
                                  toEncryptArray, 0, toEncryptArray.Length);
 
             tdes.Clear();

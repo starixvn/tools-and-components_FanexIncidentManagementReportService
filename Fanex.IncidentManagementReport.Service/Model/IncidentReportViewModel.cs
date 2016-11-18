@@ -5,7 +5,7 @@ namespace Fanex.IncidentManagementReport.Service.Model
 {
     public class IncidentReportViewModel
     {
-        public IList<IncidentReportModel> CreateNewIncidentReport { get; set; }            
+        public IList<IncidentReportModel> CreateNewIncidentReport { get; set; }
 
         public IList<IncidentReportModel> ClosedIncidentReport { get; set; }
       
@@ -18,6 +18,5 @@ namespace Fanex.IncidentManagementReport.Service.Model
         public DateTime FromDate { get; set; }
 
         public DateTime ToDate { get; set; }
-
     }
 }

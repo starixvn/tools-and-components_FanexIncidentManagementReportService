@@ -1,31 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ServiceProcess;
-using System.Text;
-using System.Threading.Tasks;
-using Topshelf;
-
-namespace Fanex.IncidentManagementReport.Service
+﻿namespace Fanex.IncidentManagementReport.Service
 {
-    static class Program
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.ServiceProcess;
+    using System.Text;
+    using System.Threading.Tasks;
+    using Topshelf;
+
+    public static class Program
     {
-        /// <summary>
-        /// The main entry point for the application.
-        /// </summary>
-        static void Main()
+        public static void Main()
         {
-            ServiceBase[] ServicesToRun;
-            ServicesToRun = new ServiceBase[]
+            ServiceBase[] servicesToRun;
+            servicesToRun = new ServiceBase[]
             {
                 new Service()
             };
-            ServiceBase.Run(ServicesToRun);
+            ServiceBase.Run(servicesToRun);
 
-            //var incidentManagementReportService = new IncidentManagementReportService();
-            //var body = incidentManagementReportService.incidentReportEmailTemplate();
-            //Console.WriteLine(body);
-            //Console.ReadKey();
+            ////var incidentManagementReportService = new IncidentManagementReportService();
+            ////var body = incidentManagementReportService.incidentReportEmailTemplate();
+            ////Console.WriteLine(body);
+            ////Console.ReadKey();
         }
     }
 }

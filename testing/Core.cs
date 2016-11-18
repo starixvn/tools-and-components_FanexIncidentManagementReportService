@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace testing
+﻿namespace Testing
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Security.Cryptography;
+    using System.Text;
+    using System.Threading.Tasks;
+
     public static class Core
     {
         private const string PassPhrase = "Fanex.IncidentMangementReport.Service";
@@ -27,11 +27,9 @@ namespace testing
             tdes.Mode = CipherMode.ECB;
             tdes.Padding = PaddingMode.PKCS7;
 
-            ICryptoTransform cTransform = tdes.CreateEncryptor();
+            ICryptoTransform transform = tdes.CreateEncryptor();
 
-            byte[] resultArray =
-              cTransform.TransformFinalBlock(toEncryptArray, 0,
-              toEncryptArray.Length);
+            byte[] resultArray = transform.TransformFinalBlock(toEncryptArray, 0, toEncryptArray.Length);
 
             tdes.Clear();
 
@@ -53,9 +51,8 @@ namespace testing
             tdes.Mode = CipherMode.ECB;
             tdes.Padding = PaddingMode.PKCS7;
 
-            ICryptoTransform cTransform = tdes.CreateDecryptor();
-            byte[] resultArray = cTransform.TransformFinalBlock(
-                                 toEncryptArray, 0, toEncryptArray.Length);
+            ICryptoTransform transform = tdes.CreateDecryptor();
+            byte[] resultArray = transform.TransformFinalBlock(toEncryptArray, 0, toEncryptArray.Length);
 
             tdes.Clear();
 

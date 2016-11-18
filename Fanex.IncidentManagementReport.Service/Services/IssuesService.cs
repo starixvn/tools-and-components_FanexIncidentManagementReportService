@@ -1,13 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using Fanex.IncidentManagementReport.Service.Model;
-using RestSharp;
-
-namespace Fanex.IncidentManagementReport.Service.Services
+﻿namespace Fanex.IncidentManagementReport.Service.Services
 {
+    using System;
+    using System.Collections.Generic;
+    using Fanex.IncidentManagementReport.Service.Model;
+    using RestSharp;
+
     public class IssuesService : BaseService, IIssuesService
     {
         private DateTime _fromDate, _toDate;
+
         public IList<IssuesViewModel> CreateNewIssue
         {
             get
@@ -39,7 +40,37 @@ namespace Fanex.IncidentManagementReport.Service.Services
             }
         }
 
+        ////public IList<IssuesViewModel> PendingIssue
+        ////{
+        ////    get
+        ////    {
+        ////        var request = new RestRequest(Method.GET);
+        ////        request.Resource = "issues.json?status_id=*&limit=100";
+        ////        request.AddHeader("Content-type", "application/json");
+        ////        request.RequestFormat = DataFormat.Json;
+
+        ////        var responeResult = RedmineAPI.Execute<IssuesModel>(request);
+
+        ////        return responeResult.Issues;
+        ////    }
+        ////}
+
         public IList<IssuesViewModel> PendingIssue
+        {
+            get
+            {
+                var request = new RestRequest(Method.GET);
+                request.Resource = "issues.json?status_id=!5|6&limit=100";
+                request.AddHeader("Content-type", "application/json");
+                request.RequestFormat = DataFormat.Json;
+
+                var responeResult = RedmineAPI.Execute<IssuesModel>(request);
+
+                return responeResult.Issues;
+            }
+        }
+
+        public IList<IssuesViewModel> PendingIssueDaily
         {
             get
             {
@@ -58,7 +89,7 @@ namespace Fanex.IncidentManagementReport.Service.Services
         {
             get
             {
-                var request = new RestRequest(Method.GET);
+              var request = new RestRequest(Method.GET);
 
                 request.Resource = "issues.json?created_on=><" + FromDate.ToString("yyyy-MM-dd") + "|" + ToDate.ToString("yyyy-MM-dd") + "&status_id=*&priority_id=1&limit=100";
                 request.AddHeader("Content-type", "application/json");

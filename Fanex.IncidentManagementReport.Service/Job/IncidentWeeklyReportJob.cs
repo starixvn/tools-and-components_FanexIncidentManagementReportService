@@ -1,14 +1,13 @@
-﻿using System;
-using Fanex.IncidentManagementReport.Service.Core;
-using Fanex.MailDelivery.Client.Jobs;
-using Fanex.MailDelivery.Client.Messages;
-using Fanex.MailDelivery.Client.Models;
-using FluentDateTime;
-using Quartz;
-
-namespace Fanex.IncidentManagementReport.Service.Job
+﻿namespace Fanex.IncidentManagementReport.Service.Job
 {
-    class IncidentWeeklyReportJob : JobBase
+    using Fanex.IncidentManagementReport.Service.Core;
+    using Fanex.MailDelivery.Client.Jobs;
+    using Fanex.MailDelivery.Client.Messages;
+    using Fanex.MailDelivery.Client.Models;
+    using Quartz;
+    using System;
+
+    public class IncidentWeeklyReportJob : JobBase
     {
         protected override JobResultMessage Run(Schedule schedule, IJobExecutionContext jobContext)
         {

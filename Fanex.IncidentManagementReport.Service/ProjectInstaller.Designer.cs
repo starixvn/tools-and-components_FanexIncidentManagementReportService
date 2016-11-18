@@ -1,7 +1,10 @@
 ﻿namespace Fanex.IncidentManagementReport.Service
 {
-    partial class ProjectInstaller
+    public partial class ProjectInstaller
     {
+        private System.ServiceProcess.ServiceProcessInstaller serviceProcessInstaller1;
+        private System.ServiceProcess.ServiceInstaller serviceInstaller1;
+
         /// <summary>
         /// Required designer variable.
         /// </summary>
@@ -17,6 +20,7 @@
             {
                 components.Dispose();
             }
+
             base.Dispose(disposing);
         }
 
@@ -52,8 +56,5 @@
         }
 
         #endregion
-
-        private System.ServiceProcess.ServiceProcessInstaller serviceProcessInstaller1;
-        private System.ServiceProcess.ServiceInstaller serviceInstaller1;
     }
 }

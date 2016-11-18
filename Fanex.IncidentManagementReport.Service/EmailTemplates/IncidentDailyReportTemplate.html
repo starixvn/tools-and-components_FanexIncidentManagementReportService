@@ -1,4 +1,4 @@
-﻿@model Fanex.IncidentManagementReport.Service.Model.IncidentReportViewModel
+﻿@model Fanex.IncidentManagementReport.Service.Model.IncidentDailyReportViewModel
 <style type="text/css">
     .datagrid table {
         border-collapse: collapse;
@@ -59,9 +59,17 @@
 
         .datagrid table tbody .title td {
             background: #d2d2d2;
+            color: #f1324c;
+            border: 1px solid #00557F;
+            font-weight: bold;
+        }
+
+        .datagrid table tbody .titleCategory td {
+            background: #f9dacf;
             color: #000;
             border: 1px solid #00557F;
             font-weight: bold;
+            padding-left: 2em;
         }
 
         .datagrid table tbody td:first-child {
@@ -80,7 +88,7 @@
 Dear All
 <br />
 <br />
-Please see the bellow table for more detail about the P1,  New created, Closed and Pending issue in yesterday.
+Please see the bellow table for more detail about the P1 and Pending issue in yesterday.
 <br />
 <br />
 <div class="datagrid">
@@ -88,12 +96,12 @@ Please see the bellow table for more detail about the P1,  New created, Closed a
         <thead>
             <tr>
                 <th>Id</th>
-                <th>Category</th>
+                <!--<th>Category</th>-->
                 <th>Incident Title</th>
                 <th>Priority</th>
                 <th>Status</th>
                 <th>Creator</th>
-                <th>Assignee</th>                
+                <th>Assignee</th>
                 <th>Created Date</th>
                 <th>Incident Date</th>
                 <th>Resolved Date</th>
@@ -101,96 +109,65 @@ Please see the bellow table for more detail about the P1,  New created, Closed a
         </thead>
         <tbody>
 
-            @if (Model.P1IncidentReport != null)
+            @if (Model.P1Incidents != null)
             {
                 <tr class="title">
-                    <td colspan="10"> P1 Incident Report(@Model.P1IncidentReport.Count) </td>
+                    <td colspan="9"> P1 Incident (@Model.P1IncidentCount) </td>
                 </tr>
 
-                foreach (var item in Model.P1IncidentReport)
+                foreach (var incidentCategory in Model.P1Incidents)
                 {
-                    <tr class="alt">
-                        <td>@item.IncidentId</td>
-                        <td> @item.CategoryName</td>
-                        <td><a href="@(Model.RedmineUrl + item.IncidentId)">@item.IncidentTitle</a></td>
-                        <td>@item.Priority</td>
-                        <td>@item.Status</td>
-                        <td>@item.Creator</td>
-                        <td>@item.Assignee</td>
-                        <td>@item.CreatedDate</td>
-                        <td>@item.IncidentDate.ToString("MM/dd/yyyy")</td>                        
-                        <td>@item.ResolvedDate</td>
-                    </tr>
-                }
+            <tr class="titleCategory">
+                <td colspan="9"> @incidentCategory.CategoryName (@incidentCategory.Incidents.Count())</td>
+            </tr>
+                             foreach (var item in incidentCategory.Incidents)
+                             {
+                             <tr class="alt">
+                                 <td>@item.IncidentId</td>
+                                 <!--<td> @item.CategoryName</td>-->
+                                 <td><a href="@(Model.RedmineUrl + item.IncidentId)">@item.IncidentTitle</a></td>
+                                 <td>@item.Priority</td>
+                                 <td>@item.Status</td>
+                                 <td>@item.Creator</td>
+                                 <td>@item.Assignee</td>
+                                 <td>@item.CreatedDate</td>
+                                 <td>@item.IncidentDate.ToString("MM/dd/yyyy")</td>
+                                 <td>@item.ResolvedDate</td>
+                             </tr>
+                             }
+                             }
+
             }
 
-            @if (Model.CreateNewIncidentReport != null)
+            @if (Model.PendingIncidents != null)
             {
-                <tr class="title">
-                    <td colspan="10"> New created Incident Report(@Model.CreateNewIncidentReport.Count) </td>
-                </tr>
-           
-                foreach (var item in Model.CreateNewIncidentReport)
-                {
-                    <tr class="alt">
-                        <td>@item.IncidentId</td>
-                        <td> @item.CategoryName</td>
-                        <td><a href="@(Model.RedmineUrl + item.IncidentId)">@item.IncidentTitle</a></td>
-                        <td>@item.Priority</td>
-                        <td>@item.Status</td>
-                        <td>@item.Creator</td>
-                        <td>@item.Assignee</td>
-                        <td>@item.CreatedDate</td>
-                        <td>@item.IncidentDate.ToString("MM/dd/yyyy")</td>                        
-                        <td>@item.ResolvedDate</td>
-                    </tr>
-                }
+            <tr class="title">
+                <td colspan="9"> Pending Incident (@Model.PendingIncidentCount) </td>
+            </tr>
+
+            foreach (var incidentCategory in Model.PendingIncidents)
+            {
+            <tr class="titleCategory">
+                <td colspan="9"> @incidentCategory.CategoryName (@incidentCategory.Incidents.Count())</td>
+            </tr>
+            foreach (var item in incidentCategory.Incidents)
+            {
+            <tr class="alt">
+                <td>@item.IncidentId</td>
+                <!--<td> @item.CategoryName</td>-->
+                <td><a href="@(Model.RedmineUrl + item.IncidentId)">@item.IncidentTitle</a></td>
+                <td>@item.Priority</td>
+                <td>@item.Status</td>
+                <td>@item.Creator</td>
+                <td>@item.Assignee</td>
+                <td>@item.CreatedDate</td>
+                <td>@item.IncidentDate.ToString("MM/dd/yyyy")</td>
+                <td>@item.ResolvedDate</td>
+            </tr>
             }
-              
-            @if (Model.ClosedIncidentReport != null)
-            {          
-                <tr class="title">
-                    <td colspan="10"> Closed Incident(@Model.ClosedIncidentReport.Count) </td>
-                </tr>
-            
-                foreach (var item in Model.ClosedIncidentReport)
-                {
-                    <tr class="alt">
-                        <td>@item.IncidentId</td>
-                        <td>@item.CategoryName</td>
-                        <td><a href="@(Model.RedmineUrl + item.IncidentId)">@item.IncidentTitle</a></td>
-                        <td>@item.Priority</td>
-                        <td>@item.Status</td>
-                        <td>@item.Creator</td>
-                        <td>@item.Assignee</td>
-                        <td>@item.CreatedDate</td>
-                        <td>@item.IncidentDate.ToString("MM/dd/yyyy")</td>                        
-                        <td>@item.ResolvedDate</td>
-                    </tr>
-                }
             }
 
-            @if (Model.PendingIncidentReport != null)
-            {
-                <tr class="title">
-                    <td colspan="10"> Pending Incident(@Model.PendingIncidentReport.Count) </td>
-                </tr>
-                foreach (var item in Model.PendingIncidentReport)
-                {
-                    <tr class="alt">
-                        <td>@item.IncidentId</td>
-                        <td>@item.CategoryName</td>
-                        <td><a href="@(Model.RedmineUrl + item.IncidentId)">@item.IncidentTitle</a></td>
-                        <td>@item.Priority</td>
-                        <td>@item.Status</td>
-                        <td>@item.Creator</td>
-                        <td>@item.Assignee</td>
-                        <td>@item.CreatedDate</td>
-                        <td>@item.IncidentDate.ToString("MM/dd/yyyy")</td>                        
-                        <td>@item.ResolvedDate</td>
-                    </tr>
-                }
             }
-        </tbody>
+</tbody>
     </table>
 </div>

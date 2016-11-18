@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Fanex.MailDelivery.Client.Jobs;
-using Fanex.MailDelivery.Client.Messages;
-using Fanex.MailDelivery.Client.Models;
-using Quartz;
-
-namespace Fanex.IncidentManagementReport.Service.Job
+﻿namespace Fanex.IncidentManagementReport.Service.Job
 {
-    class IncidentDailyReportJob : JobBase
+    using Fanex.MailDelivery.Client.Jobs;
+    using Fanex.MailDelivery.Client.Messages;
+    using Fanex.MailDelivery.Client.Models;
+    using Quartz;
+    using System;
+
+    public class IncidentDailyReportJob : JobBase
     {
         protected override JobResultMessage Run(Schedule schedule, IJobExecutionContext jobContext)
         {

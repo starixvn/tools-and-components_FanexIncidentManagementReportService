@@ -38,6 +38,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>FanexRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -146,6 +147,8 @@
     <Compile Include="DataAccess\RedmineAPI.cs" />
     <Compile Include="Job\IncidentWeeklyReportJob.cs" />
     <Compile Include="Job\IncidentDailyReportJob.cs" />
+    <Compile Include="Model\IncidentDailyReportViewModel.cs" />
+    <Compile Include="Model\IncidentGroup.cs" />
     <Compile Include="Model\IncidentReportViewModel.cs" />
     <Compile Include="Model\IssuesModel.cs" />
     <Compile Include="Model\PriorityModel.cs" />

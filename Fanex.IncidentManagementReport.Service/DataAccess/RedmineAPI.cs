@@ -1,35 +1,35 @@
-﻿using System;
-using Fanex.IncidentManagementReport.Service.Core;
-using Newtonsoft.Json;
-using RestSharp;
-using RestSharp.Authenticators;
-
-namespace Fanex.IncidentManagementReport.Service.DataAccess
+﻿namespace Fanex.IncidentManagementReport.Service.DataAccess
 {
+    using Fanex.IncidentManagementReport.Service.Core;
+    using Newtonsoft.Json;
+    using RestSharp;
+    using RestSharp.Authenticators;
+    using System;
+
     public class RedmineAPI
     {
-        readonly Uri BaseUrl;
-        readonly string _accountSid;
-        readonly string _secretKey;
+        private readonly Uri baseUrl;
+        private readonly string accountSid;
+        private readonly string secretKey;
 
         public RedmineAPI(string accountSid, string secretKey, string redmineUrl)
         {
-            _accountSid = accountSid;
-            _secretKey = Utilities.Decrypt(secretKey);
-            BaseUrl = new Uri(redmineUrl);
+            this.accountSid = accountSid;
+            this.secretKey = Utilities.Decrypt(secretKey);
+            this.baseUrl = new Uri(redmineUrl);
         }
 
         public T Execute<T>(RestRequest request) where T : new()
         {
             var client = new RestClient();
-            client.BaseUrl = BaseUrl;
-            client.Authenticator = new HttpBasicAuthenticator(_accountSid, _secretKey);
-            request.AddParameter("AccountSid", _accountSid, ParameterType.UrlSegment);
+            client.BaseUrl = baseUrl;
+            client.Authenticator = new HttpBasicAuthenticator(accountSid, secretKey);
+            request.AddParameter("AccountSid", accountSid, ParameterType.UrlSegment);
             var response = client.Execute<T>(request);
 
             if (response.ErrorException != null)
             {
-                const string message = "Error retrieving response.  Check inner details for more info.";
+                string message = "Error retrieving response.  Check inner details for more info.";
                 var twilioException = new ApplicationException(message, response.ErrorException);
                 throw twilioException;
             }

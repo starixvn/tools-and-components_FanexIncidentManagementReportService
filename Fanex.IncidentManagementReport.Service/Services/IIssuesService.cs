@@ -12,6 +12,8 @@ namespace Fanex.IncidentManagementReport.Service.Services
 
         IList<IssuesViewModel> PendingIssue { get; }
 
+        IList<IssuesViewModel> PendingIssueDaily { get; }
+
         IList<IssuesViewModel> P1Issue { get; }
 
         DateTime FromDate { get; set; }

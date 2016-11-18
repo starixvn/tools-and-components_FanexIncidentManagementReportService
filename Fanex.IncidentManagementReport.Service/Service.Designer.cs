@@ -1,6 +1,6 @@
 ﻿namespace Fanex.IncidentManagementReport.Service
 {
-    partial class Service
+    public partial class Service
     {
         /// <summary> 
         /// Required designer variable.
@@ -17,6 +17,7 @@
             {
                 components.Dispose();
             }
+
             base.Dispose(disposing);
         }
 

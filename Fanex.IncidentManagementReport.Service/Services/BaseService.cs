@@ -1,20 +1,20 @@
-﻿using System.Configuration;
-using Fanex.IncidentManagementReport.Service.DataAccess;
-
-namespace Fanex.IncidentManagementReport.Service.Services
+﻿namespace Fanex.IncidentManagementReport.Service.Services
 {
+    using System.Configuration;
+    using Fanex.IncidentManagementReport.Service.DataAccess;
 
     public class BaseService
     {      
         private RedmineAPI _redmineAPI;
 
-        public BaseService() : this( null) { }
+        public BaseService() : this(null) 
+        { 
+        }
 
         public BaseService(RedmineAPI redmineAPI)
-        {          
-
+        {
             _redmineAPI = redmineAPI ?? new RedmineAPI(AccountSid, SecretKey, RedmineUrl);
-        }    
+        }
 
         protected RedmineAPI RedmineAPI
         {

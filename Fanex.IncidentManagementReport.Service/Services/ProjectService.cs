@@ -1,13 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Fanex.IncidentManagementReport.Service.Model;
-using RestSharp;
-
-namespace Fanex.IncidentManagementReport.Service.Services
+﻿namespace Fanex.IncidentManagementReport.Service.Services
 {
-    public class ProjectService : BaseService, IProjectService
-    {     
+    using System.Collections.Generic;
+    using System.Linq;
+    using Fanex.IncidentManagementReport.Service.Model;
+    using RestSharp;
 
+    public class ProjectService : BaseService, IProjectService
+    {
         public IList<ProjectViewModel> Project
         {
             get
@@ -30,12 +29,12 @@ namespace Fanex.IncidentManagementReport.Service.Services
             if (project != null)
             {
                 var parentProject = project.First().Parent;
-                if(parentProject != null)
+                if (parentProject != null)
                 {
                     return parentProject;
                 }
             }
-                            
+
             return null;
         }
 
@@ -44,7 +43,10 @@ namespace Fanex.IncidentManagementReport.Service.Services
             var project = this.Project.Where(p => p.Id == projectId);
 
             if (project != null)
+            {
                 return project.First();
+            }
+
             return null;
         }
     }

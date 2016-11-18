@@ -1,20 +1,28 @@
-﻿using System;
-using System.IO;
-using Fanex.IncidentManagementReport.Service.Core;
-using Fanex.IncidentManagementReport.Service.Model;
-using Fanex.IncidentManagementReport.Service.Services;
-using FluentDateTime;
-using RazorEngine;
-using RazorEngine.Templating;
-
-namespace Fanex.IncidentManagementReport.Service
+﻿namespace Fanex.IncidentManagementReport.Service
 {
+    using Fanex.IncidentManagementReport.Service.Core;
+    using Fanex.IncidentManagementReport.Service.Model;
+    using Fanex.IncidentManagementReport.Service.Services;
+    using FluentDateTime;
+    using RazorEngine;
+    using RazorEngine.Templating;
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+
     public class IncidentManagementReportService
     {
-        private IIncidentReportService _incidentReportService;
-        public IncidentManagementReportService()
+        private IIncidentReportService incidentReportService;
+
+        public IncidentManagementReportService() : this(null)
         {
-            _incidentReportService = new IncidentReportService();
+        }
+
+        public IncidentManagementReportService(IIncidentReportService incidentReportService)
+        {
+            this.incidentReportService = incidentReportService ?? new IncidentReportService();
         }
 
         public string IncidentWeeklyReportEmailTemplate()
@@ -36,12 +44,8 @@ namespace Fanex.IncidentManagementReport.Service
         {
             try
             {
-                var nowDate = DateTime.Now;
-
-                var toDate = nowDate.PreviousDay();
-                var fromDate = toDate;
-
-                return IncidentReportGeneration(fromDate, toDate, "EmailTemplates/IncidentDailyReportTemplate.html");
+                var yesterday = DateTime.Now.PreviousDay();
+                return IncidentDailyReportGeneration(yesterday, yesterday, "EmailTemplates/IncidentDailyReportTemplate.html");
             }
             catch (Exception ex)
             {
@@ -49,13 +53,58 @@ namespace Fanex.IncidentManagementReport.Service
             }
         }
 
+        private string IncidentDailyReportGeneration(DateTime fromDate, DateTime toDate, string emailTemplatePath, bool isWeekly = false)
+        {
+            var getRedmineUrl = incidentReportService.GetRedmineUrl();
+            var model = new IncidentDailyReportViewModel() 
+            {
+                FromDate = fromDate,
+                ToDate = toDate,
+                RedmineUrl = getRedmineUrl + "/issues/",
+                PendingIncidents = GetPendingIncidentCategory(fromDate, toDate),
+                P1Incidents = GetP1IncidentCategory(fromDate, toDate)
+            };
+
+            var templateFolderPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, emailTemplatePath);
+            var emailTemplate = File.ReadAllText(templateFolderPath);
+            var content = Engine.Razor.RunCompile(emailTemplate, Path.GetFileName(emailTemplatePath) + "v6", typeof(IncidentDailyReportViewModel), model);
+
+            return content;
+        }
+
+        private IList<IncidentGroup> GetP1IncidentCategory(DateTime fromDate, DateTime toDate)
+        {
+            var priority1Incidents = incidentReportService.GetIncidentP1Report(fromDate, toDate);
+            IList<IncidentReportModel> priority1GroupByCategory = priority1Incidents.GroupBy(t => t.CategoryName).Select(grp => grp.First()).ToList();
+            IList<IncidentGroup> priority1IncidentGroups = priority1GroupByCategory.Select(t => new IncidentGroup()
+            {
+                CategoryName = t.CategoryName,
+                Incidents = priority1Incidents.Where(x => x.CategoryName == t.CategoryName).ToList()
+            }).ToList();
+
+            return priority1IncidentGroups;
+        }
+
+        private IList<IncidentGroup> GetPendingIncidentCategory(DateTime fromDate, DateTime toDate)
+        {
+            var pendingIncidents = incidentReportService.GetIncidentPendingReport();
+            IList<IncidentReportModel> pendingIncidentGroupByCategory = pendingIncidents.GroupBy(t => t.CategoryName).Select(grp => grp.First()).ToList();
+            IList<IncidentGroup> pendingIncidentGroups = pendingIncidentGroupByCategory.Select(t => new IncidentGroup()
+            {
+                CategoryName = t.CategoryName,
+                Incidents = pendingIncidents.Where(x => x.CategoryName == t.CategoryName).ToList()
+            }).ToList();
+
+            return pendingIncidentGroups;
+        }
+
         private string IncidentReportGeneration(DateTime fromDate, DateTime toDate, string emailTemplatePath, bool isWeekly = false)
         {
-            var getIncidentCreateNewReport = _incidentReportService.GetIncidentCreateNewReport(fromDate, toDate);
-            var getIncidentClosedReport = _incidentReportService.GetIncidentClosedReport(fromDate, toDate);
-            var getIncidentPendingReport = isWeekly ? _incidentReportService.GetWeeklyIncidentPendingReport(toDate) : _incidentReportService.GetIncidentPendingReport();
-            var getIncidentP1Report = _incidentReportService.GetIncidentP1Report(fromDate, toDate);
-            var getRedmineUrl = _incidentReportService.GetRedmineUrl();
+            var getIncidentCreateNewReport = incidentReportService.GetIncidentCreateNewReport(fromDate, toDate);
+            var getIncidentClosedReport = incidentReportService.GetIncidentClosedReport(fromDate, toDate);
+            var getIncidentPendingReport = isWeekly ? incidentReportService.GetWeeklyIncidentPendingReport(toDate) : incidentReportService.GetIncidentPendingReport();
+            var getIncidentP1Report = incidentReportService.GetIncidentP1Report(fromDate, toDate);
+            var getRedmineUrl = incidentReportService.GetRedmineUrl();
             var model = new IncidentReportViewModel()
             {
                 CreateNewIncidentReport = getIncidentCreateNewReport,

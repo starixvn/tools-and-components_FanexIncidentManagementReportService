@@ -1,7 +1,7 @@
-﻿using Newtonsoft.Json;
-
-namespace Fanex.IncidentManagementReport.Service.Model
+﻿namespace Fanex.IncidentManagementReport.Service.Model
 {
+    using Newtonsoft.Json;
+
     public class PriorityViewModel
     {
         [JsonProperty(PropertyName = "id")]
@@ -9,6 +9,5 @@ namespace Fanex.IncidentManagementReport.Service.Model
 
         [JsonProperty(PropertyName = "name")]
         public string Name { get; set; }
-
     }
 }
