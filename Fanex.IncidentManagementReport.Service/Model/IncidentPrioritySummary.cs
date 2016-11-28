@@ -21,7 +21,7 @@
         {
             if (incidents != null && incidents.Any())
             {
-                P1Count = incidents.Where(t=>t.PriorityId == (int)Priorities.P1).Count();
+                P1Count = incidents.Where(t => t.PriorityId == (int)Priorities.P1).Count();
                 P2Count = incidents.Where(t => t.PriorityId == (int)Priorities.P2).Count();
                 P3Count = incidents.Where(t => t.PriorityId == (int)Priorities.P3).Count();
             }
