@@ -1,7 +1,7 @@
-﻿using System;
-
-namespace Fanex.IncidentManagementReport.Service.Model
+﻿namespace Fanex.IncidentManagementReport.Service.Model
 {
+    using System;
+
     public class IncidentReportModel
     {
         public int IncidentId { get; set; }
@@ -9,6 +9,8 @@ namespace Fanex.IncidentManagementReport.Service.Model
         public string CategoryName { get; set; }
 
         public string IncidentTitle { get; set; }
+
+        public int PriorityId { get; set; }
 
         public string Priority { get; set; }
 
@@ -24,6 +26,6 @@ namespace Fanex.IncidentManagementReport.Service.Model
 
         public DateTime CreatedDate { get; set; }
 
-        public string ResolvedDate { get; set; }
+        public DateTime ResolvedDate { get; set; }
     }
 }

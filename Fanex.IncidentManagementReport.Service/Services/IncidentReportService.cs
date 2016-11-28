@@ -39,10 +39,11 @@
 
             if (issues != null)
             {
+                issues = issues.Where(t => !ProjectIdIgnore.Contains(t.Project.Id)).ToList();
                 return GenerateIncidentModel(issues);
             }
 
-            return null;
+            return new List<IncidentReportModel>();
         }
 
         public IList<IncidentReportModel> GetIncidentClosedReport(DateTime fromDate, DateTime toDate)
@@ -53,10 +54,11 @@
             var issues = _issuesService.CloseIssue;
             if (issues != null)
             {
+                issues = issues.Where(t => !ProjectIdIgnore.Contains(t.Project.Id)).ToList();
                 return GenerateIncidentModel(issues);
             }
 
-            return null;
+            return new List<IncidentReportModel>();
         }
 
         public string GetRedmineUrl()
@@ -66,31 +68,25 @@
 
         private IList<IncidentReportModel> GenerateIncidentModel(IList<IssuesViewModel> issues)
         {
-            if (issues != null)
+            var query = issues.Select(iss => new IncidentReportModel
             {
-                var query = issues.Select(iss => new IncidentReportModel
-                {
-                    IncidentId = iss.Id,
-                    IncidentTitle = iss.Subject,
-                    CategoryName = (_projectService.GetParentProjectById(iss.Project.Id) != null 
-                        ? _projectService.GetParentProjectById(iss.Project.Id).Name + " - " 
-                        : string.Empty) + iss.Project.Name,
-                    Assignee = iss.Assignee != null ? iss.Assignee.Name : string.Empty,
-                    IncidentDate = iss.IncidentDate,
-                    Creator = iss.Creator.Name,
-                    Priority = iss.Priority.Name,
-                    Status = iss.Status.Name,
-                    UpdatedDate = iss.UpdatedDate,
-                    CreatedDate = iss.CreatedDate,
-                    ResolvedDate = iss.ResolvedDate.Year == 0001 ? "N/A" : iss.ResolvedDate.ToShortDateString()
-                });
+                IncidentId = iss.Id,
+                IncidentTitle = iss.Subject,
+                CategoryName = (_projectService.GetParentProjectById(iss.Project.Id) != null
+                    ? _projectService.GetParentProjectById(iss.Project.Id).Name + " - "
+                    : string.Empty) + iss.Project.Name,
+                Assignee = iss.Assignee != null ? iss.Assignee.Name : string.Empty,
+                IncidentDate = iss.IncidentDate,
+                Creator = iss.Creator.Name,
+                Priority = iss.Priority.Name,
+                PriorityId = iss.Priority.Id,
+                Status = iss.Status.Name,
+                UpdatedDate = iss.UpdatedDate,
+                CreatedDate = iss.CreatedDate,
+                ResolvedDate = iss.ResolvedDate
+            });
 
-                return query.ToList();
-            }
-            else
-            {
-                return null;
-            }
+            return query.ToList();
         }
 
         public IList<IncidentReportModel> GetDailyIncidentP1Report(DateTime fromDate, DateTime toDate)
@@ -105,7 +101,7 @@
                 return GenerateIncidentModel(issues);
             }
 
-            return null;
+            return new List<IncidentReportModel>();
         }
 
         public IList<IncidentReportModel> GetWeeklyIncidentP1Report(DateTime fromDate, DateTime toDate)
@@ -116,10 +112,11 @@
             var issues = _issuesService.P1Issue;
             if (issues != null)
             {
+                issues = issues.Where(t => !ProjectIdIgnore.Contains(t.Project.Id)).ToList();
                 return GenerateIncidentModel(issues);
             }
 
-            return null;
+            return new List<IncidentReportModel>();
         }
 
         public IList<IncidentReportModel> GetDailyIncidentPendingReport()
@@ -132,7 +129,7 @@
                 return GenerateIncidentModel(issues);
             }
 
-            return null;
+            return new List<IncidentReportModel>();
         }
 
         public IList<IncidentReportModel> GetWeeklyIncidentPendingReport(DateTime toDate)
@@ -140,12 +137,12 @@
             var issues = _issuesService.PendingIssue;
             if (issues != null)
             {
+                issues = issues.Where(t => !ProjectIdIgnore.Contains(t.Project.Id)).ToList();
                 var incidentModel = GenerateIncidentModel(issues);
-
                 return incidentModel.Where(x => x.CreatedDate <= toDate).ToList();
             }
 
-            return null;
+            return new List<IncidentReportModel>();
         }
     }
 }

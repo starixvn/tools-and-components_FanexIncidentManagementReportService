@@ -43,5 +43,8 @@ namespace Fanex.IncidentManagementReport.Service.Model
 
         [JsonProperty(PropertyName = "due_date")]
         public DateTime ResolvedDate { get; set; }
+
+        [JsonProperty(PropertyName = "closed_on")]
+        public DateTime ClosedDate { get; set; }
     }
 }

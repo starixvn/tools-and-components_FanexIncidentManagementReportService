@@ -143,12 +143,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\Priorities.cs" />
     <Compile Include="Core\Utilities.cs" />
     <Compile Include="DataAccess\RedmineAPI.cs" />
     <Compile Include="Job\IncidentWeeklyReportJob.cs" />
     <Compile Include="Job\IncidentDailyReportJob.cs" />
     <Compile Include="Model\IncidentDailyReportViewModel.cs" />
     <Compile Include="Model\IncidentGroup.cs" />
+    <Compile Include="Model\IncidentPrioritySummary.cs" />
     <Compile Include="Model\IncidentReportViewModel.cs" />
     <Compile Include="Model\IssuesModel.cs" />
     <Compile Include="Model\PriorityModel.cs" />
