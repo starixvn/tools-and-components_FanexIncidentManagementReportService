@@ -103,16 +103,15 @@ Please take a look at the summary table and details below for more infomation ab
         <thead>
             <tr>
                 <th rowspan="2"></th>
-                <th colspan="3">Last Week (@Model.FromDate.ToString("dd MMM yyyy") - @Model.ToDate.ToString("dd MMM yyyy"))</th>
-                <!--<th colspan="3">Last Week (@Model.FromDate.ToShortDateString() - @Model.ToDate.ToShortDateString())</th>-->
+                <th colspan="3">Last Week (@Model.FromDateDisplay - @Model.ToDateDisplay)</th>
                 <th colspan="2">Aging Data</th>
             </tr>
             <tr>
                 <th>Created</th>
                 <th>Open</th>
                 <th>Closed</th>
-                <th>@Model.FromDate.AddDays(-7).ToString("dd MMM yyyy") - @Model.ToDate.AddDays(-7).ToString("dd MMM yyyy")</th>
-                <th>@Model.FromDate.ToString("dd MMM yyyy") - @Model.ToDate.ToString("dd MMM yyyy")</th>
+                <th>@Model.FromLast2WeekDisplay - @Model.ToLast2WeekDisplay</th>
+                <th>@Model.FromDateDisplay - @Model.ToDateDisplay</th>
             </tr>
         </thead>
         <tbody>
@@ -177,9 +176,9 @@ Please take a look at the summary table and details below for more infomation ab
                         <td>@item.Status</td>
                         <td>@item.Creator</td>
                         <td>@item.Assignee</td>
-                        <td>@TimeZoneInfo.ConvertTimeBySystemTimeZoneId(item.CreatedDate, "Singapore Standard Time").ToString("dd MMM yyyy hh:mm:ss tt")</td>
-                        <td>@item.IncidentDate.ToString("dd MMM yyyy")</td>
-                        <td>@(item.ResolvedDate.Year == 1 ? "N/A" : item.ResolvedDate.ToString("dd MMM yyyy"))</td>
+                        <td>@item.CreatedDateDisplay</td>
+                        <td>@item.IncidentDateDisplay</td>
+                        <td>@item.ResolvedDateDisplay</td>
                     </tr>
                 }
             }
@@ -200,9 +199,9 @@ Please take a look at the summary table and details below for more infomation ab
                         <td>@item.Status</td>
                         <td>@item.Creator</td>
                         <td>@item.Assignee</td>
-                        <td>@TimeZoneInfo.ConvertTimeBySystemTimeZoneId(item.CreatedDate, "Singapore Standard Time").ToString("dd MMM yyyy hh:mm:ss tt")</td>
-                        <td>@item.IncidentDate.ToString("dd MMM yyyy")</td>
-                        <td>@(item.ResolvedDate.Year == 1 ? "N/A" : item.ResolvedDate.ToString("dd MMM yyyy"))</td>
+                        <td>@item.CreatedDateDisplay</td>
+                        <td>@item.IncidentDateDisplay</td>
+                        <td>@item.ResolvedDateDisplay</td>
                     </tr>
                 }
             }
@@ -223,9 +222,9 @@ Please take a look at the summary table and details below for more infomation ab
                         <td>@item.Status</td>
                         <td>@item.Creator</td>
                         <td>@item.Assignee</td>
-                        <td>@TimeZoneInfo.ConvertTimeBySystemTimeZoneId(item.CreatedDate, "Singapore Standard Time").ToString("dd MMM yyyy hh:mm:ss tt")</td>
-                        <td>@item.IncidentDate.ToString("dd MMM yyyy")</td>
-                        <td>@(item.ResolvedDate.Year == 1 ? "N/A" : item.ResolvedDate.ToString("dd MMM yyyy"))</td>
+                        <td>@item.CreatedDateDisplay</td>
+                        <td>@item.IncidentDateDisplay</td>
+                        <td>@item.ResolvedDateDisplay</td>
                     </tr>
                 }
             }
@@ -245,9 +244,9 @@ Please take a look at the summary table and details below for more infomation ab
                         <td>@item.Status</td>
                         <td>@item.Creator</td>
                         <td>@item.Assignee</td>
-                        <td>@TimeZoneInfo.ConvertTimeBySystemTimeZoneId(item.CreatedDate, "Singapore Standard Time").ToString("dd MMM yyyy hh:mm:ss tt")</td>
-                        <td>@item.IncidentDate.ToString("dd MMM yyyy")</td>
-                        <td>@(item.ResolvedDate.Year == 1 ? "N/A" : item.ResolvedDate.ToString("dd MMM yyyy"))</td>
+                        <td>@item.CreatedDateDisplay</td>
+                        <td>@item.IncidentDateDisplay</td>
+                        <td>@item.ResolvedDateDisplay</td>
                     </tr>
                 }
             }

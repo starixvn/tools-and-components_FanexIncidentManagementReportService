@@ -1,14 +1,14 @@
-﻿using System;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using FluentDateTime;
-using RazorEngine;
-using RazorEngine.Configuration;
-using RazorEngine.Templating;
-
-namespace Fanex.IncidentManagementReport.Service.Core
+﻿namespace Fanex.IncidentManagementReport.Service.Core
 {
+    using System;
+    using System.Linq;
+    using System.Security.Cryptography;
+    using System.Text;
+    using FluentDateTime;
+    using RazorEngine;
+    using RazorEngine.Configuration;
+    using RazorEngine.Templating;
+
     public static class Utilities
     {
         private const string PassPhrase = "Fanex.IncidentMangementReport.Service";
@@ -87,6 +87,16 @@ namespace Fanex.IncidentManagementReport.Service.Core
             }
 
             return dateTime;
+        }
+
+        public static string GetDisplayShortDate(DateTime date)
+        {
+            return date.ToString("dd MMM yyyy");
+        }
+
+        public static string GetDisplayLongDate(DateTime date)
+        {
+            return TimeZoneInfo.ConvertTimeBySystemTimeZoneId(date, "Singapore Standard Time").ToString("dd MMM yyyy hh:mm:ss tt");
         }
     }
 }

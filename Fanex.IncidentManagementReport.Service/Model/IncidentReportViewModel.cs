@@ -1,5 +1,6 @@
 ﻿namespace Fanex.IncidentManagementReport.Service.Model
 {
+    using Fanex.IncidentManagementReport.Service.Core;
     using System;
     using System.Collections.Generic;
 
@@ -23,29 +24,43 @@
 
         public DateTime ToDate { get; set; }
 
-        public IncidentPrioritySummary CreateNewIncidentSummary
+        public string FromDateDisplay
         {
             get
             {
-                return new IncidentPrioritySummary(CreateNewIncidentReport);
+                return Utilities.GetDisplayShortDate(FromDate);
             }
         }
 
-        public IncidentPrioritySummary ClosedIncidentSummary
+        public string ToDateDisplay
         {
             get
             {
-                return new IncidentPrioritySummary(ClosedIncidentReport);
+                return Utilities.GetDisplayShortDate(ToDate);
             }
         }
 
-        public IncidentPrioritySummary PendingIncidentSummary
+        public string FromLast2WeekDisplay
         {
             get
             {
-                return new IncidentPrioritySummary(PendingIncidentReport);
+                return Utilities.GetDisplayShortDate(FromDate.AddDays(-7));
             }
         }
+
+        public string ToLast2WeekDisplay
+        {
+            get
+            {
+                return Utilities.GetDisplayShortDate(ToDate.AddDays(-7));
+            }
+        }
+
+        public IncidentPrioritySummary CreateNewIncidentSummary { get; set; }
+
+        public IncidentPrioritySummary ClosedIncidentSummary { get; set; }
+
+        public IncidentPrioritySummary PendingIncidentSummary { get; set; }
 
         public IncidentPrioritySummary AgingDataLastWeekSummary
         {

@@ -21,7 +21,7 @@
             {
                 Mail = new Mail
                 {
-                    Subject = "[IMS] Weekly Incident Report from " + fromDate.ToString("dd MMM yyyy") + " to " + toDate.ToString("dd MMM yyyy"),
+                    Subject = "[IMS] Weekly Incident Report from " + Utilities.GetDisplayShortDate(fromDate) + " to " + Utilities.GetDisplayShortDate(toDate),
                     Title = "Auto Mail Weekly Incident Report ",
                     Body = body
                 },

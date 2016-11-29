@@ -96,7 +96,6 @@ Please see the bellow table for more detail about the P1 and Pending issue in ye
         <thead>
             <tr>
                 <th>Id</th>
-                <!--<th>Category</th>-->
                 <th>Incident Title</th>
                 <th>Priority</th>
                 <th>Status</th>
@@ -124,15 +123,14 @@ Please see the bellow table for more detail about the P1 and Pending issue in ye
                              {
                              <tr class="alt">
                                  <td>@item.IncidentId</td>
-                                 <!--<td> @item.CategoryName</td>-->
                                  <td><a href="@(Model.RedmineUrl + item.IncidentId)">@item.IncidentTitle</a></td>
                                  <td>@item.Priority</td>
                                  <td>@item.Status</td>
                                  <td>@item.Creator</td>
                                  <td>@item.Assignee</td>
-                                 <td>@TimeZoneInfo.ConvertTimeBySystemTimeZoneId(item.CreatedDate, "Singapore Standard Time")</td>
-                                 <td>@item.IncidentDate.ToString("MM/dd/yyyy")</td>
-                                 <td>@(item.ResolvedDate.Year == 1 ? "N/A" : item.ResolvedDate.ToString("MM/dd/yyyy"))</td>
+                                 <td>@item.CreatedDateDisplay</td>
+                                 <td>@item.IncidentDateDisplay</td>
+                                 <td>@item.ResolvedDateDisplay</td>
                              </tr>
                              }
                              }
@@ -154,15 +152,14 @@ Please see the bellow table for more detail about the P1 and Pending issue in ye
             {
             <tr class="alt">
                 <td>@item.IncidentId</td>
-                <!--<td> @item.CategoryName</td>-->
                 <td><a href="@(Model.RedmineUrl + item.IncidentId)">@item.IncidentTitle</a></td>
                 <td>@item.Priority</td>
                 <td>@item.Status</td>
                 <td>@item.Creator</td>
                 <td>@item.Assignee</td>
-                <td>@TimeZoneInfo.ConvertTimeBySystemTimeZoneId(item.CreatedDate, "Singapore Standard Time")</td>
-                <td>@item.IncidentDate.ToString("MM/dd/yyyy")</td>
-                <td>@(item.ResolvedDate.Year == 1 ? "N/A" : item.ResolvedDate.ToString("MM/dd/yyyy"))</td>
+                <td>@item.CreatedDateDisplay</td>
+                <td>@item.IncidentDateDisplay</td>
+                <td>@item.ResolvedDateDisplay</td>
             </tr>
             }
             }

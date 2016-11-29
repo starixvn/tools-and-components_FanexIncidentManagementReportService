@@ -1,5 +1,6 @@
 ﻿namespace Fanex.IncidentManagementReport.Service.Model
 {
+    using Fanex.IncidentManagementReport.Service.Core;
     using System;
     using System.Collections.Generic;
     using System.Linq;
