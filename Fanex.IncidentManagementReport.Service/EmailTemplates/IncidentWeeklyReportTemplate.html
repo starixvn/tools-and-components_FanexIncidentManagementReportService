@@ -177,7 +177,7 @@ Please take a look at the summary table and details below for more infomation ab
                         <td>@item.Status</td>
                         <td>@item.Creator</td>
                         <td>@item.Assignee</td>
-                        <td>@item.CreatedDate.ToString("dd MMM yyyy hh:mm:ss tt")</td>
+                        <td>@TimeZoneInfo.ConvertTimeBySystemTimeZoneId(item.CreatedDate, "Singapore Standard Time").ToString("dd MMM yyyy hh:mm:ss tt")</td>
                         <td>@item.IncidentDate.ToString("dd MMM yyyy")</td>
                         <td>@(item.ResolvedDate.Year == 1 ? "N/A" : item.ResolvedDate.ToString("dd MMM yyyy"))</td>
                     </tr>
@@ -200,7 +200,7 @@ Please take a look at the summary table and details below for more infomation ab
                         <td>@item.Status</td>
                         <td>@item.Creator</td>
                         <td>@item.Assignee</td>
-                        <td>@item.CreatedDate.ToString("dd MMM yyyy hh:mm:ss tt")</td>
+                        <td>@TimeZoneInfo.ConvertTimeBySystemTimeZoneId(item.CreatedDate, "Singapore Standard Time").ToString("dd MMM yyyy hh:mm:ss tt")</td>
                         <td>@item.IncidentDate.ToString("dd MMM yyyy")</td>
                         <td>@(item.ResolvedDate.Year == 1 ? "N/A" : item.ResolvedDate.ToString("dd MMM yyyy"))</td>
                     </tr>
@@ -223,7 +223,7 @@ Please take a look at the summary table and details below for more infomation ab
                         <td>@item.Status</td>
                         <td>@item.Creator</td>
                         <td>@item.Assignee</td>
-                        <td>@item.CreatedDate.ToString("dd MMM yyyy hh:mm:ss tt")</td>
+                        <td>@TimeZoneInfo.ConvertTimeBySystemTimeZoneId(item.CreatedDate, "Singapore Standard Time").ToString("dd MMM yyyy hh:mm:ss tt")</td>
                         <td>@item.IncidentDate.ToString("dd MMM yyyy")</td>
                         <td>@(item.ResolvedDate.Year == 1 ? "N/A" : item.ResolvedDate.ToString("dd MMM yyyy"))</td>
                     </tr>
@@ -245,7 +245,7 @@ Please take a look at the summary table and details below for more infomation ab
                         <td>@item.Status</td>
                         <td>@item.Creator</td>
                         <td>@item.Assignee</td>
-                        <td>@item.CreatedDate.ToString("dd MMM yyyy hh:mm:ss tt")</td>
+                        <td>@TimeZoneInfo.ConvertTimeBySystemTimeZoneId(item.CreatedDate, "Singapore Standard Time").ToString("dd MMM yyyy hh:mm:ss tt")</td>
                         <td>@item.IncidentDate.ToString("dd MMM yyyy")</td>
                         <td>@(item.ResolvedDate.Year == 1 ? "N/A" : item.ResolvedDate.ToString("dd MMM yyyy"))</td>
                     </tr>

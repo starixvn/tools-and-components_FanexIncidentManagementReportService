@@ -130,9 +130,9 @@ Please see the bellow table for more detail about the P1 and Pending issue in ye
                                  <td>@item.Status</td>
                                  <td>@item.Creator</td>
                                  <td>@item.Assignee</td>
-                                 <td>@item.CreatedDate</td>
+                                 <td>@TimeZoneInfo.ConvertTimeBySystemTimeZoneId(item.CreatedDate, "Singapore Standard Time")</td>
                                  <td>@item.IncidentDate.ToString("MM/dd/yyyy")</td>
-                                 <td>@item.ResolvedDate</td>
+                                 <td>@(item.ResolvedDate.Year == 1 ? "N/A" : item.ResolvedDate.ToString("MM/dd/yyyy"))</td>
                              </tr>
                              }
                              }
@@ -160,9 +160,9 @@ Please see the bellow table for more detail about the P1 and Pending issue in ye
                 <td>@item.Status</td>
                 <td>@item.Creator</td>
                 <td>@item.Assignee</td>
-                <td>@item.CreatedDate</td>
+                <td>@TimeZoneInfo.ConvertTimeBySystemTimeZoneId(item.CreatedDate, "Singapore Standard Time")</td>
                 <td>@item.IncidentDate.ToString("MM/dd/yyyy")</td>
-                <td>@item.ResolvedDate</td>
+                <td>@(item.ResolvedDate.Year == 1 ? "N/A" : item.ResolvedDate.ToString("MM/dd/yyyy"))</td>
             </tr>
             }
             }
