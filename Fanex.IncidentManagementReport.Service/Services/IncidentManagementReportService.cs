@@ -192,7 +192,7 @@
                 || (t.PriorityId == (int)Priorities.P3 && t.IncidentDate.AddDays(7) < GetResolvedDate(t))).ToList();
 
             // no count incident which was resolved on this week
-            incidents = incidents.Where(t => t.ResolvedDate.Year == 1 || (GetResolvedDate(t).AddDays(-7) > fromDate && GetResolvedDate(t).AddDays(-7) > t.IncidentDate)).ToList();
+            incidents = incidents.Where(t => t.ResolvedDate.Year == 1 || !(t.ResolvedDate >= fromDate && t.ResolvedDate <= toDate)).ToList();
 
             return incidents;
         }
