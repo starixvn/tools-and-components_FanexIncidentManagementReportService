@@ -77,7 +77,7 @@
             {
               var request = new RestRequest(Method.GET);
 
-              request.Resource = "issues.json?start_date=><" + FromDate.ToString("yyyy-MM-dd") + "|" + ToDate.ToString("yyyy-MM-dd") + "&status_id=*&priority_id=1&limit=100";
+                request.Resource = "issues.json?start_date=><" + FromDate.ToString("yyyy-MM-dd") + "|" + ToDate.ToString("yyyy-MM-dd") + "&status_id=*&priority_id=1&limit=100";
                 request.AddHeader("Content-type", "application/json");
                 request.RequestFormat = DataFormat.Json;
 
