@@ -187,19 +187,19 @@
         private IList<IncidentReportModel> GetAgingIncidents(IList<IncidentReportModel> incidents, DateTime fromDate, DateTime toDate)
         {
             incidents = incidents.Where(t =>
-                (t.PriorityId == (int)Priorities.P1 && t.IncidentDate.AddDays(1) < GetResolvedDate(t, toDate))
-                || (t.PriorityId == (int)Priorities.P2 && t.IncidentDate.AddDays(2) < GetResolvedDate(t, toDate))
-                || (t.PriorityId == (int)Priorities.P3 && t.IncidentDate.AddDays(7) < GetResolvedDate(t, toDate))).ToList();
+                (t.PriorityId == (int)Priorities.P1 && t.IncidentDate.AddDays(1) < GetResolvedDate(t))
+                || (t.PriorityId == (int)Priorities.P2 && t.IncidentDate.AddDays(2) < GetResolvedDate(t))
+                || (t.PriorityId == (int)Priorities.P3 && t.IncidentDate.AddDays(7) < GetResolvedDate(t))).ToList();
 
             // no count incident which was resolved on this week
-            incidents = incidents.Where(t => t.ResolvedDate.Year == 1 || (t.ResolvedDate.AddDays(-7) > fromDate && t.ResolvedDate.AddDays(-7) > t.IncidentDate)).ToList();
+            incidents = incidents.Where(t => t.ResolvedDate.Year == 1 || (GetResolvedDate(t).AddDays(-7) > fromDate && GetResolvedDate(t).AddDays(-7) > t.IncidentDate)).ToList();
 
             return incidents;
         }
 
-        private DateTime GetResolvedDate(IncidentReportModel incident, DateTime toDate)
+        private DateTime GetResolvedDate(IncidentReportModel incident)
         {
-            return (incident.ResolvedDate.Year == 1 || (incident.Status != "Closed" && incident.Status != "Cancelled")) ? toDate : incident.ResolvedDate;
+            return (incident.ResolvedDate.Year == 1 || (incident.Status != "Closed" && incident.Status != "Cancelled")) ? DateTime.Now : incident.ResolvedDate;
         }
     }
 }
