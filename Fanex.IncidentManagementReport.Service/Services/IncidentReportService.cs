@@ -139,7 +139,7 @@
             {
                 issues = issues.Where(t => !ProjectIdIgnore.Contains(t.Project.Id)).ToList();
                 var incidentModel = GenerateIncidentModel(issues);
-                return incidentModel.Where(x => x.CreatedDate <= toDate).ToList();
+                return incidentModel;
             }
 
             return new List<IncidentReportModel>();
