@@ -186,31 +186,31 @@
 
         private IList<IncidentReportModel> GetAgingIncidents(IList<IncidentReportModel> incidents, DateTime fromDate, DateTime toDate)
         {
-            incidents = incidents.Where(t => IsAgingIncident(t)).ToList();
+            incidents = incidents.Where(t => IsAgingIncident(t, toDate)).ToList();
             incidents = incidents.Where(t => !IsCancelled(t) && !IsClosedInPeriod(t, fromDate, toDate)).ToList();
 
             return incidents;
         }
 
-        private DateTime GetResolvedDate(IncidentReportModel incident)
+        private DateTime GetResolvedDate(IncidentReportModel incident, DateTime toDate)
         {
-            return (incident.ResolvedDate.Year == 1 || (incident.Status != "Closed" && incident.Status != "Cancelled")) ? DateTime.Now : incident.ResolvedDate;
+            return (incident.ResolvedDate.Year == 1 || (incident.Status != "Closed" && incident.Status != "Cancelled")) ? toDate : incident.ResolvedDate;
         }
 
-        private bool IsAgingIncident(IncidentReportModel incident)
+        private bool IsAgingIncident(IncidentReportModel incident, DateTime toDate)
         {
             bool isAging;
 
             switch (incident.PriorityId)
             {
                 case (int)Priorities.P1:
-                    isAging = incident.IncidentDate.AddDays(1) < GetResolvedDate(incident);
+                    isAging = incident.IncidentDate.AddDays(1) < GetResolvedDate(incident, toDate);
                     break;
                 case (int)Priorities.P2:
-                    isAging = incident.IncidentDate.AddDays(2) < GetResolvedDate(incident);
+                    isAging = incident.IncidentDate.AddDays(2) < GetResolvedDate(incident, toDate);
                     break;
                 case (int)Priorities.P3:
-                    isAging = incident.IncidentDate.AddDays(7) < GetResolvedDate(incident);
+                    isAging = incident.IncidentDate.AddDays(7) < GetResolvedDate(incident, toDate);
                     break;
                 default:
                     isAging = false;
