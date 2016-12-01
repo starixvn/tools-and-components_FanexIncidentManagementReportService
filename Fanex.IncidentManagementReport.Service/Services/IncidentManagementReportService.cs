@@ -186,13 +186,8 @@
 
         private IList<IncidentReportModel> GetAgingIncidents(IList<IncidentReportModel> incidents, DateTime fromDate, DateTime toDate)
         {
-            incidents = incidents.Where(t =>
-                (t.PriorityId == (int)Priorities.P1 && t.IncidentDate.AddDays(1) < GetResolvedDate(t))
-                || (t.PriorityId == (int)Priorities.P2 && t.IncidentDate.AddDays(2) < GetResolvedDate(t))
-                || (t.PriorityId == (int)Priorities.P3 && t.IncidentDate.AddDays(7) < GetResolvedDate(t))).ToList();
-
-            // no count incident which was resolved on this week
-            incidents = incidents.Where(t => t.ResolvedDate.Year == 1 || !(t.ResolvedDate >= fromDate && t.ResolvedDate <= toDate)).ToList();
+            incidents = incidents.Where(t => IsAgingIncident(t)).ToList();
+            incidents = incidents.Where(t => !IsCancelled(t) && !IsClosedInPeriod(t, fromDate, toDate)).ToList();
 
             return incidents;
         }
@@ -200,6 +195,46 @@
         private DateTime GetResolvedDate(IncidentReportModel incident)
         {
             return (incident.ResolvedDate.Year == 1 || (incident.Status != "Closed" && incident.Status != "Cancelled")) ? DateTime.Now : incident.ResolvedDate;
+        }
+
+        private bool IsAgingIncident(IncidentReportModel incident)
+        {
+            bool isAging;
+
+            switch (incident.PriorityId)
+            {
+                case (int)Priorities.P1:
+                    isAging = incident.IncidentDate.AddDays(1) < GetResolvedDate(incident);
+                    break;
+                case (int)Priorities.P2:
+                    isAging = incident.IncidentDate.AddDays(2) < GetResolvedDate(incident);
+                    break;
+                case (int)Priorities.P3:
+                    isAging = incident.IncidentDate.AddDays(7) < GetResolvedDate(incident);
+                    break;
+                default:
+                    isAging = false;
+                    break;
+            }
+
+            return isAging;
+        }
+
+        private bool IsCancelled(IncidentReportModel incident)
+        {
+            return string.Equals(incident.Status, "Cancelled");
+        }
+
+        private bool IsClosedInPeriod(IncidentReportModel incident, DateTime fromDate, DateTime toDate)
+        {
+            var isClosedInPeriod = false;
+
+            if (string.Equals(incident.Status, "Closed") && incident.ResolvedDate.Year != 1)
+            {
+                isClosedInPeriod = incident.ResolvedDate >= fromDate && incident.ResolvedDate <= toDate;
+            }
+
+            return isClosedInPeriod;
         }
     }
 }
