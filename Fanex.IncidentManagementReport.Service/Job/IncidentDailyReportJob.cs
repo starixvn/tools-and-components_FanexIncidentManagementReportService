@@ -2,19 +2,18 @@
 {
     using Fanex.IncidentManagementReport.Service.Core;
     using Fanex.MailDelivery.Client.Jobs;
-    using Fanex.MailDelivery.Client.Messages;
-    using Fanex.MailDelivery.Client.Models;
+    using Fanex.MailDelivery.Core.Models;
     using Quartz;
     using System;
 
     public class IncidentDailyReportJob : JobBase
     {
-        protected override JobResultMessage Run(Schedule schedule, IJobExecutionContext jobContext)
+        protected override JobMessage Run(Schedule schedule, IJobExecutionContext jobContext)
         {
             var incidentManagementReportService = new IncidentManagementReportService();
             var body = incidentManagementReportService.IncidentDailyReportEmailTemplate();
 
-            return new JobResultMessage
+            return new JobMessage
             {
                 Mail = new Mail
                 {
@@ -22,7 +21,7 @@
                     Title = "Auto Mail Daily Incident Report ",
                     Body = body
                 },
-                JobStatus = MailDelivery.Client.Enumerations.JobStatus.Success,
+                JobStatus = JobStatus.Success,
                 Schedule = schedule
             };
         }

@@ -1,9 +1,9 @@
-﻿using System.ServiceProcess;
-using Fanex.IncidentManagementReport.Service.Core;
-using Fanex.MailDelivery.Client.Handlers;
-
-namespace Fanex.IncidentManagementReport.Service
+﻿namespace Fanex.IncidentManagementReport.Service
 {
+    using Fanex.IncidentManagementReport.Service.Core;
+    using Fanex.MailDelivery.Client;
+    using System.ServiceProcess;
+
     public partial class Service : ServiceBase
     {
         public Service()
@@ -15,7 +15,7 @@ namespace Fanex.IncidentManagementReport.Service
 
         protected override void OnStart(string[] args)
         {
-            MailClientHandler.Start();            
+            MailClientHandler.Start();
         }
 
         protected override void OnStop()

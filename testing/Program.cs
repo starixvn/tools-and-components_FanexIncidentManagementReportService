@@ -1,7 +1,7 @@
 ﻿namespace Testing
 {
     using Fanex.IncidentManagementReport.Service.Core;
-    using Fanex.MailDelivery.Client.Handlers;
+    using Fanex.MailDelivery.Client;
     using System;
 
     public class Program

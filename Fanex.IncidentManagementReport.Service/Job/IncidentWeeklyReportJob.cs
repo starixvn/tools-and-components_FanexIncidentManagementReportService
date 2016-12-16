@@ -2,14 +2,13 @@
 {
     using Fanex.IncidentManagementReport.Service.Core;
     using Fanex.MailDelivery.Client.Jobs;
-    using Fanex.MailDelivery.Client.Messages;
-    using Fanex.MailDelivery.Client.Models;
+    using Fanex.MailDelivery.Core.Models;
     using Quartz;
     using System;
 
     public class IncidentWeeklyReportJob : JobBase
     {
-        protected override JobResultMessage Run(Schedule schedule, IJobExecutionContext jobContext)
+        protected override JobMessage Run(Schedule schedule, IJobExecutionContext jobContext)
         {
             var incidentManagementReportService = new IncidentManagementReportService();
             var body = incidentManagementReportService.IncidentWeeklyReportEmailTemplate();
@@ -17,7 +16,7 @@
             var fromDate = Utilities.DateOfPreviousWeek(DateTime.Now, DayOfWeek.Monday);
             var toDate = Utilities.DateOfPreviousWeek(DateTime.Now, DayOfWeek.Sunday);
 
-            return new JobResultMessage
+            return new JobMessage
             {
                 Mail = new Mail
                 {
@@ -25,7 +24,7 @@
                     Title = "Auto Mail Weekly Incident Report ",
                     Body = body
                 },
-                JobStatus = MailDelivery.Client.Enumerations.JobStatus.Success,
+                JobStatus = JobStatus.Success,
                 Schedule = schedule
             };
         }
