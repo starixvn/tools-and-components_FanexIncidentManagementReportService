@@ -153,6 +153,7 @@ Please take a look at the summary table and details below for more infomation ab
                 <th>Status</th>
                 <th>Incident Date</th>
                 <th>Resolved Date</th>
+                <th>Closed Date</th>
                 <th>Creator</th>
                 <th>Assignee</th>
                 <th>Created Date</th>
@@ -163,7 +164,7 @@ Please take a look at the summary table and details below for more infomation ab
             @if (Model.P1IncidentReport != null)
             {
                 <tr class="title">
-                    <td colspan="10"> P1 Incident Report (@Model.P1IncidentReport.Count) </td>
+                    <td colspan="11"> P1 Incident Report (@Model.P1IncidentReport.Count) </td>
                 </tr>
 
                 foreach (var item in Model.P1IncidentReport)
@@ -187,7 +188,7 @@ Please take a look at the summary table and details below for more infomation ab
             @if (Model.CreateNewIncidentReport != null)
             {
                 <tr class="title">
-                    <td colspan="10"> New created Incident Report (@Model.CreateNewIncidentReport.Count) </td>
+                    <td colspan="11"> New created Incident Report (@Model.CreateNewIncidentReport.Count) </td>
                 </tr>
            
                 foreach (var item in Model.CreateNewIncidentReport)
@@ -211,7 +212,7 @@ Please take a look at the summary table and details below for more infomation ab
             @if (Model.ClosedIncidentReport != null)
             {          
                 <tr class="title">
-                    <td colspan="10"> Closed Incident (@Model.ClosedIncidentReport.Count) </td>
+                    <td colspan="11"> Closed Incident (@Model.ClosedIncidentReport.Count) </td>
                 </tr>
             
                 foreach (var item in Model.ClosedIncidentReport)
@@ -235,7 +236,7 @@ Please take a look at the summary table and details below for more infomation ab
             @if (Model.PendingIncidentReport != null)
             {
                 <tr class="title">
-                    <td colspan="10"> Open Incident (@Model.PendingIncidentReport.Count) </td>
+                    <td colspan="11"> Open Incident (@Model.PendingIncidentReport.Count) </td>
                 </tr>
                 foreach (var item in Model.PendingIncidentReport)
                 {
