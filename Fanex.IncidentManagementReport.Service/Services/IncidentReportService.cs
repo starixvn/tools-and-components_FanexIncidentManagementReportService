@@ -39,8 +39,8 @@
 
             if (issues != null)
             {
-                issues = issues.Where(t => !ProjectIdIgnore.Contains(t.Project.Id)).ToList();
-                return GenerateIncidentModel(issues);
+                issues = issues.Where(t => !ProjectIdIgnore.Contains(t.Project.Id)).OrderByDescending(t => t.IncidentDate).ToList();
+                return GenerateIncidentModel(issues, isDaily: false);
             }
 
             return new List<IncidentReportModel>();
@@ -54,8 +54,8 @@
             var issues = _issuesService.CloseIssue;
             if (issues != null)
             {
-                issues = issues.Where(t => !ProjectIdIgnore.Contains(t.Project.Id)).ToList();
-                return GenerateIncidentModel(issues);
+                issues = issues.Where(t => !ProjectIdIgnore.Contains(t.Project.Id)).OrderByDescending(t => t.IncidentDate).ToList();
+                return GenerateIncidentModel(issues, isDaily: false);
             }
 
             return new List<IncidentReportModel>();
@@ -66,7 +66,7 @@
             return RedmineUrl;
         }
 
-        private IList<IncidentReportModel> GenerateIncidentModel(IList<IssuesViewModel> issues)
+        private IList<IncidentReportModel> GenerateIncidentModel(IList<IssuesViewModel> issues, bool isDaily = true)
         {
             var query = issues.Select(iss => new IncidentReportModel
             {
@@ -78,7 +78,7 @@
                 Assignee = iss.Assignee != null ? iss.Assignee.Name : string.Empty,
                 IncidentDate = iss.IncidentDate,
                 Creator = iss.Creator.Name,
-                Priority = iss.Priority.Name,
+                Priority = isDaily ? iss.Priority.Name : GetPriorityName(iss.Priority.Id),
                 PriorityId = iss.Priority.Id,
                 Status = iss.Status.Name,
                 UpdatedDate = iss.UpdatedDate,
@@ -112,8 +112,8 @@
             var issues = _issuesService.P1Issue;
             if (issues != null)
             {
-                issues = issues.Where(t => !ProjectIdIgnore.Contains(t.Project.Id)).ToList();
-                return GenerateIncidentModel(issues);
+                issues = issues.Where(t => !ProjectIdIgnore.Contains(t.Project.Id)).OrderByDescending(t => t.IncidentDate).ToList();
+                return GenerateIncidentModel(issues, isDaily: false);
             }
 
             return new List<IncidentReportModel>();
@@ -137,12 +137,31 @@
             var issues = _issuesService.PendingIssue;
             if (issues != null)
             {
-                issues = issues.Where(t => !ProjectIdIgnore.Contains(t.Project.Id)).ToList();
-                var incidentModel = GenerateIncidentModel(issues);
+                issues = issues.Where(t => !ProjectIdIgnore.Contains(t.Project.Id)).OrderByDescending(t => t.IncidentDate).ToList();
+                var incidentModel = GenerateIncidentModel(issues, isDaily: false);
                 return incidentModel;
             }
 
             return new List<IncidentReportModel>();
+        }
+
+        private string GetPriorityName(int priorityId)
+        {
+            var priorityname = string.Empty;
+            switch (priorityId)
+            {
+                case 1:
+                    priorityname = "P1";
+                    break;
+                case 2:
+                    priorityname = "P1";
+                    break;
+                case 3:
+                    priorityname = "P1";
+                    break;
+            }
+
+            return priorityname;
         }
     }
 }

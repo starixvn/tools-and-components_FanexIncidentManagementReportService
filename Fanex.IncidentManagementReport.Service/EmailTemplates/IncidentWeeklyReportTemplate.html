@@ -147,15 +147,15 @@ Please take a look at the summary table and details below for more infomation ab
         <thead>
             <tr>
                 <th>Id</th>
+                <th>Priority</th>
                 <th>Category</th>
                 <th>Incident Title</th>
-                <th>Priority</th>
                 <th>Status</th>
+                <th>Incident Date</th>
+                <th>Resolved Date</th>
                 <th>Creator</th>
                 <th>Assignee</th>
                 <th>Created Date</th>
-                <th>Incident Date</th>
-                <th>Resolved Date</th>
             </tr>
         </thead>
         <tbody>
@@ -170,15 +170,15 @@ Please take a look at the summary table and details below for more infomation ab
                 {
                     <tr class="alt">
                         <td>@item.IncidentId</td>
+                        <td>@item.Priority</td>
                         <td> @item.CategoryName</td>
                         <td><a href="@(Model.RedmineUrl + item.IncidentId)">@item.IncidentTitle</a></td>
-                        <td>@item.Priority</td>
                         <td>@item.Status</td>
+                        <td>@item.IncidentDateDisplay</td>
+                        <td>@item.ResolvedDateDisplay</td>
                         <td>@item.Creator</td>
                         <td>@item.Assignee</td>
                         <td>@item.CreatedDateDisplay</td>
-                        <td>@item.IncidentDateDisplay</td>
-                        <td>@item.ResolvedDateDisplay</td>
                     </tr>
                 }
             }
@@ -193,15 +193,15 @@ Please take a look at the summary table and details below for more infomation ab
                 {
                     <tr class="alt">
                         <td>@item.IncidentId</td>
+                        <td>@item.Priority</td>
                         <td> @item.CategoryName</td>
                         <td><a href="@(Model.RedmineUrl + item.IncidentId)">@item.IncidentTitle</a></td>
-                        <td>@item.Priority</td>
                         <td>@item.Status</td>
+                        <td>@item.IncidentDateDisplay</td>
+                        <td>@item.ResolvedDateDisplay</td>
                         <td>@item.Creator</td>
                         <td>@item.Assignee</td>
                         <td>@item.CreatedDateDisplay</td>
-                        <td>@item.IncidentDateDisplay</td>
-                        <td>@item.ResolvedDateDisplay</td>
                     </tr>
                 }
             }
@@ -216,15 +216,15 @@ Please take a look at the summary table and details below for more infomation ab
                 {
                     <tr class="alt">
                         <td>@item.IncidentId</td>
-                        <td>@item.CategoryName</td>
-                        <td><a href="@(Model.RedmineUrl + item.IncidentId)">@item.IncidentTitle</a></td>
                         <td>@item.Priority</td>
+                        <td> @item.CategoryName</td>
+                        <td><a href="@(Model.RedmineUrl + item.IncidentId)">@item.IncidentTitle</a></td>
                         <td>@item.Status</td>
+                        <td>@item.IncidentDateDisplay</td>
+                        <td>@item.ResolvedDateDisplay</td>
                         <td>@item.Creator</td>
                         <td>@item.Assignee</td>
                         <td>@item.CreatedDateDisplay</td>
-                        <td>@item.IncidentDateDisplay</td>
-                        <td>@item.ResolvedDateDisplay</td>
                     </tr>
                 }
             }
@@ -232,21 +232,21 @@ Please take a look at the summary table and details below for more infomation ab
             @if (Model.PendingIncidentReport != null)
             {
                 <tr class="title">
-                    <td colspan="10"> Pending Incident (@Model.PendingIncidentReport.Count) </td>
+                    <td colspan="10"> Open Incident (@Model.PendingIncidentReport.Count) </td>
                 </tr>
                 foreach (var item in Model.PendingIncidentReport)
                 {
                     <tr class="alt">
                         <td>@item.IncidentId</td>
-                        <td>@item.CategoryName</td>
-                        <td><a href="@(Model.RedmineUrl + item.IncidentId)">@item.IncidentTitle</a></td>
                         <td>@item.Priority</td>
+                        <td> @item.CategoryName</td>
+                        <td><a href="@(Model.RedmineUrl + item.IncidentId)">@item.IncidentTitle</a></td>
                         <td>@item.Status</td>
+                        <td>@item.IncidentDateDisplay</td>
+                        <td>@item.ResolvedDateDisplay</td>
                         <td>@item.Creator</td>
                         <td>@item.Assignee</td>
                         <td>@item.CreatedDateDisplay</td>
-                        <td>@item.IncidentDateDisplay</td>
-                        <td>@item.ResolvedDateDisplay</td>
                     </tr>
                 }
             }
