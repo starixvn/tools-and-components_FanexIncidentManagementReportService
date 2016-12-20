@@ -154,10 +154,10 @@
                     priorityname = "P1";
                     break;
                 case 2:
-                    priorityname = "P1";
+                    priorityname = "P2";
                     break;
                 case 3:
-                    priorityname = "P1";
+                    priorityname = "P3";
                     break;
             }
 
