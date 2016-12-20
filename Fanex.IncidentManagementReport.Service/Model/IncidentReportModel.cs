@@ -60,7 +60,7 @@
         {
             get
             {
-                string dateDisplay = ResolvedDate.Year == 1 ? "N/A" : Utilities.GetDisplayShortDate(ClosedDate);
+                string dateDisplay = ClosedDate.Year == 1 ? "N/A" : Utilities.GetDisplayLongDate(ClosedDate);
                 return dateDisplay;
             }
         }
