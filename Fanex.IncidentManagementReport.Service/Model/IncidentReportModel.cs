@@ -29,6 +29,8 @@
 
         public DateTime ResolvedDate { get; set; }
 
+        public DateTime ClosedDate { get; set; }
+
         public string IncidentDateDisplay
         {
             get
@@ -50,6 +52,15 @@
             get
             {
                 string dateDisplay = ResolvedDate.Year == 1 ? "N/A" : Utilities.GetDisplayShortDate(ResolvedDate);
+                return dateDisplay;
+            }
+        }
+
+        public string ClosedDateDisplay
+        {
+            get
+            {
+                string dateDisplay = ResolvedDate.Year == 1 ? "N/A" : Utilities.GetDisplayShortDate(ClosedDate);
                 return dateDisplay;
             }
         }

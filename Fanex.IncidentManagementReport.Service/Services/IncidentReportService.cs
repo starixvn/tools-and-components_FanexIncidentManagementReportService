@@ -83,7 +83,8 @@
                 Status = iss.Status.Name,
                 UpdatedDate = iss.UpdatedDate,
                 CreatedDate = iss.CreatedDate,
-                ResolvedDate = iss.ResolvedDate
+                ResolvedDate = iss.ResolvedDate,
+                ClosedDate = iss.ClosedDate
             });
 
             return query.ToList();
