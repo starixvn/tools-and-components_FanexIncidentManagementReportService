@@ -14,7 +14,7 @@
 
     public class IncidentManagementReportService
     {
-        private IIncidentReportService incidentReportService;
+        private readonly IIncidentReportService incidentReportService;
 
         public IncidentManagementReportService() : this(null)
         {
@@ -27,33 +27,19 @@
 
         public string IncidentWeeklyReportEmailTemplate()
         {
-            try
-            {
-                var fromDate = Utilities.DateOfPreviousWeek(DateTime.Now, DayOfWeek.Monday);
-                var toDate = Utilities.DateOfPreviousWeek(DateTime.Now, DayOfWeek.Sunday);
+            var fromDate = Utilities.DateOfPreviousWeek(DateTime.Now, DayOfWeek.Monday);
+            var toDate = Utilities.DateOfPreviousWeek(DateTime.Now, DayOfWeek.Sunday);
 
-                return IncidentReportGeneration(fromDate, toDate, "EmailTemplates/IncidentWeeklyReportTemplate.html");
-            }
-            catch (Exception ex)
-            {
-                return ex.Message;
-            }
+            return IncidentReportGeneration(fromDate, toDate, "EmailTemplates/IncidentWeeklyReportTemplate.html");
         }
 
         public string IncidentDailyReportEmailTemplate()
         {
-            try
-            {
-                var yesterday = DateTime.Now.PreviousDay();
-                return IncidentDailyReportGeneration(yesterday, yesterday, "EmailTemplates/IncidentDailyReportTemplate.html");
-            }
-            catch (Exception ex)
-            {
-                return ex.Message;
-            }
+            var yesterday = DateTime.Now.PreviousDay();
+            return IncidentDailyReportGeneration(yesterday, yesterday, "EmailTemplates/IncidentDailyReportTemplate.html");
         }
 
-        private string IncidentDailyReportGeneration(DateTime fromDate, DateTime toDate, string emailTemplatePath, bool isWeekly = false)
+        private string IncidentDailyReportGeneration(DateTime fromDate, DateTime toDate, string emailTemplatePath)
         {
             var getRedmineUrl = incidentReportService.GetRedmineUrl();
             var model = new IncidentDailyReportViewModel() 
@@ -61,7 +47,7 @@
                 FromDate = fromDate,
                 ToDate = toDate,
                 RedmineUrl = getRedmineUrl + "/issues/",
-                PendingIncidents = GetPendingIncidentCategory(fromDate, toDate),
+                PendingIncidents = GetPendingIncidentCategory(),
                 P1Incidents = GetP1IncidentCategory(fromDate, toDate)
             };
 
@@ -85,7 +71,7 @@
             return priority1IncidentGroups;
         }
 
-        private IList<IncidentGroup> GetPendingIncidentCategory(DateTime fromDate, DateTime toDate)
+        private IList<IncidentGroup> GetPendingIncidentCategory()
         {
             var pendingIncidents = incidentReportService.GetDailyIncidentPendingReport();
             IList<IncidentReportModel> pendingIncidentGroupByCategory = pendingIncidents.GroupBy(t => t.CategoryName).Select(grp => grp.First()).ToList();

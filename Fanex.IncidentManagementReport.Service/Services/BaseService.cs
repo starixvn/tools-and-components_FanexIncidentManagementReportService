@@ -5,7 +5,7 @@
 
     public class BaseService
     {      
-        private RedmineAPI _redmineAPI;
+        private readonly RedmineAPI _redmineAPI;
 
         public BaseService() : this(null) 
         { 

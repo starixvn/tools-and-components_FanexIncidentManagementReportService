@@ -1,6 +1,7 @@
 ﻿namespace Fanex.IncidentManagementReport.Service.Job
 {
     using Fanex.IncidentManagementReport.Service.Core;
+    using Fanex.Logging;
     using Fanex.MailDelivery.Client.Jobs;
     using Fanex.MailDelivery.Core.Models;
     using Quartz;
@@ -10,20 +11,33 @@
     {
         protected override JobMessage Run(Schedule schedule, IJobExecutionContext jobContext)
         {
-            var incidentManagementReportService = new IncidentManagementReportService();
-            var body = incidentManagementReportService.IncidentDailyReportEmailTemplate();
-
-            return new JobMessage
+            var jobMessage = new JobMessage()
             {
-                Mail = new Mail
+                Mail = new Mail()
                 {
-                    Subject = "[IMS] Daily Incident Report on " + Utilities.GetDisplayShortDate(DateTime.Now),
-                    Title = "Auto Mail Daily Incident Report ",
-                    Body = body
+                    Title = "Auto Mail Daily Incident Report "
                 },
-                JobStatus = JobStatus.Success,
                 Schedule = schedule
             };
+
+            try
+            {
+                jobMessage.Mail.Subject = "[IMS] Daily Incident Report on " + Utilities.GetDisplayShortDate(DateTime.Now);
+
+                var incidentManagementReportService = new IncidentManagementReportService();
+                var body = incidentManagementReportService.IncidentDailyReportEmailTemplate();
+
+                jobMessage.Mail.Body = body;
+                jobMessage.JobStatus = JobStatus.Success;
+            }
+            catch (Exception ex)
+            {
+                jobMessage.JobStatus = JobStatus.JobFailed;
+                var message = ex.InnerException != null ? ex.InnerException.Message : ex.Message;
+                LogService.Error(message);
+            }
+
+            return jobMessage;
         }
     }
 }

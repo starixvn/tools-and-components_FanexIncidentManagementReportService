@@ -7,9 +7,8 @@
 
     public class IncidentReportService : BaseService, IIncidentReportService
     {
-        private readonly string projectIdIgnore = "31,56,65,66";
-        private IIssuesService _issuesService;
-        private IProjectService _projectService;
+        private readonly IIssuesService _issuesService;
+        private readonly IProjectService _projectService;
 
         public IncidentReportService() : this(null, null) 
         { 
@@ -19,16 +18,11 @@
         {
             _issuesService = issuesService ?? new IssuesService();
             _projectService = projectService ?? new ProjectService();
+            var projectIds = "31,56,65,66".Split(',');
+            ProjectIdIgnore = projectIds.Select(t => int.Parse(t)).ToList();
         }
 
-        public IList<int> ProjectIdIgnore
-        {
-            get
-            {
-                var projectIds = projectIdIgnore.Split(',');
-                return projectIds.Select(t => int.Parse(t)).ToList();
-            }
-        }
+        public IList<int> ProjectIdIgnore { get; set; }
 
         public IList<IncidentReportModel> GetIncidentCreateNewReport(DateTime fromDate, DateTime toDate)
         {
