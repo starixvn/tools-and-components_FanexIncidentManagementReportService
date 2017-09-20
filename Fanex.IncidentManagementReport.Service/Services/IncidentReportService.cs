@@ -68,24 +68,28 @@
             IList<IncidentReportModel> result = new List<IncidentReportModel>();
             foreach (var iss in issues)
             {
-                IncidentReportModel incident = new IncidentReportModel
-                {
-                    IncidentId = iss.Id,
-                    IncidentTitle = iss.Subject,
-                    CategoryName = (_projectService.GetParentProjectById(iss.Project.Id) != null
-                                       ? _projectService.GetParentProjectById(iss.Project.Id).Name + " - "
-                                       : string.Empty) + iss.Project.Name,
-                    Assignee = iss.Assignee != null ? iss.Assignee.Name : string.Empty,
-                    IncidentDate = iss.IncidentDate,
-                    Creator = iss.Creator.Name,
-                    Priority = isDaily ? iss.Priority.Name : GetPriorityName(iss.Priority.Id),
-                    PriorityId = iss.Priority.Id,
-                    Status = iss.Status.Name,
-                    UpdatedDate = iss.UpdatedDate,
-                    CreatedDate = ExtractDate(ReportedDateCustomFieldId, iss),
-                    ResolvedDate = ExtractDate(ResolvedDateCustomFieldId, iss),
-                    ClosedDate = iss.ClosedDate
-                };
+                IncidentReportModel incident = new IncidentReportModel();
+
+                incident.IncidentId = iss.Id;
+                incident.IncidentTitle = iss.Subject;
+                incident.CategoryName = (_projectService.GetParentProjectById(iss.Project.Id) != null
+                                            ? _projectService.GetParentProjectById(iss.Project.Id).Name + " - "
+                                            : string.Empty) + iss.Project.Name;
+                incident.Assignee = iss.Assignee != null ? iss.Assignee.Name : string.Empty;
+
+                incident.Creator = iss.Creator.Name;
+                incident.Priority = isDaily ? iss.Priority.Name : GetPriorityName(iss.Priority.Id);
+                incident.PriorityId = iss.Priority.Id;
+                incident.Status = iss.Status.Name;
+                incident.UpdatedDate = iss.UpdatedDate;
+
+                incident.CreatedDate = iss.CreatedDate;
+                incident.ClosedDate = iss.ClosedDate;
+
+                // start_date
+                incident.IncidentDate = ExtractDate(ReportedDateCustomFieldId, iss);
+                // due_date
+                incident.ResolvedDate = ExtractDate(ResolvedDateCustomFieldId, iss);
 
                 result.Add(incident);
             }
@@ -97,9 +101,20 @@
         {
             var dateTimeString = model.CustomFields.Where(x => x.Id == customFieldValue).Select(x => x.Value)
                 .FirstOrDefault()?.ToString();
-            return !string.IsNullOrEmpty(dateTimeString)
-                ? DateTime.ParseExact(dateTimeString, "dd/MM/yyyy hh:mm", CultureInfo.InvariantCulture)
+            var parsedDate = !string.IsNullOrEmpty(dateTimeString)
+                ? DateTime.ParseExact(dateTimeString, "dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture)
                 : new DateTime(1, 1, 1);
+            if (parsedDate.Year > 1)
+            {
+                // Valid time
+                // Convert to UTC
+                parsedDate = DateTime.SpecifyKind(parsedDate, DateTimeKind.Utc);
+
+                // Minus the understanded timezone set in App.config
+                parsedDate = parsedDate - TimeSpan.FromHours(CustomFieldTimeZone);
+            }
+
+            return parsedDate;
         }
 
         public IList<IncidentReportModel> GetDailyIncidentP1Report(DateTime fromDate, DateTime toDate)

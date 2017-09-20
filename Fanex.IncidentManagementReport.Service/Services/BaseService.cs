@@ -57,5 +57,16 @@
                 return result;
             }
         }
+
+        protected int CustomFieldTimeZone
+        {
+            get
+            {
+                var settingString = ConfigurationManager.AppSettings["CustomFieldTimeZone"];
+                int result;
+                int.TryParse(settingString, out result);
+                return result;
+            }
+        }
     }
 }
