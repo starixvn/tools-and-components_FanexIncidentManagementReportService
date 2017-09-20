@@ -1,6 +1,6 @@
 ﻿namespace Fanex.IncidentManagementReport.Service.Model
 {
-    using Fanex.IncidentManagementReport.Service.Core;
+    using Core;
     using System;
 
     public class IncidentReportModel
@@ -31,27 +31,15 @@
 
         public DateTime ClosedDate { get; set; }
 
-        public string IncidentDateDisplay
-        {
-            get
-            {
-                return Utilities.GetDisplayShortDate(IncidentDate);
-            }
-        }
+        public string IncidentDateDisplay => Utilities.GetDisplayLongDate(IncidentDate);
 
-        public string CreatedDateDisplay
-        {
-            get
-            {
-                return Utilities.GetDisplayLongDate(CreatedDate);
-            }
-        }
+        public string CreatedDateDisplay => Utilities.GetDisplayLongDate(CreatedDate);
 
         public string ResolvedDateDisplay
         {
             get
             {
-                string dateDisplay = ResolvedDate.Year == 1 ? "N/A" : Utilities.GetDisplayShortDate(ResolvedDate);
+                string dateDisplay = ResolvedDate.Year == 1 ? "N/A" : Utilities.GetDisplayLongDate(ResolvedDate);
                 return dateDisplay;
             }
         }

@@ -3,6 +3,8 @@ using Newtonsoft.Json;
 
 namespace Fanex.IncidentManagementReport.Service.Model
 {
+    using System.Collections.Generic;
+
     public class IssuesViewModel
     {
         [JsonProperty(PropertyName = "id")]
@@ -46,5 +48,11 @@ namespace Fanex.IncidentManagementReport.Service.Model
 
         [JsonProperty(PropertyName = "closed_on")]
         public DateTime ClosedDate { get; set; }
+
+        [JsonProperty("done_ratio")]
+        public int DoneRatio { get; set; }
+
+        [JsonProperty("custom_fields")]
+        public IList<CustomFieldViewModel> CustomFields { get; set; }
     }
 }

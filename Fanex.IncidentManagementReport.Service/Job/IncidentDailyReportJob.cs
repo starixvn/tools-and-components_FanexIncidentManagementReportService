@@ -1,9 +1,9 @@
 ﻿namespace Fanex.IncidentManagementReport.Service.Job
 {
-    using Fanex.IncidentManagementReport.Service.Core;
-    using Fanex.Logging;
-    using Fanex.MailDelivery.Client.Jobs;
-    using Fanex.MailDelivery.Core.Models;
+    using Core;
+    using Logging;
+    using MailDelivery.Client.Jobs;
+    using MailDelivery.Core.Models;
     using Quartz;
     using System;
 
@@ -11,9 +11,9 @@
     {
         protected override JobMessage Run(Schedule schedule, IJobExecutionContext jobContext)
         {
-            var jobMessage = new JobMessage()
+            var jobMessage = new JobMessage
             {
-                Mail = new Mail()
+                Mail = new Mail
                 {
                     Title = "Auto Mail Daily Incident Report "
                 },

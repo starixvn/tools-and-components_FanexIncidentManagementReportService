@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using Fanex.IncidentManagementReport.Service.Model;
 
@@ -10,8 +11,8 @@
         private readonly IIssuesService _issuesService;
         private readonly IProjectService _projectService;
 
-        public IncidentReportService() : this(null, null) 
-        { 
+        public IncidentReportService() : this(null, null)
+        {
         }
 
         public IncidentReportService(IIssuesService issuesService, IProjectService projectService)
@@ -33,7 +34,8 @@
 
             if (issues != null)
             {
-                issues = issues.Where(t => !ProjectIdIgnore.Contains(t.Project.Id)).OrderByDescending(t => t.IncidentDate).ToList();
+                issues = issues.Where(t => !ProjectIdIgnore.Contains(t.Project.Id))
+                    .OrderByDescending(t => t.IncidentDate).ToList();
                 return GenerateIncidentModel(issues, isDaily: false);
             }
 
@@ -48,7 +50,8 @@
             var issues = _issuesService.CloseIssue;
             if (issues != null)
             {
-                issues = issues.Where(t => !ProjectIdIgnore.Contains(t.Project.Id)).OrderByDescending(t => t.IncidentDate).ToList();
+                issues = issues.Where(t => !ProjectIdIgnore.Contains(t.Project.Id))
+                    .OrderByDescending(t => t.IncidentDate).ToList();
                 return GenerateIncidentModel(issues, isDaily: false);
             }
 
@@ -62,26 +65,41 @@
 
         private IList<IncidentReportModel> GenerateIncidentModel(IList<IssuesViewModel> issues, bool isDaily = true)
         {
-            var query = issues.Select(iss => new IncidentReportModel
+            IList<IncidentReportModel> result = new List<IncidentReportModel>();
+            foreach (var iss in issues)
             {
-                IncidentId = iss.Id,
-                IncidentTitle = iss.Subject,
-                CategoryName = (_projectService.GetParentProjectById(iss.Project.Id) != null
-                    ? _projectService.GetParentProjectById(iss.Project.Id).Name + " - "
-                    : string.Empty) + iss.Project.Name,
-                Assignee = iss.Assignee != null ? iss.Assignee.Name : string.Empty,
-                IncidentDate = iss.IncidentDate,
-                Creator = iss.Creator.Name,
-                Priority = isDaily ? iss.Priority.Name : GetPriorityName(iss.Priority.Id),
-                PriorityId = iss.Priority.Id,
-                Status = iss.Status.Name,
-                UpdatedDate = iss.UpdatedDate,
-                CreatedDate = iss.CreatedDate,
-                ResolvedDate = iss.ResolvedDate,
-                ClosedDate = iss.ClosedDate
-            });
+                IncidentReportModel incident = new IncidentReportModel
+                {
+                    IncidentId = iss.Id,
+                    IncidentTitle = iss.Subject,
+                    CategoryName = (_projectService.GetParentProjectById(iss.Project.Id) != null
+                                       ? _projectService.GetParentProjectById(iss.Project.Id).Name + " - "
+                                       : string.Empty) + iss.Project.Name,
+                    Assignee = iss.Assignee != null ? iss.Assignee.Name : string.Empty,
+                    IncidentDate = iss.IncidentDate,
+                    Creator = iss.Creator.Name,
+                    Priority = isDaily ? iss.Priority.Name : GetPriorityName(iss.Priority.Id),
+                    PriorityId = iss.Priority.Id,
+                    Status = iss.Status.Name,
+                    UpdatedDate = iss.UpdatedDate,
+                    CreatedDate = ExtractDate(ReportedDateCustomFieldId, iss),
+                    ResolvedDate = ExtractDate(ResolvedDateCustomFieldId, iss),
+                    ClosedDate = iss.ClosedDate
+                };
 
-            return query.ToList();
+                result.Add(incident);
+            }
+
+            return result;
+        }
+
+        private DateTime ExtractDate(int customFieldValue, IssuesViewModel model)
+        {
+            var dateTimeString = model.CustomFields.Where(x => x.Id == customFieldValue).Select(x => x.Value)
+                .FirstOrDefault()?.ToString();
+            return !string.IsNullOrEmpty(dateTimeString)
+                ? DateTime.ParseExact(dateTimeString, "dd/MM/yyyy hh:mm", CultureInfo.InvariantCulture)
+                : new DateTime(1, 1, 1);
         }
 
         public IList<IncidentReportModel> GetDailyIncidentP1Report(DateTime fromDate, DateTime toDate)
@@ -107,7 +125,8 @@
             var issues = _issuesService.P1Issue;
             if (issues != null)
             {
-                issues = issues.Where(t => !ProjectIdIgnore.Contains(t.Project.Id)).OrderByDescending(t => t.IncidentDate).ToList();
+                issues = issues.Where(t => !ProjectIdIgnore.Contains(t.Project.Id))
+                    .OrderByDescending(t => t.IncidentDate).ToList();
                 return GenerateIncidentModel(issues, isDaily: false);
             }
 
@@ -120,7 +139,8 @@
             if (issues != null)
             {
                 issues = issues.Where(t => !ProjectIdIgnore.Contains(t.Project.Id))
-                    .Where(t => !((t.CreatedDate - DateTime.Now.Date.AddDays(-1)).Days == 0 && t.Priority.Id == 1)).ToList();
+                    .Where(t => !((t.CreatedDate - DateTime.Now.Date.AddDays(-1)).Days == 0 && t.Priority.Id == 1))
+                    .ToList();
                 return GenerateIncidentModel(issues);
             }
 
@@ -132,7 +152,8 @@
             var issues = _issuesService.PendingIssue;
             if (issues != null)
             {
-                issues = issues.Where(t => !ProjectIdIgnore.Contains(t.Project.Id)).OrderByDescending(t => t.IncidentDate).ToList();
+                issues = issues.Where(t => !ProjectIdIgnore.Contains(t.Project.Id))
+                    .OrderByDescending(t => t.IncidentDate).ToList();
                 var incidentModel = GenerateIncidentModel(issues, isDaily: false);
                 return incidentModel;
             }

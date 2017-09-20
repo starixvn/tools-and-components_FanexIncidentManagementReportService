@@ -151,6 +151,7 @@
     <Compile Include="DataAccess\RedmineAPI.cs" />
     <Compile Include="Job\IncidentWeeklyReportJob.cs" />
     <Compile Include="Job\IncidentDailyReportJob.cs" />
+    <Compile Include="Model\CustomFieldViewModel.cs" />
     <Compile Include="Model\IncidentDailyReportViewModel.cs" />
     <Compile Include="Model\IncidentGroup.cs" />
     <Compile Include="Model\IncidentPrioritySummary.cs" />

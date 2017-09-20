@@ -27,7 +27,7 @@
             request.AddParameter("AccountSid", accountSid, ParameterType.UrlSegment);
             var response = client.Execute<T>(request);
 
-            if (response.ErrorException != null)
+            if (response.ErrorException != null && string.IsNullOrEmpty(response.Content))
             {
                 string message = "Error retrieving response.  Check inner details for more info.";
                 var twilioException = new ApplicationException(message, response.ErrorException);

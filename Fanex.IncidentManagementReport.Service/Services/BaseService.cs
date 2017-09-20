@@ -4,11 +4,11 @@
     using Fanex.IncidentManagementReport.Service.DataAccess;
 
     public class BaseService
-    {      
+    {
         private readonly RedmineAPI _redmineAPI;
 
-        public BaseService() : this(null) 
-        { 
+        public BaseService() : this(null)
+        {
         }
 
         public BaseService(RedmineAPI redmineAPI)
@@ -18,33 +18,43 @@
 
         protected RedmineAPI RedmineAPI
         {
-            get
-            {
-                return _redmineAPI;
-            }
+            get { return _redmineAPI; }
         }
 
         protected string RedmineUrl
         {
-            get
-            {
-                return ConfigurationManager.AppSettings["redmine-url"];
-            }
+            get { return ConfigurationManager.AppSettings["redmine-url"]; }
         }
 
         protected string AccountSid
         {
-            get
-            {
-                return ConfigurationManager.AppSettings["accountSid"];
-            }
+            get { return ConfigurationManager.AppSettings["accountSid"]; }
         }
 
         protected string SecretKey
         {
+            get { return ConfigurationManager.AppSettings["secretKey"]; }
+        }
+
+        protected int ReportedDateCustomFieldId
+        {
             get
             {
-                return ConfigurationManager.AppSettings["secretKey"];
+                var settingString = ConfigurationManager.AppSettings["ReportedDateCustomFieldId"];
+                int result;
+                int.TryParse(settingString, out result);
+                return result;
+            }
+        }
+
+        protected int ResolvedDateCustomFieldId
+        {
+            get
+            {
+                var settingString = ConfigurationManager.AppSettings["ResolvedDateCustomFieldId"];
+                int result;
+                int.TryParse(settingString, out result);
+                return result;
             }
         }
     }

@@ -1,9 +1,9 @@
 ﻿namespace Fanex.IncidentManagementReport.Service.Services
 {
+    using Model;
+    using RestSharp;
     using System.Collections.Generic;
     using System.Linq;
-    using Fanex.IncidentManagementReport.Service.Model;
-    using RestSharp;
 
     public class ProjectService : BaseService, IProjectService
     {
@@ -16,7 +16,7 @@
                 request.AddHeader("Content-type", "application/json");
                 request.RequestFormat = DataFormat.Json;
 
-                var responeResult = RedmineAPI.Execute<ProjectModel>(request);                
+                var responeResult = RedmineAPI.Execute<ProjectModel>(request);
 
                 return responeResult.Projects;
             }
@@ -26,7 +26,7 @@
         {
             var project = this.Project.Where(p => p.Id == projectId);
 
-            if (project != null)
+            if (project.Any())
             {
                 var parentProject = project.First().Parent;
                 if (parentProject != null)
