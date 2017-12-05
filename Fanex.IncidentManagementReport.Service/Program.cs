@@ -20,7 +20,7 @@
             ServiceBase.Run(servicesToRun);
 
             ////var incidentManagementReportService = new IncidentManagementReportService();
-            ////var body = incidentManagementReportService.incidentReportEmailTemplate();
+            ////var body = incidentManagementReportService.IncidentDailyReportEmailTemplate();
             ////Console.WriteLine(body);
             ////Console.ReadKey();
         }
