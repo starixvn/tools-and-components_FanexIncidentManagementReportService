@@ -1,25 +1,23 @@
 ﻿namespace Fanex.IncidentManagementReport.Service.Services
 {
-    using Model;
-    using RestSharp;
     using System;
     using System.Collections.Generic;
+    using Model;
+    using Model.Enumerations;
+    using RestSharp;
 
     public class IssuesService : BaseService, IIssuesService
     {
-        private DateTime _fromDate;
-        private DateTime _toDate;
-
-        //Incidents
-
         public IList<IssuesViewModel> CreateNewIssue
         {
             get
             {
-                var request = new RestRequest(Method.GET);
+                var request = new RestRequest(Method.GET)
+                {
+                    Resource =
+                        $"issues.json?start_date=><{FromDate:yyyy-MM-dd}|{ToDate:yyyy-MM-dd}&status_id=*&limit=100&tracker_id={(int)Tracker}"
+                };
 
-                request.Resource = "issues.json?start_date=><" + FromDate.ToString("yyyy-MM-dd") + "|" +
-                                   ToDate.ToString("yyyy-MM-dd") + "&status_id=*&limit=100&tracker_id=4";
 
                 request.AddHeader("Content-type", "application/json");
                 request.RequestFormat = DataFormat.Json;
@@ -34,9 +32,11 @@
         {
             get
             {
-                var request = new RestRequest(Method.GET);
-                request.Resource = "issues.json?start_date<=" + ToDate.ToString("yyyy-MM-dd") 
-                    + "&due_date=><" + FromDate.ToString("yyyy-MM-dd") + "|" + ToDate.ToString("yyyy-MM-dd") + "&status_id=5&limit=100&tracker_id=4";
+                var request = new RestRequest(Method.GET)
+                {
+                    Resource =
+                        $"issues.json?start_date<={ToDate:yyyy-MM-dd}&due_date=><{FromDate:yyyy-MM-dd}|{ToDate:yyyy-MM-dd}&status_id=5&limit=100&tracker_id={(int)Tracker}"
+                };
 
                 request.AddHeader("Content-type", "application/json");
                 request.RequestFormat = DataFormat.Json;
@@ -51,8 +51,10 @@
         {
             get
             {
-                var request = new RestRequest(Method.GET);
-                request.Resource = "issues.json?start_date<=" + ToDate.ToString("yyyy-MM-dd") + "status_id=!5|6&limit=100&tracker_id=4";
+                var request = new RestRequest(Method.GET)
+                {
+                    Resource = $"issues.json?start_date<={ToDate:yyyy-MM-dd}status_id=!5|6&limit=100&tracker_id={(int)Tracker}"
+                };
 
                 request.AddHeader("Content-type", "application/json");
                 request.RequestFormat = DataFormat.Json;
@@ -67,8 +69,10 @@
         {
             get
             {
-                var request = new RestRequest(Method.GET);
-                request.Resource = "issues.json?status_id=!5|6&priority_id=!1&limit=100&tracker_id=4";
+                var request = new RestRequest(Method.GET)
+                {
+                    Resource = $"issues.json?status_id=!5|6&priority_id=!1&limit=100&tracker_id={(int)Tracker}"
+                };
 
                 request.AddHeader("Content-type", "application/json");
                 request.RequestFormat = DataFormat.Json;
@@ -83,10 +87,12 @@
         {
             get
             {
-                var request = new RestRequest(Method.GET);
+                var request = new RestRequest(Method.GET)
+                {
+                    Resource =
+                        $"issues.json?start_date=><{FromDate:yyyy-MM-dd}|{ToDate:yyyy-MM-dd}&status_id=*&priority_id=1&limit=100&tracker_id={(int)Tracker}"
+                };
 
-                request.Resource = "issues.json?start_date=><" + FromDate.ToString("yyyy-MM-dd") + "|" +
-                                   ToDate.ToString("yyyy-MM-dd") + "&status_id=*&priority_id=1&limit=100&tracker_id=4";
 
                 request.AddHeader("Content-type", "application/json");
                 request.RequestFormat = DataFormat.Json;
@@ -101,10 +107,12 @@
         {
             get
             {
-                var request = new RestRequest(Method.GET);
+                var request = new RestRequest(Method.GET)
+                {
+                    Resource =
+                        $"issues.json?created_on=><{FromDate:yyyy-MM-dd}|{ToDate:yyyy-MM-dd}&status_id=*&priority_id=1&limit=100&tracker_id={(int)Tracker}"
+                };
 
-                request.Resource = "issues.json?created_on=><" + FromDate.ToString("yyyy-MM-dd") + "|" + ToDate.ToString("yyyy-MM-dd") 
-                    + "&status_id=*&priority_id=1&limit=100&tracker_id=4";
 
                 request.AddHeader("Content-type", "application/json");
                 request.RequestFormat = DataFormat.Json;
@@ -115,30 +123,10 @@
             }
         }
 
-        public DateTime FromDate
-        {
-            get
-            {
-                return _fromDate;
-            }
+        public DateTime FromDate { get; set; }
 
-            set
-            {
-                _fromDate = value;
-            }
-        }
+        public DateTime ToDate { get; set; }
 
-        public DateTime ToDate
-        {
-            get
-            {
-                return _toDate;
-            }
-
-            set
-            {
-                _toDate = value;
-            }
-        }     
+        public Tracker Tracker { get; set; }
     }
 }

@@ -4,7 +4,8 @@
     using System.Collections.Generic;
     using System.Globalization;
     using System.Linq;
-    using Fanex.IncidentManagementReport.Service.Model;
+    using Model;
+    using Model.Enumerations;
 
     public class IncidentReportService : BaseService, IIncidentReportService
     {
@@ -19,6 +20,9 @@
         {
             _issuesService = issuesService ?? new IssuesService();
             _projectService = projectService ?? new ProjectService();
+
+            _issuesService.Tracker = Tracker.Incident;
+
             var projectIds = "31,56,65,66".Split(',');
             ProjectIdIgnore = projectIds.Select(t => int.Parse(t)).ToList();
         }
@@ -29,6 +33,7 @@
         {
             _issuesService.FromDate = fromDate;
             _issuesService.ToDate = toDate;
+            
 
             var issues = _issuesService.CreateNewIssue;
 

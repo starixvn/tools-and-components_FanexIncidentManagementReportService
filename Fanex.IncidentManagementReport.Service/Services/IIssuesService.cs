@@ -1,9 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using Fanex.IncidentManagementReport.Service.Model;
+﻿
 
 namespace Fanex.IncidentManagementReport.Service.Services
 {
+    using System;
+    using System.Collections.Generic;
+    using Model;
+    using Model.Enumerations;
+
     public interface IIssuesService
     {
         IList<IssuesViewModel> CreateNewIssue { get; }
@@ -21,5 +24,7 @@ namespace Fanex.IncidentManagementReport.Service.Services
         DateTime FromDate { get; set; }
 
         DateTime ToDate { get; set; }
+
+        Tracker Tracker { get; set; }
     }
 }
