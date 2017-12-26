@@ -3,8 +3,9 @@
     using System;
     using System.Collections.Generic;
     using Model;
-    using Model.Enumerations;
+    using Model.Problem;
     using RestSharp;
+    using Tracker = Model.Enumerations.Tracker;
 
     public class IssuesService : BaseService, IIssuesService
     {
@@ -123,10 +124,24 @@
             }
         }
 
+        public IList<Issue> GetAllIssues(TrackerEnum tracker)
+        {
+            var request = new RestRequest(Method.GET)
+            {
+                Resource =
+                    $"issues.json?status_id=*&limit=100&tracker_id={(int)Tracker}&include=relations"
+            };
+
+            request.AddHeader("Content-type", "application/json");
+            request.RequestFormat = DataFormat.Json;
+
+            return RedmineAPI.Execute<RedmineResult>(request).Issues;
+        }
+
         public DateTime FromDate { get; set; }
 
         public DateTime ToDate { get; set; }
 
-        public Tracker Tracker { get; set; }
+        public TrackerEnum Tracker { get; set; }
     }
 }

@@ -5,7 +5,7 @@
     using System.Globalization;
     using System.Linq;
     using Model;
-    using Model.Enumerations;
+    using Model.Problem;
 
     public class IncidentReportService : BaseService, IIncidentReportService
     {
@@ -21,7 +21,7 @@
             _issuesService = issuesService ?? new IssuesService();
             _projectService = projectService ?? new ProjectService();
 
-            _issuesService.Tracker = Tracker.Incident;
+            _issuesService.Tracker = TrackerEnum.Incident;
 
             var projectIds = "31,56,65,66".Split(',');
             ProjectIdIgnore = projectIds.Select(t => int.Parse(t)).ToList();

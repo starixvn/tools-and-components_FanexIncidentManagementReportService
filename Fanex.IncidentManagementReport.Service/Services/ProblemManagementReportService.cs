@@ -3,9 +3,8 @@
     using System;
     using System.Collections.Generic;
     using System.IO;
-    using System.Linq;
     using Core;
-    using Model;
+    using Model.Problem;
     using RazorEngine;
     using RazorEngine.Templating;
     using Services;
@@ -23,118 +22,130 @@
             this.problemReportService = problemReportService ?? new ProblemReportService();
         }
 
-        public string ProblemWeeklyReportEmailTemplate()
+        private WeeklyProblemsReportViewModel GetData()
         {
             var fromDate = DateTime.Now.DateOfPreviousWeek(DayOfWeek.Monday);
             var toDate = DateTime.Now.DateOfPreviousWeek(DayOfWeek.Sunday);
 
-            return ProblemReportGeneration(fromDate, toDate, "EmailTemplates/ProblemWeeklyReportTemplate.html");
-        }
+            // TODO: For test
+            fromDate = new DateTime(2017, 12, 10);
 
-        private IList<ProblemGroup> GetP1ProblemCategory(DateTime fromDate, DateTime toDate)
-        {
-            var priority1Problems = problemReportService.GetDailyProblemP1Report(fromDate, toDate);
-            IList<ProblemReportModel> priority1GroupByCategory = priority1Problems.GroupBy(t => t.CategoryName).Select(grp => grp.First()).ToList();
-            IList<ProblemGroup> priority1ProblemGroups = priority1GroupByCategory.Select(t => new ProblemGroup()
+            // Get all problems
+            var issues = problemReportService.GetAllProblems();
+
+            var viewModel = new WeeklyProblemsReportViewModel
             {
-                CategoryName = t.CategoryName,
-                Problems = priority1Problems.Where(x => x.CategoryName == t.CategoryName).ToList()
-            }).ToList();
-
-            return priority1ProblemGroups;
-        }
-
-        private IList<ProblemGroup> GetPendingProblemCategory()
-        {
-            var pendingProblems = problemReportService.GetDailyProblemPendingReport();
-            IList<ProblemReportModel> pendingProblemGroupByCategory = pendingProblems.GroupBy(t => t.CategoryName).Select(grp => grp.First()).ToList();
-            IList<ProblemGroup> pendingProblemGroups = pendingProblemGroupByCategory.Select(t => new ProblemGroup()
-            {
-                CategoryName = t.CategoryName,
-                Problems = pendingProblems.Where(x => x.CategoryName == t.CategoryName).ToList()
-            }).ToList();
-
-            return pendingProblemGroups;
-        }
-
-        private string ProblemReportGeneration(DateTime fromDate, DateTime toDate, string emailTemplatePath)
-        {
-            var newProblems = problemReportService.GetProblemCreateNewReport(fromDate, toDate);
-            var closedProblems = problemReportService.GetProblemClosedReport(fromDate, toDate);
-            var pendingProblems = problemReportService.GetWeeklyProblemPendingReport(toDate);
-            var firstPriorityProblems = problemReportService.GetWeeklyProblemP1Report(fromDate, toDate);
-
-            var newProblemSummary = new ProblemPrioritySummary(newProblems);
-            var closedProblemSummary = new ProblemPrioritySummary(closedProblems);
-            var pendingProblemSummary = new ProblemPrioritySummary(pendingProblems);
-
-            var getRedmineUrl = problemReportService.GetRedmineUrl();
-            var model = new ProblemReportViewModel
-            {
-                NewCreatedProblemSummary = newProblemSummary,
-                ClosedProblemSummary = closedProblemSummary,
-                PendingChangeProblemSummary = pendingProblemSummary,
-                NewCreatedProblems = RemoveP1Problems(firstPriorityProblems, newProblems),
-                ClosedProblems = RemoveP1Problems(firstPriorityProblems, closedProblems),
-                PendingProblems = RemoveP1Problems(firstPriorityProblems, pendingProblems),
-                P1Problems = firstPriorityProblems,
-                RedmineUrl = getRedmineUrl + "/issues/",
                 FromDate = fromDate,
-                ToDate = toDate
+                ToDate = toDate,
+                RedmineUrl = problemReportService.GetRedmineUrl(),
+                IssueGroupsByStatus = new List<IssueGroup>()
             };
+
+            SplitProblemIntoGroups(issues, viewModel);
+
+            viewModel.IssueGroupsByTimeSummary = new List<IssueGroup>();
+
+            // Open all
+            viewModel.IssueGroupsByTimeSummary.Add(new IssueGroup(
+                1,
+                issues,
+                new[] { (int)TrackerEnum.Problem },
+                new[]
+                {
+                    (int)StatusEnum.New,
+                    (int)StatusEnum.Assigned,
+                    (int)StatusEnum.Workaround,
+                    (int)StatusEnum.PendingChange
+                },
+                "Open (All)"));
+
+            // Lastweek
+            viewModel.IssueGroupsByTimeSummary.Add(new IssueGroup(
+                2,
+                issues,
+                DateTime.Now.DateOfPreviousWeek(DayOfWeek.Monday),
+                DateTime.Now.DateOfPreviousWeek(DayOfWeek.Sunday),
+                "Last week ({0} - {1}"));
+
+            // Aging data
+            // TODO: Filter not correct here
+            viewModel.IssueGroupsByTimeSummary.Add(new IssueGroup(
+                2,
+                issues,
+                DateTime.Now.DateOfPreviousWeek(DayOfWeek.Monday),
+                DateTime.Now.DateOfPreviousWeek(DayOfWeek.Sunday),
+                "Last week ({0} - {1}"));
+
+            return viewModel;
+        }
+
+        private static void SplitProblemIntoGroups(IEnumerable<Issue> issues, WeeklyProblemsReportViewModel viewModel)
+        {
+            // Open
+            viewModel.IssueGroupsByStatus.Add(
+                new IssueGroup(
+                    1,
+                    issues,
+                    new[] { (int)TrackerEnum.Problem },
+                    new[]
+                    {
+                        (int)StatusEnum.New,
+                        (int)StatusEnum.Assigned,
+                        (int)StatusEnum.Workaround,
+                        (int)StatusEnum.PendingChange
+                    },
+                    "Open Problems ({0}) - Include New, Assinged, Workaround, Pending Change status untill now"));
+
+            // Resolved
+            viewModel.IssueGroupsByStatus.Add(
+                new IssueGroup(
+                    2,
+                    issues,
+                    new[] { (int)TrackerEnum.Problem },
+                    new[] { (int)StatusEnum.Resolved },
+                    "Resolved Problems ({0})"));
+
+            // Closed
+            viewModel.IssueGroupsByStatus.Add(
+                new IssueGroup(
+                    3,
+                    issues,
+                    new[] { (int)TrackerEnum.Problem },
+                    new[] { (int)StatusEnum.Closed },
+                    "Closed Problems ({0})"));
+
+            // Cancelled
+            viewModel.IssueGroupsByStatus.Add(
+                new IssueGroup(
+                    4,
+                    issues,
+                    new[] { (int)TrackerEnum.Problem },
+                    new[] { (int)StatusEnum.Cancelled },
+                    "Cancelled Problems ({0})"));
+
+            // Newly Created
+            viewModel.IssueGroupsByStatus.Add(
+                new IssueGroup(
+                    5,
+                    issues,
+                    DateTime.Now.DateOfPreviousWeek(DayOfWeek.Monday),
+                    DateTime.Now.DateOfPreviousWeek(DayOfWeek.Sunday),
+                    "Newly created Problem Report ({0})"));
+        }
+
+        public string ProblemWeeklyReportEmailTemplate()
+        {
+            var viewModel = GetData();
+
+            var emailTemplatePath = "EmailTemplates/ProblemWeeklyReportTemplate.html";
 
             var templateFolderPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, emailTemplatePath);
             var emailTemplate = File.ReadAllText(templateFolderPath);
 
-            var content = Engine.Razor.RunCompile(emailTemplate, Path.GetFileName(emailTemplatePath) + "v6", typeof(ProblemReportViewModel), model);
-
-            return content;
-        }
-
-        private static IList<ProblemReportModel> RemoveP1Problems(IList<ProblemReportModel> firstPriorityProblems, IList<ProblemReportModel> problems)
-        {
-            problems = problems.Where(t => firstPriorityProblems.All(x => x.ProblemId != t.ProblemId)).ToList();
-            return problems;
-        }
-
-        private IList<ProblemReportModel> CombineProblems(
-            IList<ProblemReportModel> firstPriorityProblems, 
-            IList<ProblemReportModel> newProblems, 
-            IList<ProblemReportModel> closedProblems, 
-            IList<ProblemReportModel> pendingProblems)
-        {
-            List<ProblemReportModel> problems = new List<ProblemReportModel>();
-
-            problems.AddRange(firstPriorityProblems);
-            problems.AddRange(newProblems.Where(t => problems.All(x => x.ProblemId != t.ProblemId)));
-            problems.AddRange(closedProblems.Where(t => problems.All(x => x.ProblemId != t.ProblemId)));
-            problems.AddRange(pendingProblems.Where(t => problems.All(x => x.ProblemId != t.ProblemId)));
-
-            return problems;
-        }
-
-        private IList<ProblemReportModel> GetAgingProblems(IList<ProblemReportModel> problems, DateTime fromDate, DateTime toDate)
-        {
-            problems = problems.Where(t => !IsCancelled(t) && !IsClosedInPeriod(t, fromDate, toDate)).ToList();
-
-            return problems;
-        }
-
-        private static bool IsCancelled(ProblemReportModel problem)
-        {
-            return string.Equals(problem.Status, "Cancelled");
-        }
-
-        private static bool IsClosedInPeriod(ProblemReportModel problem, DateTime fromDate, DateTime toDate)
-        {
-            var isClosedInPeriod = false;
-
-            if (string.Equals(problem.Status, "Closed") && problem.ResolvedDate.Year != 1)
-            {
-                isClosedInPeriod = problem.ResolvedDate >= fromDate && problem.ResolvedDate <= toDate;
-            }
-
-            return isClosedInPeriod;
+            return Engine.Razor.RunCompile(
+                emailTemplate,
+                Path.GetFileName(emailTemplatePath) + "v6",
+                typeof(WeeklyProblemsReportViewModel), viewModel);
         }
     }
 }

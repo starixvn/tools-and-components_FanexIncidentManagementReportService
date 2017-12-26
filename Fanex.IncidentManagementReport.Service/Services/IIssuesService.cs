@@ -1,11 +1,9 @@
-﻿
-
-namespace Fanex.IncidentManagementReport.Service.Services
+﻿namespace Fanex.IncidentManagementReport.Service.Services
 {
     using System;
     using System.Collections.Generic;
     using Model;
-    using Model.Enumerations;
+    using Model.Problem;
 
     public interface IIssuesService
     {
@@ -21,10 +19,12 @@ namespace Fanex.IncidentManagementReport.Service.Services
 
         IList<IssuesViewModel> P1IssueDaily { get; }
 
+        IList<Issue> GetAllIssues(TrackerEnum tracker);
+
         DateTime FromDate { get; set; }
 
         DateTime ToDate { get; set; }
 
-        Tracker Tracker { get; set; }
+        TrackerEnum Tracker { get; set; }
     }
 }

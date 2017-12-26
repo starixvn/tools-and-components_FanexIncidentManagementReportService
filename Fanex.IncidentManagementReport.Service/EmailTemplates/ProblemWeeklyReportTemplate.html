@@ -1,4 +1,6 @@
-﻿@model Fanex.IncidentManagementReport.Service.Model.IncidentReportViewModel
+﻿@using Fanex.IncidentManagementReport.Service.Model.Problem
+@model WeeklyProblemsReportViewModel
+
 <style type="text/css">
     .datagrid table {
         border-collapse: collapse;
@@ -95,6 +97,7 @@
         margin-top: 5px;
     }
 </style>
+
 Dear All
 <br />
 <br />
@@ -106,48 +109,57 @@ Please take a look at the summary table and details below for more information a
     <table id="sum-table">
         <thead>
             <tr>
-                <th rowspan="1"></th>
-                <th colspan="5">Last Week (@Model.FromDateDisplay - @Model.ToDateDisplay)</th>
+                <th colspan="6">Open (All)</th>
+                <th colspan="4">Last Week (@Model.FromDate.ToString("dd MMM yyyy") - @Model.ToDate.ToString("dd MMM yyyy"))</th>
+                <th colspan="1">Aging Data</th>
             </tr>
             <tr>
-                <th></th>
-                <th>Created</th>
-                <th>Open</th>
+                <!--Open (All)-->
+                <th>Priority</th>
+                <th>New</th>
+                <th>Assigned</th>
                 <th>Workaround</th>
                 <th>Pending Change</th>
+                <th>Number of Occurrences</th>
+                <!--Lastweek-->
+                <th>Resolved</th>
                 <th>Closed</th>
+                <th>Cancel</th>
+                <th>* Newly Created</th>
+                <!--Aging Data-->
+                <th>@Model.FromDate.ToString("dd MMM yyyy") - @Model.ToDate.ToString("dd MMM yyyy")</th>
             </tr>
         </thead>
         <tbody>
+            @for (int i = 1; i < 4; i++)
+            {
             <tr class="alt">
-                <td>P1</td>
-                <td>@Model.NewCreatedProblemSummary.P1Count</td>
-                <td>@Model.OpenProblemsSummary.P1Count</td>
-                <td>@Model.WorkaroundProblemSummary.P1Count</td>
-                <td>@Model.PendingChangeProblemSummary.P1Count</td>
-                <td>@Model.ClosedProblemSummary.P1Count</td>
+                @{
+                var openIssues = Model.IssueGroupsByTimeSummary[0].Issues.Where(x => x.Priority.Id == i).ToList();
+                var lastweekIssues = Model.IssueGroupsByTimeSummary[1].Issues.Where(x => x.Priority.Id == i).ToList();
+                var priority = "P" + i;
+                }
+                <td>@priority</td>
+                <!--Open (All)-->
+                <td>@openIssues.Count(x => x.Status.Id == (int)StatusEnum.New)</td>
+                <td>@openIssues.Count(x => x.Status.Id == (int)StatusEnum.Assigned)</td>
+                <td>@openIssues.Count(x => x.Status.Id == (int)StatusEnum.Workaround)</td>
+                <td>@openIssues.Count(x => x.Status.Id == (int)StatusEnum.PendingChange)</td>
+                <td>@openIssues.Where(x => x.Relations != null && x.Relations.Any()).Sum(x => x.Relations.Count)</td>
+
+                <!--Lastweek-->
+                <td>@lastweekIssues.Count(x => x.Status.Id == (int)StatusEnum.Resolved)</td>
+                <td>@lastweekIssues.Count(x => x.Status.Id == (int)StatusEnum.Closed)</td>
+                <td>@lastweekIssues.Count(x => x.Status.Id == (int)StatusEnum.Cancelled)</td>
+                <!--Lastweek newly created-->
+                <td>@Model.IssueGroupsByTimeSummary.Last().Issues.Count(x => x.Priority.Id == i)</td>
+
+                <!--Aging Data-->
+                <td>@Model.IssueGroupsByTimeSummary[2].Issues.Count(x => x.Priority.Id == i)</td>
             </tr>
-            <tr class="alt">
-                <td>P2</td>
-                <td>@Model.NewCreatedProblemSummary.P2Count</td>
-                <td>@Model.OpenProblemsSummary.P2Count</td>
-                <td>@Model.WorkaroundProblemSummary.P2Count</td>
-                <td>@Model.PendingChangeProblemSummary.P2Count</td>
-                <td>@Model.ClosedProblemSummary.P2Count</td>
-            </tr>
-            <tr class="alt">
-                <td>P3</td>
-                <td>@Model.NewCreatedProblemSummary.P3Count</td>
-                <td>@Model.OpenProblemsSummary.P3Count</td>
-                <td>@Model.WorkaroundProblemSummary.P3Count</td>
-                <td>@Model.PendingChangeProblemSummary.P3Count</td>
-                <td>@Model.ClosedProblemSummary.P3Count</td>
-            </tr>
+            }
         </tbody>
     </table>
-    <div class="note">
-        ※ Aging Data: Tickets are defined as aged when not resolved after 1 calendar day for P1, 2 days for P2 and 7 days for P3 incidents.
-    </div>
     <br />
     <table>
         <thead>
@@ -160,107 +172,55 @@ Please take a look at the summary table and details below for more information a
                 <th>Created Date</th>
                 <th>Resolved Date</th>
                 <th>Closed Date</th>
-                <th>Created Date</th>
                 <th>Creator</th>
                 <th>Assignee</th>
+                <th>Number of Occurrences</th>
                 <th>Related Incidents</th>
                 <th>Known Error</th>
                 <th>Request For Change</th>
             </tr>
         </thead>
         <tbody>
-
-            @if (Model.P1IncidentReport != null)
+            @foreach (var g in Model.IssueGroupsByStatus)
             {
-            <tr class="title">
-                <td colspan="11"> P1 Incident Report (@Model.P1IncidentReport.Count) </td>
+            <tr>
+                <td colspan="14">@g.Name</td>
             </tr>
 
-            foreach (var item in Model.P1IncidentReport)
+            foreach (var p in g.Issues)
             {
+            var issueLink = Model.RedmineUrl + "/issues/" + p.Id;
+
             <tr class="alt">
-                <td>@item.IncidentId</td>
-                <td>@item.Priority</td>
-                <td> @item.CategoryName</td>
-                <td><a href="@(Model.RedmineUrl + item.IncidentId)">@item.IncidentTitle</a></td>
-                <td>@item.Status</td>
-                <td>@item.IncidentDateDisplay</td>
-                <td>@item.ResolvedDateDisplay</td>
-                <td>@item.ClosedDateDisplay</td>
-                <td>@item.CreatedDateDisplay</td>
-                <td>@item.Creator</td>
-                <td>@item.Assignee</td>
-            </tr>
-            }
-            }
+                <td><a href="@issueLink">#@p.Id</a></td>
+                <td>@p.Priority.Name</td>
+                <td>@p.Project.Name</td>
+                <td>@p.Subject</td>
+                <td>@p.Status.Name</td>
+                <td>@p.CreatedOn</td>
+                <td>@p.ResolvedDate</td>
+                <td>@p.CloseOn</td>
+                <td>@p.Author.Name</td>
+                @if (p.AssignedTo == null)
+                {
+                <td></td>
+                }
+                else
+                {
+                <td>@p.AssignedTo.Name</td>
+                }
+                <td>@p.Relations.Count</td>
+                <td>
+                    @foreach (var relation in p.Relations)
+                    {
+                    var relatedIssueLink = Model.RedmineUrl + "/issues/" + relation.IssueToId;
 
-            @if (Model.CreateNewIncidentReport != null)
-            {
-            <tr class="title">
-                <td colspan="11"> New created Incident Report (@Model.CreateNewIncidentReport.Count) </td>
-            </tr>
-
-            foreach (var item in Model.CreateNewIncidentReport)
-            {
-            <tr class="alt">
-                <td>@item.IncidentId</td>
-                <td>@item.Priority</td>
-                <td> @item.CategoryName</td>
-                <td><a href="@(Model.RedmineUrl + item.IncidentId)">@item.IncidentTitle</a></td>
-                <td>@item.Status</td>
-                <td>@item.IncidentDateDisplay</td>
-                <td>@item.ResolvedDateDisplay</td>
-                <td>@item.ClosedDateDisplay</td>
-                <td>@item.CreatedDateDisplay</td>
-                <td>@item.Creator</td>
-                <td>@item.Assignee</td>
-            </tr>
-            }
-            }
-
-            @if (Model.ClosedIncidentReport != null)
-            {
-            <tr class="title">
-                <td colspan="11"> Closed Incident (@Model.ClosedIncidentReport.Count) </td>
-            </tr>
-
-            foreach (var item in Model.ClosedIncidentReport)
-            {
-            <tr class="alt">
-                <td>@item.IncidentId</td>
-                <td>@item.Priority</td>
-                <td> @item.CategoryName</td>
-                <td><a href="@(Model.RedmineUrl + item.IncidentId)">@item.IncidentTitle</a></td>
-                <td>@item.Status</td>
-                <td>@item.IncidentDateDisplay</td>
-                <td>@item.ResolvedDateDisplay</td>
-                <td>@item.ClosedDateDisplay</td>
-                <td>@item.CreatedDateDisplay</td>
-                <td>@item.Creator</td>
-                <td>@item.Assignee</td>
-            </tr>
-            }
-            }
-
-            @if (Model.PendingIncidentReport != null)
-            {
-            <tr class="title">
-                <td colspan="11"> Open Incident (@Model.PendingIncidentReport.Count) </td>
-            </tr>
-            foreach (var item in Model.PendingIncidentReport)
-            {
-            <tr class="alt">
-                <td>@item.IncidentId</td>
-                <td>@item.Priority</td>
-                <td> @item.CategoryName</td>
-                <td><a href="@(Model.RedmineUrl + item.IncidentId)">@item.IncidentTitle</a></td>
-                <td>@item.Status</td>
-                <td>@item.IncidentDateDisplay</td>
-                <td>@item.ResolvedDateDisplay</td>
-                <td>@item.ClosedDateDisplay</td>
-                <td>@item.CreatedDateDisplay</td>
-                <td>@item.Creator</td>
-                <td>@item.Assignee</td>
+                    <a href="@relatedIssueLink">#@relation.IssueToId</a>
+                    <br />
+                    }
+                </td>
+                <td>@p.KnowError</td>
+                <td>@p.RequestForChange</td>
             </tr>
             }
             }

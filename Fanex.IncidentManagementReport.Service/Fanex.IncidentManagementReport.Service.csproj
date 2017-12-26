@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{064147FB-B96D-4576-8111-17744412EF8C}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Fanex.IncidentManagementReport.Service</RootNamespace>
     <AssemblyName>Fanex.IncidentManagementReport.Service</AssemblyName>
@@ -48,6 +48,9 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Common.Logging, Version=3.0.0.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
@@ -151,6 +154,7 @@
     <Compile Include="DataAccess\RedmineAPI.cs" />
     <Compile Include="Job\IncidentWeeklyReportJob.cs" />
     <Compile Include="Job\IncidentDailyReportJob.cs" />
+    <Compile Include="Job\ProblemWeeklyReportJob.cs" />
     <Compile Include="Model\CustomFieldViewModel.cs" />
     <Compile Include="Model\IncidentDailyReportViewModel.cs" />
     <Compile Include="Model\IncidentGroup.cs" />
@@ -158,6 +162,20 @@
     <Compile Include="Model\IncidentReportViewModel.cs" />
     <Compile Include="Model\IssuesModel.cs" />
     <Compile Include="Model\PriorityModel.cs" />
+    <Compile Include="Model\Problem\AssignedTo.cs" />
+    <Compile Include="Model\Problem\Author.cs" />
+    <Compile Include="Model\Problem\CustomField.cs" />
+    <Compile Include="Model\Problem\Issue.cs" />
+    <Compile Include="Model\Problem\IssueGroup.cs" />
+    <Compile Include="Model\Problem\Priority.cs" />
+    <Compile Include="Model\Problem\Project.cs" />
+    <Compile Include="Model\Problem\RedmineResult.cs" />
+    <Compile Include="Model\Problem\Relation.cs" />
+    <Compile Include="Model\Problem\Status.cs" />
+    <Compile Include="Model\Problem\StatusEnum.cs" />
+    <Compile Include="Model\Problem\Tracker.cs" />
+    <Compile Include="Model\Problem\TrackerEnum.cs" />
+    <Compile Include="Model\Problem\WeeklyProblemsReportViewModel.cs" />
     <Compile Include="Model\ProjectModel.cs" />
     <Compile Include="Model\StatusModel.cs" />
     <Compile Include="Model\TrackersModel.cs" />
@@ -188,8 +206,11 @@
     <Compile Include="Services\IIncidentReportService.cs" />
     <Compile Include="Services\IIssuesService.cs" />
     <Compile Include="Services\IncidentReportService.cs" />
+    <Compile Include="Services\IProblemReportService.cs" />
     <Compile Include="Services\PriorityService.cs" />
     <Compile Include="Services\IPriorityService.cs" />
+    <Compile Include="Services\ProblemManagementReportService.cs" />
+    <Compile Include="Services\ProblemReportService.cs" />
     <Compile Include="Services\StatusService.cs" />
     <Compile Include="Services\IStatusService.cs" />
     <Compile Include="Services\TrackersService.cs" />
@@ -204,6 +225,9 @@
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
+    <Content Include="EmailTemplates\ProblemWeeklyReportTemplate.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Fanex.IncidentManagementReport.Service.exe.pro.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -237,6 +261,7 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
