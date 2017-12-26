@@ -1,6 +1,10 @@
 ﻿@using Fanex.IncidentManagementReport.Service.Model.Problem
 @model WeeklyProblemsReportViewModel
 
+@{
+    Layout = null;
+}
+
 <style type="text/css">
     .datagrid table {
         border-collapse: collapse;
@@ -183,7 +187,7 @@ Please take a look at the summary table and details below for more information a
         <tbody>
             @foreach (var g in Model.IssueGroupsByStatus)
             {
-            <tr>
+            <tr class="title">
                 <td colspan="14">@g.Name</td>
             </tr>
 

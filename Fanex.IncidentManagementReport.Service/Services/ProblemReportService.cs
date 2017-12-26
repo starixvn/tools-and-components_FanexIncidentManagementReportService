@@ -1,6 +1,7 @@
 ﻿namespace Fanex.IncidentManagementReport.Service.Services
 {
     using System.Collections.Generic;
+    using System.Linq;
     using Model.Problem;
 
     public class ProblemReportService : BaseService, IProblemReportService
@@ -22,7 +23,8 @@
 
         public IList<Issue> GetAllProblems()
         {
-            return _issuesService.GetAllIssues(TrackerEnum.Problem);
+            var result = _issuesService.GetAllIssues(TrackerEnum.Problem);
+            return result.Where(x => !ProjectIdIgnore.Contains(x.Id)).ToList();
         }
 
         public string GetRedmineUrl()
