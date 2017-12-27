@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.IO;
+    using System.Linq;
     using Core;
     using Model.Problem;
     using RazorEngine;
@@ -22,14 +23,18 @@
             this.problemReportService = problemReportService ?? new ProblemReportService();
         }
 
-        private WeeklyProblemsReportViewModel GetData()
+        private WeeklyProblemsReportViewModel GetData(DateTime fromDate, DateTime toDate)
         {
-            var fromDate = DateTime.Now.DateOfPreviousWeek(DayOfWeek.Monday);
-            var toDate = DateTime.Now.DateOfPreviousWeek(DayOfWeek.Sunday);
+            if (fromDate == default(DateTime))
+            {
+                fromDate = DateTime.Now.DateOfPreviousWeek(DayOfWeek.Monday);
+            }
 
-            // TODO: For test
-            fromDate = new DateTime(2017, 12, 10);
-
+            if (toDate == default(DateTime))
+            {
+                toDate = DateTime.Now.DateOfPreviousWeek(DayOfWeek.Sunday);
+            }
+            
             // Get all problems
             var issues = problemReportService.GetAllProblems();
 
@@ -60,21 +65,21 @@
                 "Open (All)"));
 
             // Lastweek
-            viewModel.IssueGroupsByTimeSummary.Add(new IssueGroup(
-                2,
-                issues,
-                DateTime.Now.DateOfPreviousWeek(DayOfWeek.Monday),
-                DateTime.Now.DateOfPreviousWeek(DayOfWeek.Sunday),
-                "Last week ({0} - {1}"));
+            viewModel.IssueGroupsByTimeSummary.Add(new IssueGroup(2, issues, fromDate, toDate, "Last week ({0} - {1}"));
 
             // Aging data
-            // TODO: Filter not correct here
+            var filteredIssue = issues.Where(x => x.Tracker.Id == (int)TrackerEnum.Problem);
+            filteredIssue = filteredIssue.Where(x =>
+                x.Status.Id != (int)StatusEnum.Closed && x.Status.Id != (int)StatusEnum.Cancelled);
+            // (Resolved Date - Created Date) >= 2 Months
+            filteredIssue = filteredIssue.Where(x =>
+                (x.ResolvedDate != null && (x.ResolvedDate.Value - x.CreatedOn) >= TimeSpan.FromDays(60))
+                || (x.ResolvedDate == null && (DateTime.Now - x.CreatedOn) >= TimeSpan.FromDays(60)));
+
             viewModel.IssueGroupsByTimeSummary.Add(new IssueGroup(
-                2,
-                issues,
-                DateTime.Now.DateOfPreviousWeek(DayOfWeek.Monday),
-                DateTime.Now.DateOfPreviousWeek(DayOfWeek.Sunday),
-                "Last week ({0} - {1}"));
+                3,
+                filteredIssue,
+                "Aging ({0})"));
 
             return viewModel;
         }
@@ -96,46 +101,52 @@
                     },
                     "Open Problems ({0}) - Include New, Assinged, Workaround, Pending Change status untill now"));
 
+            var fromDate = viewModel.FromDate;
+            var toDate = viewModel.ToDate;
+
             // Resolved
+            var filteredIssue = issues.Where(x => fromDate <= x.ResolvedDate && x.ResolvedDate <= toDate);
             viewModel.IssueGroupsByStatus.Add(
                 new IssueGroup(
                     2,
-                    issues,
+                    filteredIssue,
                     new[] { (int)TrackerEnum.Problem },
                     new[] { (int)StatusEnum.Resolved },
                     "Resolved Problems ({0})"));
 
             // Closed
+            filteredIssue = issues.Where(x => fromDate <= x.CloseOn && x.CloseOn <= toDate);
             viewModel.IssueGroupsByStatus.Add(
                 new IssueGroup(
                     3,
-                    issues,
+                    filteredIssue,
                     new[] { (int)TrackerEnum.Problem },
                     new[] { (int)StatusEnum.Closed },
                     "Closed Problems ({0})"));
 
             // Cancelled
+            filteredIssue = issues.Where(x => fromDate <= x.CloseOn && x.CloseOn <= toDate);
             viewModel.IssueGroupsByStatus.Add(
                 new IssueGroup(
                     4,
-                    issues,
+                    filteredIssue,
                     new[] { (int)TrackerEnum.Problem },
                     new[] { (int)StatusEnum.Cancelled },
                     "Cancelled Problems ({0})"));
 
             // Newly Created
+            filteredIssue = issues.Where(x => fromDate <= x.CreatedOn && x.CreatedOn <= toDate);
             viewModel.IssueGroupsByStatus.Add(
                 new IssueGroup(
                     5,
-                    issues,
-                    DateTime.Now.DateOfPreviousWeek(DayOfWeek.Monday),
-                    DateTime.Now.DateOfPreviousWeek(DayOfWeek.Sunday),
+                    filteredIssue,
                     "Newly created Problem Report ({0})"));
         }
 
         public string ProblemWeeklyReportEmailTemplate()
         {
-            var viewModel = GetData();
+            var viewModel = new WeeklyProblemsReportViewModel();
+            viewModel = GetData(viewModel.FromDate, viewModel.ToDate);
 
             var emailTemplatePath = "EmailTemplates/ProblemWeeklyReportTemplate.html";
 

@@ -26,6 +26,13 @@
             Name = string.Format(name, fromDate, toDate);
         }
 
+        public IssueGroup(int displayOrder, IEnumerable<Issue> filteredIssue, string name)
+        {
+            DisplayOrder = displayOrder;
+            Issues = filteredIssue.ToList();
+            Name = string.Format(name, Issues.Count);
+        }
+
         private static IList<Issue> Filter(IEnumerable<Issue> issues, int[] trackers, int[] statusIds)
         {
             var filteredIssues = issues;

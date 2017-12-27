@@ -156,7 +156,7 @@ Please take a look at the summary table and details below for more information a
                 <td>@lastweekIssues.Count(x => x.Status.Id == (int)StatusEnum.Closed)</td>
                 <td>@lastweekIssues.Count(x => x.Status.Id == (int)StatusEnum.Cancelled)</td>
                 <!--Lastweek newly created-->
-                <td>@Model.IssueGroupsByTimeSummary.Last().Issues.Count(x => x.Priority.Id == i)</td>
+                <td>@Model.IssueGroupsByStatus.Last().Issues.Count(x => x.Priority.Id == i)</td>
 
                 <!--Aging Data-->
                 <td>@Model.IssueGroupsByTimeSummary[2].Issues.Count(x => x.Priority.Id == i)</td>
