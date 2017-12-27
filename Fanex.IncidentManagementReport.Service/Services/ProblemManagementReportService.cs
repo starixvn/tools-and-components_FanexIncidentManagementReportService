@@ -23,35 +23,20 @@
             this.problemReportService = problemReportService ?? new ProblemReportService();
         }
 
-        private WeeklyProblemsReportViewModel GetData(DateTime fromDate, DateTime toDate)
+        public string ProblemWeeklyReportEmailTemplate()
         {
-            if (fromDate == default(DateTime))
-            {
-                fromDate = DateTime.Now.DateOfPreviousWeek(DayOfWeek.Monday);
-            }
+            var viewModel = new WeeklyProblemsReportViewModel();
+            viewModel = GetData(viewModel.FromDate, viewModel.ToDate);
 
-            if (toDate == default(DateTime))
-            {
-                toDate = DateTime.Now.DateOfPreviousWeek(DayOfWeek.Sunday);
-            }
-            
-            // Get all problems
-            var issues = problemReportService.GetAllProblems();
+            var emailTemplatePath = "EmailTemplates/ProblemWeeklyReportTemplate.html";
 
-            var viewModel = new WeeklyProblemsReportViewModel
-            {
-                FromDate = fromDate,
-                ToDate = toDate,
-                RedmineUrl = problemReportService.GetRedmineUrl(),
-                IssueGroupsByStatus = new List<IssueGroup>(),
-                IssueGroupsByTimeSummary = new List<IssueGroup>()
-            };
+            var templateFolderPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, emailTemplatePath);
+            var emailTemplate = File.ReadAllText(templateFolderPath);
 
-            SplitProblemIntoGroupsByStatus(issues, viewModel);
-
-            SplitProblemIntoGroupsByTimeSummary(issues, viewModel);
-
-            return viewModel;
+            return Engine.Razor.RunCompile(
+                emailTemplate,
+                Path.GetFileName(emailTemplatePath) + "v6",
+                typeof(WeeklyProblemsReportViewModel), viewModel);
         }
 
         private static void SplitProblemIntoGroupsByStatus(IEnumerable<Issue> issues, WeeklyProblemsReportViewModel viewModel)
@@ -144,20 +129,35 @@
                 "Aging ({0})"));
         }
 
-        public string ProblemWeeklyReportEmailTemplate()
+        private WeeklyProblemsReportViewModel GetData(DateTime fromDate, DateTime toDate)
         {
-            var viewModel = new WeeklyProblemsReportViewModel();
-            viewModel = GetData(viewModel.FromDate, viewModel.ToDate);
+            if (fromDate == default(DateTime))
+            {
+                fromDate = DateTime.Now.DateOfPreviousWeek(DayOfWeek.Monday);
+            }
 
-            var emailTemplatePath = "EmailTemplates/ProblemWeeklyReportTemplate.html";
+            if (toDate == default(DateTime))
+            {
+                toDate = DateTime.Now.DateOfPreviousWeek(DayOfWeek.Sunday);
+            }
+            
+            // Get all problems
+            var issues = problemReportService.GetAllProblems();
 
-            var templateFolderPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, emailTemplatePath);
-            var emailTemplate = File.ReadAllText(templateFolderPath);
+            var viewModel = new WeeklyProblemsReportViewModel
+            {
+                FromDate = fromDate,
+                ToDate = toDate,
+                RedmineUrl = problemReportService.GetRedmineUrl(),
+                IssueGroupsByStatus = new List<IssueGroup>(),
+                IssueGroupsByTimeSummary = new List<IssueGroup>()
+            };
 
-            return Engine.Razor.RunCompile(
-                emailTemplate,
-                Path.GetFileName(emailTemplatePath) + "v6",
-                typeof(WeeklyProblemsReportViewModel), viewModel);
+            SplitProblemIntoGroupsByStatus(issues, viewModel);
+
+            SplitProblemIntoGroupsByTimeSummary(issues, viewModel);
+
+            return viewModel;
         }
     }
 }
