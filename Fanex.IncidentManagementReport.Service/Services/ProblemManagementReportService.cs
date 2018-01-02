@@ -52,9 +52,10 @@
                         (int)StatusEnum.New,
                         (int)StatusEnum.Assigned,
                         (int)StatusEnum.Workaround,
-                        (int)StatusEnum.PendingChange
+                        (int)StatusEnum.PendingChange,
+                        (int)StatusEnum.Resolved
                     },
-                    "Open Problems ({0}) - Include New, Assinged, Workaround, Pending Change status untill now"));
+                    "Open Problems ({0}) - Include New, Assinged, Workaround, Pending Change, Resolved status untill now"));
 
             // Resolved
             var filteredIssue = issues.Where(x => viewModel.FromDate <= x.ResolvedDate && x.ResolvedDate <= viewModel.ToDate);
@@ -64,7 +65,7 @@
                     filteredIssue,
                     new[] { (int)TrackerEnum.Problem },
                     new[] { (int)StatusEnum.Resolved },
-                    "Resolved Problems ({0})"));
+                    "Resolved Problems ({0}) - Problems resolved last week"));
 
             // Closed
             filteredIssue = issues.Where(x => viewModel.FromDate <= x.CloseOn && x.CloseOn <= viewModel.ToDate);
@@ -74,7 +75,7 @@
                     filteredIssue,
                     new[] { (int)TrackerEnum.Problem },
                     new[] { (int)StatusEnum.Closed },
-                    "Closed Problems ({0})"));
+                    "Closed Problems ({0}) - Problems closed last week"));
 
             // Cancelled
             filteredIssue = issues.Where(x => viewModel.FromDate <= x.CloseOn && x.CloseOn <= viewModel.ToDate);
@@ -84,7 +85,7 @@
                     filteredIssue,
                     new[] { (int)TrackerEnum.Problem },
                     new[] { (int)StatusEnum.Cancelled },
-                    "Cancelled Problems ({0})"));
+                    "Cancelled Problems ({0}) - Problem cancelled last week"));
 
             // Newly Created
             filteredIssue = issues.Where(x => viewModel.FromDate <= x.CreatedOn && x.CreatedOn <= viewModel.ToDate);
@@ -92,7 +93,7 @@
                 new IssueGroup(
                     5,
                     filteredIssue,
-                    "Newly created Problem Report ({0})"));
+                    "Newly created Problem Report ({0}) - Problem created lastweek"));
         }
 
         private static void SplitProblemIntoGroupsByTimeSummary(IEnumerable<Issue> issues, WeeklyProblemsReportViewModel viewModel)
@@ -107,7 +108,8 @@
                     (int)StatusEnum.New,
                     (int)StatusEnum.Assigned,
                     (int)StatusEnum.Workaround,
-                    (int)StatusEnum.PendingChange
+                    (int)StatusEnum.PendingChange,
+                    (int)StatusEnum.Resolved
                 },
                 "Open (All)"));
 
