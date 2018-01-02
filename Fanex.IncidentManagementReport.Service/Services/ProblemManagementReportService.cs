@@ -119,9 +119,11 @@
             filteredIssue = filteredIssue.Where(x =>
                 x.Status.Id != (int)StatusEnum.Closed && x.Status.Id != (int)StatusEnum.Cancelled);
             // (Resolved Date - Created Date) >= 2 Months
-            filteredIssue = filteredIssue.Where(x =>
-                (x.ResolvedDate != null && (x.ResolvedDate.Value - x.CreatedOn) >= TimeSpan.FromDays(60))
-                || (x.ResolvedDate == null && (DateTime.Now - x.CreatedOn) >= TimeSpan.FromDays(60)));
+            ////filteredIssue = filteredIssue.Where(x =>
+            ////    (x.ResolvedDate != null && (x.ResolvedDate.Value - x.CreatedOn) >= TimeSpan.FromDays(60))
+            ////    || (x.ResolvedDate == null && (DateTime.Now - x.CreatedOn) >= TimeSpan.FromDays(60)));
+
+            filteredIssue = filteredIssue.Where(x => ((DateTime.Now - x.CreatedOn) >= TimeSpan.FromDays(60)));
 
             viewModel.IssueGroupsByTimeSummary.Add(new IssueGroup(
                 3,
@@ -140,7 +142,7 @@
             {
                 toDate = DateTime.Now.DateOfPreviousWeek(DayOfWeek.Sunday);
             }
-            
+
             // Get all problems
             var issues = problemReportService.GetAllProblems();
 

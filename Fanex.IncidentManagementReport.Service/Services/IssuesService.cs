@@ -5,7 +5,6 @@
     using Model;
     using Model.Problem;
     using RestSharp;
-    using Tracker = Model.Enumerations.Tracker;
 
     public class IssuesService : BaseService, IIssuesService
     {
