@@ -51,7 +51,7 @@
         public DateTime UpdatedOn { get; set; }
 
         [JsonProperty("closed_on")]
-        public DateTime CloseOn { get; set; }
+        public DateTime? CloseOn { get; set; }
 
         [JsonProperty("relations")]
         public IList<Relation> Relations { get; set; }

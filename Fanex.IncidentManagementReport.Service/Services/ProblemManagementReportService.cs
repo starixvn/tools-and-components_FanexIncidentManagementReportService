@@ -114,23 +114,37 @@
                 "Open (All)"));
 
             // Lastweek
-            viewModel.IssueGroupsByTimeSummary.Add(new IssueGroup(2, issues, viewModel.FromDate, viewModel.ToDate, "Last week ({0} - {1}"));
+            var problems = issues.Where(x => x.Tracker.Id == (int)TrackerEnum.Problem);
+
+            var lastweekIssues = new List<Issue>();
+            // Resolved Lastweek
+            lastweekIssues.AddRange(problems.Where(x => x.Status.Id == (int)StatusEnum.Resolved
+                                                        && x.ResolvedDate != null
+                                                        && viewModel.FromDate <= x.ResolvedDate
+                                                        && x.ResolvedDate <= viewModel.ToDate));
+
+            // Closed / Cancelled Lastweek
+            lastweekIssues.AddRange(problems.Where(x => (x.Status.Id == (int)StatusEnum.Closed || x.Status.Id == (int)StatusEnum.Cancelled)
+                                                        && x.CloseOn != null
+                                                        && viewModel.FromDate <= x.CloseOn
+                                                        && x.CloseOn <= viewModel.ToDate));
+
+            // Newly created Lastweek
+            lastweekIssues.AddRange(problems.Where(x => viewModel.FromDate <= x.CreatedOn
+                                                        && x.CreatedOn <= viewModel.ToDate));
+
+            viewModel.IssueGroupsByTimeSummary.Add(
+                new IssueGroup(2, lastweekIssues)
+                {
+                    Name = $"Last week ({viewModel.FromDate} - {viewModel.ToDate})"
+                });
 
             // Aging data
-            var filteredIssue = issues.Where(x => x.Tracker.Id == (int)TrackerEnum.Problem);
-            filteredIssue = filteredIssue.Where(x =>
-                x.Status.Id != (int)StatusEnum.Closed && x.Status.Id != (int)StatusEnum.Cancelled);
-            // (Resolved Date - Created Date) >= 2 Months
-            ////filteredIssue = filteredIssue.Where(x =>
-            ////    (x.ResolvedDate != null && (x.ResolvedDate.Value - x.CreatedOn) >= TimeSpan.FromDays(60))
-            ////    || (x.ResolvedDate == null && (DateTime.Now - x.CreatedOn) >= TimeSpan.FromDays(60)));
+            var filteredIssue = problems.Where(x => x.Status.Id != (int)StatusEnum.Closed
+                                                    && x.Status.Id != (int)StatusEnum.Cancelled
+                                                    && ((DateTime.Now - x.CreatedOn) >= TimeSpan.FromDays(60)));
 
-            filteredIssue = filteredIssue.Where(x => ((DateTime.Now - x.CreatedOn) >= TimeSpan.FromDays(60)));
-
-            viewModel.IssueGroupsByTimeSummary.Add(new IssueGroup(
-                3,
-                filteredIssue,
-                "Aging ({0})"));
+            viewModel.IssueGroupsByTimeSummary.Add(new IssueGroup(3, filteredIssue, "Aging ({0})"));
         }
 
         private WeeklyProblemsReportViewModel GetData(DateTime fromDate, DateTime toDate)
