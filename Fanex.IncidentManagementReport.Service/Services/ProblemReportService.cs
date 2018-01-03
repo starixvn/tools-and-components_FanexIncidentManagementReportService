@@ -24,7 +24,7 @@
         public IList<Issue> GetAllProblems()
         {
             var result = _issuesService.GetAllIssues(TrackerEnum.Problem);
-            result = result.Where(x => !ProjectIdIgnore.Contains(x.Id)).ToList();
+            result = result.Where(x => !ProjectIdIgnore.Contains(x.Project.Id)).ToList();
 
             return result;
         }
