@@ -85,7 +85,7 @@
                     filteredIssue,
                     new[] { (int)TrackerEnum.Problem },
                     new[] { (int)StatusEnum.Cancelled },
-                    "Cancelled Problems ({0}) - Problem cancelled last week"));
+                    "Cancelled Problems ({0}) - Problems cancelled last week"));
 
             // Newly Created
             filteredIssue = issues.Where(x => viewModel.FromDate <= x.CreatedOn && x.CreatedOn <= viewModel.ToDate);
