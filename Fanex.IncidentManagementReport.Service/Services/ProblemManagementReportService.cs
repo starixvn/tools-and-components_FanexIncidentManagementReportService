@@ -93,7 +93,7 @@
                 new IssueGroup(
                     5,
                     filteredIssue,
-                    "Newly created Problem Report ({0}) - Problem created lastweek"));
+                    "Newly created Problems ({0}) - Problems created last week"));
         }
 
         private static void SplitProblemIntoGroupsByTimeSummary(IEnumerable<Issue> issues, WeeklyProblemsReportViewModel viewModel)
