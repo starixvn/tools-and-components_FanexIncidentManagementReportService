@@ -55,7 +55,7 @@
                         (int)StatusEnum.PendingChange,
                         (int)StatusEnum.Resolved
                     },
-                    "Open Problems ({0}) - Include New, Assinged, Workaround, Pending Change, Resolved status untill now"));
+                    "Open Problems ({0}) - Include New, Assigned, Workaround, Pending Change, Resolved status untill now"));
 
             // Resolved
             var filteredIssue = issues.Where(x => viewModel.FromDate <= x.ResolvedDate && x.ResolvedDate <= viewModel.ToDate);
