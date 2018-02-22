@@ -58,6 +58,28 @@
             }
         }
 
+        protected int KnowErrorCustomFieldId
+        {
+            get
+            {
+                var settingString = ConfigurationManager.AppSettings["KnowErrorCustomFieldId"];
+                int result;
+                int.TryParse(settingString, out result);
+                return result;
+            }
+        }
+        
+        protected int RequestForChangeCustomFieldId
+        {
+            get
+            {
+                var settingString = ConfigurationManager.AppSettings["RequestForChangeCustomFieldId"];
+                int result;
+                int.TryParse(settingString, out result);
+                return result;
+            }
+        }
+
         protected int CustomFieldTimeZone
         {
             get

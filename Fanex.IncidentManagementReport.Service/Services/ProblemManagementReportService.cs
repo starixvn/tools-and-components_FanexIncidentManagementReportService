@@ -7,6 +7,7 @@
     using Core;
     using Model.Problem;
     using RazorEngine;
+    using RazorEngine.Configuration;
     using RazorEngine.Templating;
     using Services;
 
@@ -32,6 +33,9 @@
 
             var templateFolderPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, emailTemplatePath);
             var emailTemplate = File.ReadAllText(templateFolderPath);
+
+            var config = new TemplateServiceConfiguration { Debug = true };
+            Engine.Razor = RazorEngineService.Create(config);
 
             return Engine.Razor.RunCompile(
                 emailTemplate,
@@ -161,6 +165,22 @@
 
             // Get all problems
             var issues = problemReportService.GetAllProblems();
+
+            // Get occurred time of related issue
+            foreach (Issue issue in issues)
+            {
+                if (issue.Relations.Any())
+                {
+                    foreach (Relation relation in issue.Relations)
+                    {
+                        var relatedIssue = problemReportService.GetSingleIssue(relation.IssueToId.ToString());
+                        if (relatedIssue.ReportedDateTime != null)
+                        {
+                            relation.ReportedDateTime = relatedIssue.ReportedDateTime.Value;
+                        }
+                    }
+                }
+            }
 
             var viewModel = new WeeklyProblemsReportViewModel
             {

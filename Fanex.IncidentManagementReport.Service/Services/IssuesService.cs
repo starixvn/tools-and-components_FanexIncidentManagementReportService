@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using DataAccess;
     using Model;
     using Model.Problem;
     using RestSharp;
@@ -135,6 +136,19 @@
             request.RequestFormat = DataFormat.Json;
 
             return RedmineAPI.Execute<RedmineResult>(request).Issues;
+        }
+
+        public Issue GetSingleIssue(string issueId)
+        {
+            var request = new RestRequest(Method.GET)
+            {
+                Resource = $"issues/{issueId}.json"
+            };
+
+            request.AddHeader("Content-type", "application/json");
+            request.RequestFormat = DataFormat.Json;
+
+            return RedmineAPI.Execute<SingleIssueResult>(request).Issue;
         }
 
         public DateTime FromDate { get; set; }

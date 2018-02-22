@@ -21,6 +21,8 @@
 
         IList<Issue> GetAllIssues(TrackerEnum tracker);
 
+        Issue GetSingleIssue(string issueId);
+
         DateTime FromDate { get; set; }
 
         DateTime ToDate { get; set; }

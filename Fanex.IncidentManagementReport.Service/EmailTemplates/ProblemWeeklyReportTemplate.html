@@ -182,6 +182,7 @@ Please take a look at the summary table and details below for more information a
                 <th>Assignee</th>
                 <th>Number of Occurrences</th>
                 <th>Related Incidents</th>
+                <th>Last occurred date</th>
                 <th>Known Error</th>
                 <th>Request For Change</th>
             </tr>
@@ -190,7 +191,7 @@ Please take a look at the summary table and details below for more information a
             @foreach (var g in Model.IssueGroupsByStatus)
             {
             <tr class="title">
-                <td colspan="14">@g.Name</td>
+                <td colspan="15">@g.Name</td>
             </tr>
 
             foreach (var p in g.Issues)
@@ -216,6 +217,8 @@ Please take a look at the summary table and details below for more information a
                 <td>@p.AssignedTo.Name</td>
                 }
                 <td>@p.Relations.Count</td>
+                @if (p.Relations.Any())
+                {
                 <td>
                     @foreach (var relation in p.Relations)
                     {
@@ -225,6 +228,13 @@ Please take a look at the summary table and details below for more information a
                     <br />
                     }
                 </td>
+                <td>@p.LastOccurredDateTime</td>
+                }
+                else
+                {
+                <td></td>
+                <td></td>
+                }
                 <td>@p.KnowError</td>
                 <td>@p.RequestForChange</td>
             </tr>

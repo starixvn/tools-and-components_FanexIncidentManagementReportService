@@ -1,5 +1,6 @@
 ﻿namespace Fanex.IncidentManagementReport.Service.Model.Problem
 {
+    using System;
     using Newtonsoft.Json;
 
     public class Relation
@@ -18,5 +19,7 @@
 
         [JsonProperty("delay")]
         public object Delay { get; set; }
+
+        public DateTime ReportedDateTime { get; set; }
     }
 }

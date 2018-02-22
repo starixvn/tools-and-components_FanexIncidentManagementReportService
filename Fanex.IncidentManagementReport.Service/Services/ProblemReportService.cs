@@ -29,6 +29,11 @@
             return result;
         }
 
+        public Issue GetSingleIssue(string issueId)
+        {
+            return _issuesService.GetSingleIssue(issueId);
+        }
+
         public string GetRedmineUrl()
         {
             return RedmineUrl;

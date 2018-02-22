@@ -5,8 +5,9 @@
     using System.Globalization;
     using System.Linq;
     using Newtonsoft.Json;
+    using Services;
 
-    public class Issue
+    public class Issue : BaseService
     {
         [JsonProperty("id")]
         public int Id { get; set; }
@@ -58,12 +59,27 @@
 
         #region Calculated data
 
-        // 35 - Resolved date
+        // 36 - Resolved date
         public DateTime? ResolvedDate
         {
             get
             {
-                var data = CustomFields.FirstOrDefault(x => x.Id == 35)?.Value.ToString();
+                var data = CustomFields.FirstOrDefault(x => x.Id == ResolvedDateCustomFieldId)?.Value.ToString();
+                if (!string.IsNullOrEmpty(data))
+                {
+                    return DateTime.ParseExact(data, "g", new CultureInfo("fr-FR"));
+                }
+
+                return null;
+            }
+        }
+
+        // 35 - Reported date
+        public DateTime? ReportedDateTime
+        {
+            get
+            {
+                var data = CustomFields.FirstOrDefault(x => x.Id == ReportedDateCustomFieldId)?.Value.ToString();
                 if (!string.IsNullOrEmpty(data))
                 {
                     return DateTime.ParseExact(data, "g", new CultureInfo("fr-FR"));
@@ -78,7 +94,7 @@
         {
             get
             {
-                var data = CustomFields.FirstOrDefault(x => x.Id == 37)?.Value.ToString();
+                var data = CustomFields.FirstOrDefault(x => x.Id == KnowErrorCustomFieldId)?.Value.ToString();
                 if (!string.IsNullOrEmpty(data))
                 {
                     return data == "1" ? "Yes" : "No";
@@ -93,7 +109,15 @@
         {
             get
             {
-                return CustomFields.FirstOrDefault(x => x.Id == 39)?.Value.ToString();
+                return CustomFields.FirstOrDefault(x => x.Id == RequestForChangeCustomFieldId)?.Value.ToString();
+            }
+        }
+
+        public DateTime LastOccurredDateTime
+        {
+            get
+            {
+                return Relations.Max(x => x.ReportedDateTime);
             }
         }
 

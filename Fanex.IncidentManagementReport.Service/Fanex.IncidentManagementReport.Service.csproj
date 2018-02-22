@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{064147FB-B96D-4576-8111-17744412EF8C}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Fanex.IncidentManagementReport.Service</RootNamespace>
     <AssemblyName>Fanex.IncidentManagementReport.Service</AssemblyName>
@@ -171,6 +171,7 @@
     <Compile Include="Model\Problem\Project.cs" />
     <Compile Include="Model\Problem\RedmineResult.cs" />
     <Compile Include="Model\Problem\Relation.cs" />
+    <Compile Include="Model\Problem\SingleIssueResult.cs" />
     <Compile Include="Model\Problem\Status.cs" />
     <Compile Include="Model\Problem\StatusEnum.cs" />
     <Compile Include="Model\Problem\Tracker.cs" />

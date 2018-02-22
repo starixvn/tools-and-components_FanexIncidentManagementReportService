@@ -7,6 +7,8 @@
     {
         IList<Issue> GetAllProblems();
 
+        Issue GetSingleIssue(string issueId);
+
         string GetRedmineUrl();
     }
 }
