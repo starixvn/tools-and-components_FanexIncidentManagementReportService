@@ -222,10 +222,13 @@ Please take a look at the summary table and details below for more information a
                 <td>
                     @foreach (var relation in p.Relations)
                     {
-                    var relatedIssueLink = Model.RedmineUrl + "/issues/" + relation.IssueToId;
+                    if (relation.Tracker == TrackerEnum.Incident)
+                    {
+                    var relatedIssueLink = Model.RedmineUrl + "/issues/" + relation.DisplayedId;
 
-                    <a href="@relatedIssueLink">#@relation.IssueToId</a>
+                    <a href="@relatedIssueLink">#@relation.DisplayedId</a>
                     <br />
+                    }
                     }
                 </td>
                 <td>@p.LastOccurredDateTime</td>

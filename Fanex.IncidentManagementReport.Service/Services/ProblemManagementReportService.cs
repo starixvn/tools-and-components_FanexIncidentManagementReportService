@@ -173,10 +173,11 @@
                 {
                     foreach (Relation relation in issue.Relations)
                     {
-                        var issueIdToGet = issue.Id != relation.IssueId ? relation.IssueId : relation.IssueToId;
+                        relation.DisplayedId = issue.Id != relation.IssueId ? relation.IssueId : relation.IssueToId;
 
-                        var relatedIssue = problemReportService.GetSingleIssue(issueIdToGet.ToString());
-                        if (relatedIssue.ReportedDateTime != null && relatedIssue.Tracker.Id == (int)TrackerEnum.Incident)
+                        var relatedIssue = problemReportService.GetSingleIssue(relation.DisplayedId.ToString());
+                        relation.Tracker = (TrackerEnum)relatedIssue.Tracker.Id;
+                        if (relatedIssue.ReportedDateTime != null && relation.Tracker == TrackerEnum.Incident)
                         {
                             relation.ReportedDateTime = relatedIssue.ReportedDateTime.Value;
                         }

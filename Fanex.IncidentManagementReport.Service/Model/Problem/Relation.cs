@@ -21,5 +21,9 @@
         public object Delay { get; set; }
 
         public DateTime ReportedDateTime { get; set; }
+
+        public int DisplayedId { get; set; }
+
+        public TrackerEnum Tracker { get; set; }
     }
 }
