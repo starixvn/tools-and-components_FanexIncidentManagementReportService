@@ -31,7 +31,7 @@
 
         public DateTime ClosedDate { get; set; }
 
-        public string IncidentDateDisplay => Utilities.GetDisplayLongDate(IncidentDate);
+        public string IncidentDateDisplay => IncidentDate.Year == 1 ? "N/A" : Utilities.GetDisplayLongDate(IncidentDate);
 
         public string CreatedDateDisplay => Utilities.GetDisplayLongDate(CreatedDate);
 
