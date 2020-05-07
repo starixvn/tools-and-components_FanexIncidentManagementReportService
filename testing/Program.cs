@@ -3,12 +3,28 @@
     using Fanex.IncidentManagementReport.Service.Core;
     using Fanex.MailDelivery.Client;
     using System;
+    using Fanex.Logging;
+    using Fanex.Logging.Sentry;
+    using Sentry;
+    using System.Collections.Generic;
+    using System.Configuration;
 
     public class Program
     {
         public static void Main()
         {
             Utilities.RazorEngineConfig();
+
+            LogManager
+            .SetDefaultLogCategory(ConfigurationManager.AppSettings["LogCategory"])
+            .Use(new List<ILogEngine>
+            {
+                new SentryLogging(new SentryEngineOptions
+                {
+                    Dsn = new Dsn(ConfigurationManager.AppSettings["SentryUrl"])
+                })
+            });
+
             MailClientHandler.Start();
 
             ////var fromDate = Utilities.DateOfPreviousWeek(DateTime.Now, DayOfWeek.Monday);
