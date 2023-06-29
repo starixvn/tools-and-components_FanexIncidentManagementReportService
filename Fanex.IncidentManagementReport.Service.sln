@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33516.290
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fanex.IncidentManagementReport.Service", "Fanex.IncidentManagementReport.Service\Fanex.IncidentManagementReport.Service.csproj", "{064147FB-B96D-4576-8111-17744412EF8C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Testing", "testing\Testing.csproj", "{375C7412-7449-44AF-9BEE-422B5EA78BE8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fanex.IncidentManagementReport.Services", "Fanex.IncidentManagementReport.Services\Fanex.IncidentManagementReport.Services.csproj", "{950E6BA0-66CC-490C-A794-8F220CBB83E4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,8 +23,15 @@ Global
 		{375C7412-7449-44AF-9BEE-422B5EA78BE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{375C7412-7449-44AF-9BEE-422B5EA78BE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{375C7412-7449-44AF-9BEE-422B5EA78BE8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{950E6BA0-66CC-490C-A794-8F220CBB83E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{950E6BA0-66CC-490C-A794-8F220CBB83E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{950E6BA0-66CC-490C-A794-8F220CBB83E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{950E6BA0-66CC-490C-A794-8F220CBB83E4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A0722163-0A95-4B05-9F28-439E09476E78}
 	EndGlobalSection
 EndGlobal

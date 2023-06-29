@@ -1,0 +1,268 @@
+﻿@using Fanex.IncidentManagementReport.Services.Core.Enums
+@using Fanex.IncidentManagementReport.Services.Model;
+@model IncidentReportViewModel
+
+<style type="text/css">
+    .datagrid table {
+        border-collapse: collapse;
+        text-align: left;
+        width: 100%;
+        border: 1px solid #00557F;
+    }
+
+    .datagrid {
+        font: normal 12px/150% Arial, Helvetica, sans-serif;
+        background: #fff;
+        overflow: hidden;
+        -webkit-border-radius: 3px;
+        -moz-border-radius: 3px;
+        border-radius: 3px;
+    }
+
+        table td,
+        table th {
+            padding: 3px 10px;
+        }
+
+    table thead th {
+        background: -webkit-gradient( linear, left top, left bottom, color-stop(0.05, #006699), color-stop(1, #00557F) );
+        background: -moz-linear-gradient( center top, #006699 5%, #00557F 100% );
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#006699', endColorstr='#00557F');
+        background-color: #006699;
+        color: #FFFFFF;
+        font-size: 15px;
+        font-weight: bold;
+        border-left: 1px solid #a8b3b9;
+        border-bottom: 1px solid #a8b3b9;
+        text-align: center;
+    }
+
+        table thead th:first-child {
+            border: 1px solid #00557F !important;
+        }
+
+        table tbody td {
+            color: #000000;
+            border-left: 1px solid #E1EEF4;
+            font-size: 12px;
+            font-weight: normal;
+        }
+
+        table tbody td a {
+           text-decoration:none;
+        }
+
+        table tbody td a:hover {
+           text-decoration:underline;
+        }
+
+        table tbody .alt td {
+            background: #fff;
+            color: #00557F;
+            border: 1px solid #00557F;
+        }
+
+        table tbody .title td {
+            background: #d2d2d2;
+            color: #000;
+            border: 1px solid #00557F;
+            font-weight: bold;
+        }
+
+    table tbody td:first-child {
+        border: 1px solid #00557F;
+    }
+
+        table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+    div.dhtmlx_window_active, div.dhx_modal_cover_dv {
+        position: fixed !important;
+    }
+
+    #sum-table {
+        width: 60%;
+    }
+
+        #sum-table tr td {
+            text-align: center;
+        }
+
+    #age-table {
+            width: 45%;
+            float: left;
+        }
+    .note {
+        margin-top: 5px;
+    }
+</style>
+Dear All
+<br />
+<br />
+Please take a look at the summary table and details below for more infomation about the weekly incident report.
+
+<br />
+<br />
+<div class="datagrid">
+    <table id="sum-table">
+        <thead>
+            <tr>
+                <th rowspan="2"></th>
+                <th colspan="3">Last Week (@Model.FromDateDisplay - @Model.ToDateDisplay)</th>
+                <th colspan="2">Aging Data</th>
+            </tr>
+            <tr>
+                <th>Created</th>
+                <th>Open</th>
+                <th>Closed</th>
+                <th>@Model.FromLast2WeekDisplay - @Model.ToLast2WeekDisplay</th>
+                <th>@Model.FromDateDisplay - @Model.ToDateDisplay</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="alt">
+                <td>P1</td>
+                <td>@Model.CreateNewIncidentSummary.P1Count</td>
+                <td>@Model.PendingIncidentSummary.P1Count</td>
+                <td>@Model.ClosedIncidentSummary.P1Count</td>
+                <td>@Model.AgingDataLast2WeekSummary.P1Count</td>
+                <td>@Model.AgingDataLastWeekSummary.P1Count</td>
+            </tr>
+            <tr class="alt">
+                <td>P2</td>
+                <td>@Model.CreateNewIncidentSummary.P2Count</td>
+                <td>@Model.PendingIncidentSummary.P2Count</td>
+                <td>@Model.ClosedIncidentSummary.P2Count</td>
+                <td>@Model.AgingDataLast2WeekSummary.P2Count</td>
+                <td>@Model.AgingDataLastWeekSummary.P2Count</td>
+            </tr>
+            <tr class="alt">
+                <td>P3</td>
+                <td>@Model.CreateNewIncidentSummary.P3Count</td>
+                <td>@Model.PendingIncidentSummary.P3Count</td>
+                <td>@Model.ClosedIncidentSummary.P3Count</td>
+                <td>@Model.AgingDataLast2WeekSummary.P3Count</td>
+                <td>@Model.AgingDataLastWeekSummary.P3Count</td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="note">
+        ※ Aging Data: Tickets are defined as aged when not resolved after 1 calendar day for P1, 2 days for P2 and 7 days for P3 incidents.
+    </div>
+    <br />
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Priority</th>
+                <th>Category</th>
+                <th>Incident Title</th>
+                <th>Status</th>
+                <th>Incident Date</th>
+                <th>Resolved Date</th>
+                <th>Closed Date</th>
+                <th>Created Date</th>
+                <th>Creator</th>
+                <th>Assignee</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @if (Model.P1IncidentReport != null)
+            {
+                <tr class="title">
+                    <td colspan="11"> P1 Incident Report (@Model.P1IncidentReport.Count) </td>
+                </tr>
+
+                foreach (var item in Model.P1IncidentReport)
+                {
+                    <tr class="alt">
+                        <td>@item.IncidentId</td>
+                        <td>@item.Priority</td>
+                        <td> @item.CategoryName</td>
+                        <td><a href="@(Model.RedmineUrl + item.IncidentId)">@item.IncidentTitle</a></td>
+                        <td>@item.Status</td>
+                        <td>@item.IncidentDateDisplay</td>
+                        <td>@item.ResolvedDateDisplay</td>
+                        <td>@item.ClosedDateDisplay</td>
+                        <td>@item.CreatedDateDisplay</td>
+                        <td>@item.Creator</td>
+                        <td>@item.Assignee</td>
+                    </tr>
+                }
+            }
+
+            @if (Model.CreateNewIncidentReport != null)
+            {
+                <tr class="title">
+                    <td colspan="11"> New created Incident Report (@Model.CreateNewIncidentReport.Count) </td>
+                </tr>
+           
+                foreach (var item in Model.CreateNewIncidentReport)
+                {
+                    <tr class="alt">
+                        <td>@item.IncidentId</td>
+                        <td>@item.Priority</td>
+                        <td> @item.CategoryName</td>
+                        <td><a href="@(Model.RedmineUrl + item.IncidentId)">@item.IncidentTitle</a></td>
+                        <td>@item.Status</td>
+                        <td>@item.IncidentDateDisplay</td>
+                        <td>@item.ResolvedDateDisplay</td>
+                        <td>@item.ClosedDateDisplay</td>
+                        <td>@item.CreatedDateDisplay</td>
+                        <td>@item.Creator</td>
+                        <td>@item.Assignee</td>
+                    </tr>
+                }
+            }
+              
+            @if (Model.ClosedIncidentReport != null)
+            {          
+                <tr class="title">
+                    <td colspan="11"> Closed Incident (@Model.ClosedIncidentReport.Count) </td>
+                </tr>
+            
+                foreach (var item in Model.ClosedIncidentReport)
+                {
+                    <tr class="alt">
+                        <td>@item.IncidentId</td>
+                        <td>@item.Priority</td>
+                        <td> @item.CategoryName</td>
+                        <td><a href="@(Model.RedmineUrl + item.IncidentId)">@item.IncidentTitle</a></td>
+                        <td>@item.Status</td>
+                        <td>@item.IncidentDateDisplay</td>
+                        <td>@item.ResolvedDateDisplay</td>
+                        <td>@item.ClosedDateDisplay</td>
+                        <td>@item.CreatedDateDisplay</td>
+                        <td>@item.Creator</td>
+                        <td>@item.Assignee</td>
+                    </tr>
+                }
+            }
+
+            @if (Model.PendingIncidentReport != null)
+            {
+                <tr class="title">
+                    <td colspan="11"> Open Incident (@Model.PendingIncidentReport.Count) </td>
+                </tr>
+                foreach (var item in Model.PendingIncidentReport)
+                {
+                    <tr class="alt">
+                        <td>@item.IncidentId</td>
+                        <td>@item.Priority</td>
+                        <td> @item.CategoryName</td>
+                        <td><a href="@(Model.RedmineUrl + item.IncidentId)">@item.IncidentTitle</a></td>
+                        <td>@item.Status</td>
+                        <td>@item.IncidentDateDisplay</td>
+                        <td>@item.ResolvedDateDisplay</td>
+                        <td>@item.ClosedDateDisplay</td>
+                        <td>@item.CreatedDateDisplay</td>
+                        <td>@item.Creator</td>
+                        <td>@item.Assignee</td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>

@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
-using Newtonsoft.Json;
-
-namespace Fanex.IncidentManagementReport.Service.Model
+﻿namespace Fanex.IncidentManagementReport.Service.Model
 {
+    using System.Collections.Generic;
+    using Newtonsoft.Json;
+
     public class ProjectModel
     {
         [JsonProperty(PropertyName = "projects")]

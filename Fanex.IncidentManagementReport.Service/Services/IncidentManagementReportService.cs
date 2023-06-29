@@ -1,16 +1,15 @@
 ﻿namespace Fanex.IncidentManagementReport.Service
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
     using Fanex.IncidentManagementReport.Service.Core;
     using Fanex.IncidentManagementReport.Service.Model;
     using Fanex.IncidentManagementReport.Service.Services;
     using FluentDateTime;
     using RazorEngine;
     using RazorEngine.Templating;
-    using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
 
     public class IncidentManagementReportService
     {
@@ -42,7 +41,7 @@
         private string IncidentDailyReportGeneration(DateTime fromDate, DateTime toDate, string emailTemplatePath)
         {
             var getRedmineUrl = incidentReportService.GetRedmineUrl();
-            var model = new IncidentDailyReportViewModel() 
+            var model = new IncidentDailyReportViewModel()
             {
                 FromDate = fromDate,
                 ToDate = toDate,
@@ -124,9 +123,9 @@
         }
 
         private IList<IncidentReportModel> GetAgingIncidentsLastWeek(
-            IList<IncidentReportModel> firstPriorityIncidents, 
-            IList<IncidentReportModel> newIncidents, 
-            IList<IncidentReportModel> closedIncidents, 
+            IList<IncidentReportModel> firstPriorityIncidents,
+            IList<IncidentReportModel> newIncidents,
+            IList<IncidentReportModel> closedIncidents,
             IList<IncidentReportModel> pendingIncidents,
             DateTime fromDate,
             DateTime toDate)
@@ -155,9 +154,9 @@
         }
 
         private IList<IncidentReportModel> CombineIncidents(
-            IList<IncidentReportModel> firstPriorityIncidents, 
-            IList<IncidentReportModel> newIncidents, 
-            IList<IncidentReportModel> closedIncidents, 
+            IList<IncidentReportModel> firstPriorityIncidents,
+            IList<IncidentReportModel> newIncidents,
+            IList<IncidentReportModel> closedIncidents,
             IList<IncidentReportModel> pendingIncidents)
         {
             List<IncidentReportModel> incidents = new List<IncidentReportModel>();
@@ -192,12 +191,15 @@
                 case (int)Priorities.P1:
                     isAging = incident.IncidentDate.AddDays(1) < GetResolvedDate(incident, toDate);
                     break;
+
                 case (int)Priorities.P2:
                     isAging = incident.IncidentDate.AddDays(2) < GetResolvedDate(incident, toDate);
                     break;
+
                 case (int)Priorities.P3:
                     isAging = incident.IncidentDate.AddDays(7) < GetResolvedDate(incident, toDate);
                     break;
+
                 default:
                     isAging = false;
                     break;

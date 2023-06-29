@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "Fanex.IncidentManagementReport.Services": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:57558;http://localhost:57559"
+    }
+  }
+}
