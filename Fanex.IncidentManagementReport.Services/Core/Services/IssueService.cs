@@ -11,6 +11,7 @@
     using Fanex.IncidentManagementReport.Services.Model;
     using Fanex.IncidentManagementReport.Services.Model.Problem;
     using Fanex.IncidentManagementReport.Services.Models.Problem;
+    using Fanex.Logging;
 
     public class IssueService : BaseHttpClientService, IIssueService
     {
@@ -110,12 +111,21 @@
         private static DateTime? CalculateFromCustomFields(IList<CustomField> customFields, int customFieldsId)
         {
             var data = customFields.FirstOrDefault(x => x.Id == customFieldsId)?.Value.ToString();
-            if (!string.IsNullOrEmpty(data))
-            {
-                return DateTime.ParseExact(data, "g", new CultureInfo("fr-FR"));
-            }
 
-            return null;
+            try
+            {
+                if (!string.IsNullOrEmpty(data))
+                {
+                    return DateTime.ParseExact(data, "dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture);
+                }
+
+                return null;
+            }
+            catch (Exception ex)
+            {
+                LogService.Error(data);
+                throw;
+            }
         }
     }
 }
