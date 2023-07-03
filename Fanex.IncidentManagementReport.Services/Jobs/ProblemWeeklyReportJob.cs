@@ -1,6 +1,9 @@
 ﻿namespace Fanex.IncidentManagementReport.Services.Jobs
 {
     using System;
+    using Fanex.IncidentManagementReport.Services.Core.Extensions;
+    using Fanex.IncidentManagementReport.Services.Core.Services;
+    using Fanex.IncidentManagementReport.Services.Services;
     using MailDelivery.Client.Jobs;
     using MailDelivery.Core.Models;
     using Quartz;
@@ -9,8 +12,13 @@
     {
         protected override JobMessage Run(Schedule schedule, IJobExecutionContext jobContext)
         {
-            var ProblemManagementReportService = new ProblemManagementReportService();
-            var body = ProblemManagementReportService.ProblemWeeklyReportEmailTemplate();
+            var services = ServiceExtension.Services.BuildServiceProvider();
+            ILogServiceProvider logService = services.GetService<ILogServiceProvider>();
+            logService.LogFile($"Weekly Problem Report called at: {DateTime.Now}");
+
+            IProblemManagementReportService problemManagementReportService = services.GetRequiredService<IProblemManagementReportService>();
+
+            var body = problemManagementReportService.GenerateProblemWeeklyReportContent().GetAwaiter().GetResult();
             var fromDate = DateTime.Now.DateOfPreviousWeek(DayOfWeek.Monday);
             var toDate = DateTime.Now.DateOfPreviousWeek(DayOfWeek.Sunday);
 

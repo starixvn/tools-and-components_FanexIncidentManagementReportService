@@ -18,17 +18,17 @@
 
     public class IncidentReportManagementService : IIncidentReportManagementService
     {
-        private readonly IViewRenderService viewRenderService;
         private readonly IIncidentService incidentService;
+        private readonly IViewRenderService viewRenderService;
         private readonly RedmineApiSettings redmineSettings;
         private const string WeeklyReportEmailTemplate = "IncidentWeeklyReportTemplate";
         private const string DailyReportEmailTemplate = "IncidentDailyReportTemplate";
 
-        public IncidentReportManagementService(IViewRenderService viewRenderService, IIncidentService incidentService, RedmineApiSettings redmineSettings)
+        public IncidentReportManagementService(IIncidentService incidentService, IViewRenderService viewRenderService, RedmineApiSettings redmineSettings)
         {
-            this.viewRenderService = viewRenderService;
             this.incidentService = incidentService;
             this.redmineSettings = redmineSettings;
+            this.viewRenderService = viewRenderService;
         }
 
         public async Task<string> GenerateIncidentDailyReportContent()

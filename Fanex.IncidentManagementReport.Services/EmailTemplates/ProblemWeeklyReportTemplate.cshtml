@@ -135,31 +135,31 @@ Please take a look at the summary table and details below for more information a
         <tbody>
             @for (int i = 1; i < 4; i++)
             {
-            <tr class="alt">
-                @{
-                var openIssues = Model.IssueGroupsByTimeSummary[0].Issues.Where(x => x.Priority.Id == i).ToList();
-                var lastweekIssues = Model.IssueGroupsByTimeSummary[1].Issues.Where(x => x.Priority.Id == i).ToList();
-                var priority = "P" + i;
-                }
-                <td>@priority</td>
-                <!--Open (All)-->
-                <td>@openIssues.Count(x => x.Status.Id == (int)StatusEnum.New)</td>
-                <td>@openIssues.Count(x => x.Status.Id == (int)StatusEnum.Assigned)</td>
-                <td>@openIssues.Count(x => x.Status.Id == (int)StatusEnum.Workaround)</td>
-                <td>@openIssues.Count(x => x.Status.Id == (int)StatusEnum.PendingChange)</td>
-                <td>@openIssues.Count(x => x.Status.Id == (int)StatusEnum.Resolved)</td>
-                <td>@openIssues.Where(x => x.Relations != null && x.Relations.Any()).Sum(x => x.Relations.Count)</td>
+                <tr class="alt">
+                    @{
+                        var openIssues = Model.IssueGroupsByTimeSummary[0].Issues.Where(x => x.Priority.Id == i).ToList();
+                        var lastweekIssues = Model.IssueGroupsByTimeSummary[1].Issues.Where(x => x.Priority.Id == i).ToList();
+                        var priority = "P" + i;
+                    }
+                    <td>@priority</td>
+                    <!--Open (All)-->
+                    <td>@openIssues.Count(x => x.Status.Id == (int)StatusEnum.New)</td>
+                    <td>@openIssues.Count(x => x.Status.Id == (int)StatusEnum.Assigned)</td>
+                    <td>@openIssues.Count(x => x.Status.Id == (int)StatusEnum.Workaround)</td>
+                    <td>@openIssues.Count(x => x.Status.Id == (int)StatusEnum.PendingChange)</td>
+                    <td>@openIssues.Count(x => x.Status.Id == (int)StatusEnum.Resolved)</td>
+                    <td>@openIssues.Where(x => x.Relations != null && x.Relations.Any()).Sum(x => x.Relations.Count)</td>
 
-                <!--Lastweek-->
-                <td>@lastweekIssues.Count(x => x.Status.Id == (int)StatusEnum.Resolved)</td>
-                <td>@lastweekIssues.Count(x => x.Status.Id == (int)StatusEnum.Closed)</td>
-                <td>@lastweekIssues.Count(x => x.Status.Id == (int)StatusEnum.Cancelled)</td>
-                <!--Lastweek newly created-->
-                <td>@Model.IssueGroupsByStatus.Last().Issues.Count(x => x.Priority.Id == i)</td>
+                    <!--Lastweek-->
+                    <td>@lastweekIssues.Count(x => x.Status.Id == (int)StatusEnum.Resolved)</td>
+                    <td>@lastweekIssues.Count(x => x.Status.Id == (int)StatusEnum.Closed)</td>
+                    <td>@lastweekIssues.Count(x => x.Status.Id == (int)StatusEnum.Cancelled)</td>
+                    <!--Lastweek newly created-->
+                    <td>@Model.IssueGroupsByStatus.Last().Issues.Count(x => x.Priority.Id == i)</td>
 
-                <!--Aging Data-->
-                <td>@Model.IssueGroupsByTimeSummary[2].Issues.Count(x => x.Priority.Id == i)</td>
-            </tr>
+                    <!--Aging Data-->
+                    <td>@Model.IssueGroupsByTimeSummary[2].Issues.Count(x => x.Priority.Id == i)</td>
+                </tr>
             }
         </tbody>
     </table>
@@ -187,58 +187,58 @@ Please take a look at the summary table and details below for more information a
         <tbody>
             @foreach (var g in Model.IssueGroupsByStatus)
             {
-            <tr class="title">
-                <td colspan="15">@g.Name</td>
-            </tr>
+                <tr class="title">
+                    <td colspan="15">@g.Name</td>
+                </tr>
 
-            foreach (var p in g.Issues)
-            {
-            var issueLink = Model.RedmineUrl + "/issues/" + p.Id;
+                foreach (var p in g.Issues)
+                {
+                    var issueLink = Model.RedmineUrl + "/issues/" + p.Id;
 
-            <tr class="alt">
-                <td><a href="@issueLink">#@p.Id</a></td>
-                <td>@p.Priority.Name</td>
-                <td>@p.Project.Name</td>
-                <td>@p.Subject</td>
-                <td>@p.Status.Name</td>
-                <td>@p.CreatedOn</td>
-                <td>@p.ResolvedDate</td>
-                <td>@p.CloseOn</td>
-                <td>@p.Author.Name</td>
-                @if (p.AssignedTo == null)
-                {
-                <td></td>
-                }
-                else
-                {
-                <td>@p.AssignedTo.Name</td>
-                }
-                <td>@p.Relations.Count</td>
-                @if (p.Relations.Any())
-                {
-                <td>
-                    @foreach (var relation in p.Relations)
-                    {
-                    if (relation.Tracker == TrackerEnum.Incident)
-                    {
-                    var relatedIssueLink = Model.RedmineUrl + "/issues/" + relation.DisplayedId;
+                    <tr class="alt">
+                        <td><a href="@issueLink">#@p.Id</a></td>
+                        <td>@p.Priority.Name</td>
+                        <td>@p.Project.Name</td>
+                        <td>@p.Subject</td>
+                        <td>@p.Status.Name</td>
+                        <td>@p.CreatedOn</td>
+                        <td>@p.ResolvedDate</td>
+                        <td>@p.CloseOn</td>
+                        <td>@p.Author.Name</td>
+                        @if (p.AssignedTo == null)
+                        {
+                            <td></td>
+                        }
+                        else
+                        {
+                            <td>@p.AssignedTo.Name</td>
+                        }
+                        <td>@p.Relations.Count</td>
+                        @if (p.Relations.Any())
+                        {
+                            <td>
+                                @foreach (var relation in p.Relations)
+                                {
+                                    if (relation.Tracker == TrackerEnum.Incident)
+                                    {
+                                        var relatedIssueLink = Model.RedmineUrl + "/issues/" + relation.DisplayedId;
 
-                    <a href="@relatedIssueLink">#@relation.DisplayedId</a>
-                    <br />
-                    }
-                    }
-                </td>
-                <td>@p.LastOccurredDateTime</td>
+                                        <a href="@relatedIssueLink">#@relation.DisplayedId</a>
+                                        <br />
+                                    }
+                                }
+                            </td>
+                            <td>@p.LastOccurredDateTime</td>
+                        }
+                        else
+                        {
+                            <td></td>
+                            <td></td>
+                        }
+                        <td>@p.KnowError</td>
+                        <td>@p.RequestForChange</td>
+                    </tr>
                 }
-                else
-                {
-                <td></td>
-                <td></td>
-                }
-                <td>@p.KnowError</td>
-                <td>@p.RequestForChange</td>
-            </tr>
-            }
             }
         </tbody>
     </table>

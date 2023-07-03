@@ -9,16 +9,6 @@
     {
         private const string PassPhrase = "Fanex.IncidentMangementReport.Service";
 
-        //public static void RazorEngineConfig()
-        //{
-        //    var config = new TemplateServiceConfiguration();
-        //    config.DisableTempFileLocking = true;
-        //    config.CachingProvider = new DefaultCachingProvider(t => { });
-
-        //    var service = RazorEngineService.Create(config);
-        //    Engine.Razor = service;
-        //}
-
         public static string Encrypt(string toEncrypt)
         {
             byte[] keyArray;

@@ -17,7 +17,7 @@
         private readonly IIssueService issueService;
         private readonly IViewRenderService viewRenderService;
         private readonly RedmineApiSettings redmineSettings;
-        private const string EmailTemplate = "ProblemWeeklyReportTemplate";
+        private const string ProblemWeeklyReportTemplate = "ProblemWeeklyReportTemplate";
 
         public ProblemManagementReportService(IIssueService issueService, IViewRenderService viewRenderService, RedmineApiSettings redmineSettings)
         {
@@ -30,7 +30,7 @@
         {
             var viewModel = await GetDataAsync();
 
-            var content = await viewRenderService.RenderViewToStringAsync(EmailTemplate, viewModel);
+            var content = await viewRenderService.RenderViewToStringAsync(ProblemWeeklyReportTemplate, viewModel);
             return content;
         }
 

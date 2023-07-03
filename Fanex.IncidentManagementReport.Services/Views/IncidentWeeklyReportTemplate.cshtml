@@ -198,7 +198,7 @@ Please take a look at the summary table and details below for more infomation ab
                 <tr class="title">
                     <td colspan="11"> New created Incident Report (@Model.CreateNewIncidentReport.Count) </td>
                 </tr>
-           
+
                 foreach (var item in Model.CreateNewIncidentReport)
                 {
                     <tr class="alt">
@@ -216,13 +216,13 @@ Please take a look at the summary table and details below for more infomation ab
                     </tr>
                 }
             }
-              
+
             @if (Model.ClosedIncidentReport != null)
-            {          
+            {
                 <tr class="title">
                     <td colspan="11"> Closed Incident (@Model.ClosedIncidentReport.Count) </td>
                 </tr>
-            
+
                 foreach (var item in Model.ClosedIncidentReport)
                 {
                     <tr class="alt">

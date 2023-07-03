@@ -6,12 +6,15 @@
     using Fanex.IncidentManagementReport.Services.Core.Services.Interfaces;
     using Fanex.IncidentManagementReport.Services.Services;
     using Fanex.IncidentManagementReport.Services.Services.Interfaces;
+    using Fanex.Logging;
+    using Fanex.Logging.Sentry;
+    using Fanex.MailDelivery.Client;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
-    using Microsoft.AspNetCore.HttpOverrides;
     using Microsoft.AspNetCore.Mvc.Infrastructure;
-    using NLog;
+    using Microsoft.AspNetCore.Mvc.Razor;
+    using Sentry;
 
     public class Startup
     {
@@ -24,50 +27,40 @@
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddAntiforgery(options =>
-            {
-                options.SuppressXFrameOptionsHeader = true;
-            });
+            LogManager
+                .SetDefaultLogCategory(Configuration.GetValue<string>("Fanex.Logging:LogCategory"))
+                .Use(new List<ILogEngine>
+                {
+                        new SentryLogging(new SentryEngineOptions
+                        {
+                            Dsn = new Dsn(Configuration.GetValue<string>("Fanex.Logging:SentryEngineOptions:Dsn"))
+                        })
+                });
 
             services.AddControllersWithViews();
-            services.Configure<ForwardedHeadersOptions>(options =>
-            {
-                options.ForwardedHeaders =
-                    ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
-            });
+            services.AddRazorPages();
 
             var appSettings = Configuration.GetSection("AppSettings").Get<AppSettings>();
             services.AddSingleton(appSettings);
 
             var nexBotSettings = Configuration.GetSection("RedmineApiSettings").Get<RedmineApiSettings>();
+            services.AddSingleton(nexBotSettings);
+
             services.AddHttpClient();
 
-            services.AddSingleton(nexBotSettings);
             RegisterDI(services);
+            ServiceExtension.Services = services;
+            MailClientHandler.Start();
         }
 
         public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app.UseForwardedHeaders();
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-            else
+            if (!env.IsDevelopment())
             {
                 app.UseMiddleware<ErrorHandler>();
-                app.UseHsts();
             }
 
-            app.UseStaticFiles();
-
             app.UseRouting();
-            app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod());
-            app.UseAuthentication();
-            app.UseAuthorization();
-            app.UseCookiePolicy();
-            app.UseSession();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
@@ -88,6 +81,8 @@
             services.AddSingleton<IProjectService, ProjectService>();
             services.AddSingleton<ICommonService, CommonService>();
 
+            services.AddSingleton<IRazorViewEngine, RazorViewEngine>();
+            //services.AddSingleton<ITempDataProvider>();
             services.AddSingleton<IViewRenderService, ViewRenderService>();
             services.AddSingleton<IIncidentService, IncidentService>();
             services.AddSingleton<IProblemManagementReportService, ProblemManagementReportService>();

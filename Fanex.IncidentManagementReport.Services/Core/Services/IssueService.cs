@@ -36,15 +36,15 @@
         public async Task<IList<IssuesViewModel>> GetClosedIssuesAsync(DateTime fromDate, DateTime toDate, TrackerEnum tracker)
         {
             var url = $"issues.json?start_date<={toDate:yyyy-MM-dd}&due_date=><{fromDate:yyyy-MM-dd}|{toDate:yyyy-MM-dd}&status_id=5&limit=100&tracker_id={(int)tracker}";
-            var issues = await ExecuteAsync<IList<IssuesViewModel>>(url);
-            return issues;
+            var issueResponse = await ExecuteAsync<IssuesModel>(url);
+            return issueResponse.Issues;
         }
 
         public async Task<IList<IssuesViewModel>> GetCreateNewIssuesAsync(DateTime fromDate, DateTime toDate, TrackerEnum tracker)
         {
             var url = $"issues.json?start_date=><{fromDate:yyyy-MM-dd}|{toDate:yyyy-MM-dd}&status_id=*&limit=100&tracker_id={(int)tracker}";
-            var issues = await ExecuteAsync<IList<IssuesViewModel>>(url);
-            return issues;
+            var issueResponse = await ExecuteAsync<IssuesModel>(url);
+            return issueResponse.Issues;
         }
 
         public async Task<ProblemIssue> GetIssueByIdAsync(string issueId)
@@ -60,29 +60,29 @@
         public async Task<IList<IssuesViewModel>> GetP1IssuesAsync(DateTime fromDate, DateTime toDate, TrackerEnum tracker)
         {
             var url = $"issues.json?start_date=><{fromDate:yyyy-MM-dd}|{toDate:yyyy-MM-dd}&status_id=*&priority_id=1&limit=100&tracker_id={(int)tracker}";
-            var issues = await ExecuteAsync<IList<IssuesViewModel>>(url);
-            return issues;
+            var issueResponse = await ExecuteAsync<IssuesModel>(url);
+            return issueResponse.Issues;
         }
 
         public async Task<IList<IssuesViewModel>> GetP1IssuesDailyAsync(DateTime fromDate, DateTime toDate, TrackerEnum tracker)
         {
             var url = $"issues.json?created_on=><{fromDate:yyyy-MM-dd}|{toDate:yyyy-MM-dd}&status_id=*&priority_id=1&limit=100&tracker_id={(int)tracker}";
-            var issues = await ExecuteAsync<IList<IssuesViewModel>>(url);
-            return issues;
+            var issueResponse = await ExecuteAsync<IssuesModel>(url);
+            return issueResponse.Issues;
         }
 
         public async Task<IList<IssuesViewModel>> GetPendingIssuesAsync(DateTime startDate, TrackerEnum tracker)
         {
             var url = $"issues.json?start_date<={startDate:yyyy-MM-dd}status_id=!5|6&limit=100&tracker_id={(int)tracker}";
-            var issues = await ExecuteAsync<IList<IssuesViewModel>>(url);
-            return issues;
+            var issueResponse = await ExecuteAsync<IssuesModel>(url);
+            return issueResponse.Issues;
         }
 
         public async Task<IList<IssuesViewModel>> GetPendingIssuesDailyAsync(TrackerEnum tracker)
         {
             var url = $"issues.json?status_id=!5|6&priority_id=!1&limit=100&tracker_id={(int)tracker}";
-            var issues = await ExecuteAsync<IList<IssuesViewModel>>(url);
-            return issues;
+            var issueResponse = await ExecuteAsync<IssuesModel>(url);
+            return issueResponse.Issues;
         }
 
         private void CalculateIssueData(ProblemIssue issue)
