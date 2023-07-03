@@ -11,7 +11,6 @@
     using Fanex.IncidentManagementReport.Services.Model;
     using Fanex.IncidentManagementReport.Services.Model.Problem;
     using Fanex.IncidentManagementReport.Services.Models.Problem;
-    using Fanex.Logging;
 
     public class IssueService : BaseHttpClientService, IIssueService
     {
@@ -112,20 +111,12 @@
         {
             var data = customFields.FirstOrDefault(x => x.Id == customFieldsId)?.Value.ToString();
 
-            try
+            if (!string.IsNullOrEmpty(data))
             {
-                if (!string.IsNullOrEmpty(data))
-                {
-                    return DateTime.ParseExact(data, "dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture);
-                }
+                return DateTime.ParseExact(data, "dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture);
+            }
 
-                return null;
-            }
-            catch (Exception ex)
-            {
-                LogService.Error(data);
-                throw;
-            }
+            return null;
         }
     }
 }
