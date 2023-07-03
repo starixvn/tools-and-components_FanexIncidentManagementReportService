@@ -13,7 +13,6 @@
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc.Infrastructure;
-    using Microsoft.AspNetCore.Mvc.Razor;
     using Sentry;
 
     public class Startup
@@ -81,8 +80,6 @@
             services.AddSingleton<IProjectService, ProjectService>();
             services.AddSingleton<ICommonService, CommonService>();
 
-            services.AddSingleton<IRazorViewEngine, RazorViewEngine>();
-            //services.AddSingleton<ITempDataProvider>();
             services.AddSingleton<IViewRenderService, ViewRenderService>();
             services.AddSingleton<IIncidentService, IncidentService>();
             services.AddSingleton<IProblemManagementReportService, ProblemManagementReportService>();

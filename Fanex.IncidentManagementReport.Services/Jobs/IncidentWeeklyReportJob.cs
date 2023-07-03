@@ -2,7 +2,6 @@
 {
     using System;
     using Fanex.IncidentManagementReport.Services.Core.Extensions;
-    using Fanex.IncidentManagementReport.Services.Core.Services;
     using Fanex.IncidentManagementReport.Services.Services;
     using Fanex.MailDelivery.Client.Jobs;
     using Fanex.MailDelivery.Core.Models;
@@ -13,8 +12,6 @@
         protected override JobMessage Run(Schedule schedule, IJobExecutionContext jobContext)
         {
             var services = ServiceExtension.Services.BuildServiceProvider();
-            ILogServiceProvider logService = services.GetService<ILogServiceProvider>();
-            logService.LogFile($"Weekly Incident Report called at: {DateTime.Now}");
 
             IIncidentReportManagementService incidentReportManagementService = services.GetRequiredService<IIncidentReportManagementService>();
 
