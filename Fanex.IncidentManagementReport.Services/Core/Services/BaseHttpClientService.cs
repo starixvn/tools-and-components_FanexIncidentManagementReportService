@@ -28,7 +28,7 @@
 
         public async Task<T> ExecuteAsync<T>(string endpoint)
         {
-            var httpClient = httpClientFactory.CreateClient();
+            var httpClient = httpClientFactory.CreateClient("ProxiedClient");
             using var request = CreateRequest(endpoint, HttpMethod.Get);
             using var response = await httpClient.SendAsync(request);
             response.EnsureSuccessStatusCode();

@@ -1,5 +1,6 @@
 ﻿namespace Fanex.IncidentManagementReport.Services
 {
+    using System.Net;
     using Fanex.IncidentManagementReport.Services.Core.Extensions;
     using Fanex.IncidentManagementReport.Services.Core.Models;
     using Fanex.IncidentManagementReport.Services.Core.Services;
@@ -45,11 +46,24 @@
             var nexBotSettings = Configuration.GetSection("RedmineApiSettings").Get<RedmineApiSettings>();
             services.AddSingleton(nexBotSettings);
 
-            services.AddHttpClient();
+            RegisterHttpClientService(services, Configuration);
 
             RegisterDI(services);
             ServiceExtension.Services = services;
             MailClientHandler.Start();
+        }
+
+        private static void RegisterHttpClientService(IServiceCollection services, IConfiguration configuration)
+        {
+            bool isUseProxy = configuration.GetValue<bool>("ProxySettings:IsUseProxy");
+            string proxyAddress = configuration.GetValue<string>("ProxySettings:ProxyAddress");
+            bool byPassLocal = configuration.GetValue<bool>("ProxySettings:BypassOnLocal");
+
+            services.AddHttpClient("ProxiedClient").ConfigurePrimaryHttpMessageHandler(() => new SocketsHttpHandler
+            {
+                UseProxy = isUseProxy,
+                Proxy = new WebProxy(proxyAddress, byPassLocal)
+            });
         }
 
         public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
