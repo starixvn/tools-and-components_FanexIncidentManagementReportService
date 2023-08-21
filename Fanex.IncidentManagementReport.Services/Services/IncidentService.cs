@@ -117,7 +117,7 @@
                     CategoryName = (parentProject is not null ? parentProject.Name + " - " : string.Empty) + iss.Project.Name,
                     Assignee = iss.Assignee != null ? iss.Assignee.Name : string.Empty,
                     Creator = iss.Creator.Name,
-                    Priority = isDaily ? iss.Priority.Name : GetPriorityName(iss.Priority.Id),
+                    Priority = isDaily ? iss.Priority.Name : GetPriorityName(iss.Priority.Name),
                     PriorityId = iss.Priority.Id,
                     Status = iss.Status.Name,
                     UpdatedDate = iss.UpdatedDate,
@@ -137,7 +137,15 @@
             return result;
         }
 
-        private static string GetPriorityName(int priorityId) => $"P{priorityId}";
+        private static string GetPriorityName(string priorityName)
+        {
+            var value = string.Empty;
+            if (!string.IsNullOrWhiteSpace(priorityName) && priorityName.Contains('-'))
+            {
+                value = "P" + priorityName.Split('-').FirstOrDefault().Trim();
+            }
+            return value;
+        }
 
         private DateTime ExtractDate(int customFieldValue, IssuesViewModel model)
         {
