@@ -1,6 +1,6 @@
 ﻿namespace Fanex.IncidentManagementReport.Services.Core.Services.Interfaces
 {
-    using Fanex.IncidentManagementReport.Services.Model;
+    using Model;
 
     public interface IProjectService
     {

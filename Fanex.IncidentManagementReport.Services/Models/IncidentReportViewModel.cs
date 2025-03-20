@@ -1,8 +1,8 @@
 ﻿namespace Fanex.IncidentManagementReport.Services.Model
 {
+    using Core.Extensions;
     using System;
     using System.Collections.Generic;
-    using Fanex.IncidentManagementReport.Services.Core.Extensions;
 
     public class IncidentReportViewModel
     {

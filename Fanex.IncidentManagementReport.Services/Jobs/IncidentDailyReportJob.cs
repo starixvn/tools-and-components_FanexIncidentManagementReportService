@@ -1,11 +1,11 @@
 ﻿namespace Fanex.IncidentManagementReport.Services.Jobs
 {
-    using System;
-    using Fanex.IncidentManagementReport.Services.Core.Extensions;
-    using Fanex.IncidentManagementReport.Services.Services;
+    using Core.Extensions;
     using MailDelivery.Client.Jobs;
     using MailDelivery.Core.Models;
     using Quartz;
+    using Services;
+    using System;
 
     public class IncidentDailyReportJob : JobBase
     {

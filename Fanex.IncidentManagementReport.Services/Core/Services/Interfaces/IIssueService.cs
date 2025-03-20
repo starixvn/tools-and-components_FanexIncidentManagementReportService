@@ -1,8 +1,8 @@
 ﻿namespace Fanex.IncidentManagementReport.Services.Core.Services.Interfaces
 {
-    using Fanex.IncidentManagementReport.Services.Core.Enums;
-    using Fanex.IncidentManagementReport.Services.Model;
-    using Fanex.IncidentManagementReport.Services.Model.Problem;
+    using Enums;
+    using Model;
+    using Model.Problem;
 
     public interface IIssueService
     {

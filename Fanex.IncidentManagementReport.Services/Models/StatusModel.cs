@@ -1,6 +1,6 @@
 ﻿namespace Fanex.IncidentManagementReport.Services.Model
 {
-    using Fanex.IncidentManagementReport.Services.Models;
+    using Models;
     using Newtonsoft.Json;
 
     public class StatusModel

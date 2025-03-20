@@ -1,8 +1,8 @@
 ﻿namespace Fanex.IncidentManagementReport.Services.Model
 {
-    using System.Collections.Generic;
-    using Fanex.IncidentManagementReport.Services.Models;
+    using Models;
     using Newtonsoft.Json;
+    using System.Collections.Generic;
 
     public class IssuesViewModel
     {

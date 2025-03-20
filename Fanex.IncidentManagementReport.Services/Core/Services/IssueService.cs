@@ -1,16 +1,16 @@
 ﻿namespace Fanex.IncidentManagementReport.Services.Core.Services
 {
+    using Enums;
+    using Fanex.IncidentManagementReport.Services.Models.Problem;
+    using Interfaces;
+    using Model;
+    using Model.Problem;
+    using Models;
     using System;
     using System.Collections.Generic;
     using System.Globalization;
     using System.Net.Http;
     using System.Threading.Tasks;
-    using Fanex.IncidentManagementReport.Services.Core.Enums;
-    using Fanex.IncidentManagementReport.Services.Core.Models;
-    using Fanex.IncidentManagementReport.Services.Core.Services.Interfaces;
-    using Fanex.IncidentManagementReport.Services.Model;
-    using Fanex.IncidentManagementReport.Services.Model.Problem;
-    using Fanex.IncidentManagementReport.Services.Models.Problem;
 
     public class IssueService : BaseHttpClientService, IIssueService
     {

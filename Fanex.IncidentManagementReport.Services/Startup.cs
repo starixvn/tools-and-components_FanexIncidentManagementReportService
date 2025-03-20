@@ -1,20 +1,20 @@
 ﻿namespace Fanex.IncidentManagementReport.Services
 {
-    using System.Net;
-    using Fanex.IncidentManagementReport.Services.Core.Extensions;
+    using Core.Extensions;
     using Fanex.IncidentManagementReport.Services.Core.Models;
     using Fanex.IncidentManagementReport.Services.Core.Services;
     using Fanex.IncidentManagementReport.Services.Core.Services.Interfaces;
-    using Fanex.IncidentManagementReport.Services.Services;
-    using Fanex.IncidentManagementReport.Services.Services.Interfaces;
-    using Fanex.Logging;
     using Fanex.Logging.Sentry;
-    using Fanex.MailDelivery.Client;
+    using Logging;
+    using MailDelivery.Client;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc.Infrastructure;
     using Sentry;
+    using Services;
+    using Services.Interfaces;
+    using System.Net;
 
     public class Startup
     {

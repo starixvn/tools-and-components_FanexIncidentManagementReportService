@@ -1,13 +1,13 @@
 ﻿namespace Fanex.IncidentManagementReport.Services.Services
 {
-    using System.Threading.Tasks;
+    using Core.Extensions;
     using Fanex.IncidentManagementReport.Service.Core;
-    using Fanex.IncidentManagementReport.Services.Core.Extensions;
     using Fanex.IncidentManagementReport.Services.Core.Models;
     using Fanex.IncidentManagementReport.Services.Core.Services;
-    using Fanex.IncidentManagementReport.Services.Model;
-    using Fanex.IncidentManagementReport.Services.Services.Interfaces;
     using FluentDateTime;
+    using Interfaces;
+    using Model;
+    using System.Threading.Tasks;
 
     public interface IIncidentReportManagementService
     {

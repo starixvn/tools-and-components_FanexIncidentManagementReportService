@@ -1,7 +1,7 @@
 ﻿namespace Fanex.IncidentManagementReport.Services.Model
 {
+    using Core.Extensions;
     using System;
-    using Fanex.IncidentManagementReport.Services.Core.Extensions;
 
     public class IncidentReportModel
     {

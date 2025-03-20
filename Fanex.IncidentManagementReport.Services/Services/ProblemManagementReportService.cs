@@ -1,11 +1,11 @@
 ﻿namespace Fanex.IncidentManagementReport.Services.Services
 {
-    using Fanex.IncidentManagementReport.Services.Core.Enums;
-    using Fanex.IncidentManagementReport.Services.Core.Extensions;
+    using Core.Enums;
+    using Core.Extensions;
     using Fanex.IncidentManagementReport.Services.Core.Models;
     using Fanex.IncidentManagementReport.Services.Core.Services;
     using Fanex.IncidentManagementReport.Services.Core.Services.Interfaces;
-    using Fanex.IncidentManagementReport.Services.Model.Problem;
+    using Model.Problem;
 
     public interface IProblemManagementReportService
     {

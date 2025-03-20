@@ -1,11 +1,11 @@
 ﻿namespace Fanex.IncidentManagementReport.Services.Core.Services
 {
+    using Interfaces;
+    using Model;
+    using Models;
     using System.Collections.Generic;
     using System.Net.Http;
     using System.Threading.Tasks;
-    using Fanex.IncidentManagementReport.Services.Core.Models;
-    using Fanex.IncidentManagementReport.Services.Core.Services.Interfaces;
-    using Fanex.IncidentManagementReport.Services.Model;
 
     public class ProjectService : BaseHttpClientService, IProjectService
     {

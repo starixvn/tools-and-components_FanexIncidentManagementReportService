@@ -1,10 +1,10 @@
 ﻿namespace Fanex.IncidentManagementReport.Services.Core.Services
 {
+    using Extensions;
+    using Models;
+    using Newtonsoft.Json;
     using System.Net.Http.Headers;
     using System.Text;
-    using Fanex.IncidentManagementReport.Services.Core.Extensions;
-    using Fanex.IncidentManagementReport.Services.Core.Models;
-    using Newtonsoft.Json;
 
     public class BaseHttpClientService
     {

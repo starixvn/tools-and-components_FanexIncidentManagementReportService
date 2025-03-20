@@ -1,14 +1,14 @@
 ﻿namespace Fanex.IncidentManagementReport.Services.Services
 {
+    using Core.Enums;
+    using Fanex.IncidentManagementReport.Services.Core.Models;
+    using Fanex.IncidentManagementReport.Services.Core.Services.Interfaces;
+    using Interfaces;
+    using Model;
     using System;
     using System.Collections.Generic;
     using System.Globalization;
     using System.Threading.Tasks;
-    using Fanex.IncidentManagementReport.Services.Core.Enums;
-    using Fanex.IncidentManagementReport.Services.Core.Models;
-    using Fanex.IncidentManagementReport.Services.Core.Services.Interfaces;
-    using Fanex.IncidentManagementReport.Services.Model;
-    using Fanex.IncidentManagementReport.Services.Services.Interfaces;
 
     public class IncidentService : IIncidentService
     {

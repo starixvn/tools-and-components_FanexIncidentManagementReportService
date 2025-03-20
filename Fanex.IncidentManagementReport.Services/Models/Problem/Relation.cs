@@ -1,8 +1,8 @@
 ﻿namespace Fanex.IncidentManagementReport.Services.Model.Problem
 {
-    using System;
-    using Fanex.IncidentManagementReport.Services.Core.Enums;
+    using Core.Enums;
     using Newtonsoft.Json;
+    using System;
 
     public class Relation
     {
