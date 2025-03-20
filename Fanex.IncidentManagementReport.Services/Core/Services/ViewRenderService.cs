@@ -5,70 +5,69 @@ using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
-namespace Fanex.IncidentManagementReport.Services.Core.Services
+namespace Fanex.IncidentManagementReport.Services.Core.Services;
+
+public interface IViewRenderService
 {
-    public interface IViewRenderService
+    Task<string> RenderViewToStringAsync<TModel>(string name, TModel model);
+}
+
+public class ViewRenderService : IViewRenderService
+{
+    private readonly IRazorViewEngine viewEngine;
+    private readonly ITempDataProvider tempDataProvider;
+    private readonly IServiceProvider serviceProvider;
+
+    public ViewRenderService(
+        IRazorViewEngine viewEngine,
+        ITempDataProvider tempDataProvider,
+        IServiceProvider serviceProvider)
     {
-        Task<string> RenderViewToStringAsync<TModel>(string name, TModel model);
+        this.viewEngine = viewEngine;
+        this.tempDataProvider = tempDataProvider;
+        this.serviceProvider = serviceProvider;
     }
 
-    public class ViewRenderService : IViewRenderService
+    public async Task<string> RenderViewToStringAsync<TModel>(string name, TModel model)
     {
-        private IRazorViewEngine viewEngine;
-        private ITempDataProvider tempDataProvider;
-        private IServiceProvider serviceProvider;
+        var actionContext = GetActionContext();
 
-        public ViewRenderService(
-            IRazorViewEngine viewEngine,
-            ITempDataProvider tempDataProvider,
-            IServiceProvider serviceProvider)
+        var viewEngineResult = viewEngine.FindView(actionContext, name, false);
+
+        if (!viewEngineResult.Success)
         {
-            this.viewEngine = viewEngine;
-            this.tempDataProvider = tempDataProvider;
-            this.serviceProvider = serviceProvider;
+            throw new InvalidOperationException($"Couldn't find view '{name}'");
         }
 
-        public async Task<string> RenderViewToStringAsync<TModel>(string name, TModel model)
-        {
-            var actionContext = GetActionContext();
+        var view = viewEngineResult.View;
 
-            var viewEngineResult = viewEngine.FindView(actionContext, name, false);
-
-            if (!viewEngineResult.Success)
+        await using var output = new StringWriter();
+        var viewContext = new ViewContext(
+            actionContext,
+            view,
+            new ViewDataDictionary<TModel>(
+                metadataProvider: new EmptyModelMetadataProvider(),
+                modelState: new ModelStateDictionary())
             {
-                throw new InvalidOperationException(string.Format("Couldn't find view '{0}'", name));
-            }
+                Model = model
+            },
+            new TempDataDictionary(
+                actionContext.HttpContext,
+                tempDataProvider),
+            output,
+            new HtmlHelperOptions());
 
-            var view = viewEngineResult.View;
+        await view.RenderAsync(viewContext);
 
-            using var output = new StringWriter();
-            var viewContext = new ViewContext(
-                actionContext,
-                view,
-                new ViewDataDictionary<TModel>(
-                    metadataProvider: new EmptyModelMetadataProvider(),
-                    modelState: new ModelStateDictionary())
-                {
-                    Model = model
-                },
-                new TempDataDictionary(
-                    actionContext.HttpContext,
-                    tempDataProvider),
-                output,
-                new HtmlHelperOptions());
+        return output.ToString();
+    }
 
-            await view.RenderAsync(viewContext);
-
-            return output.ToString();
-        }
-
-        private ActionContext GetActionContext()
+    private ActionContext GetActionContext()
+    {
+        var httpContext = new DefaultHttpContext
         {
-            var httpContext = new DefaultHttpContext
-            {
-                RequestServices = serviceProvider
-            };
-            return new ActionContext(httpContext, new RouteData(), new ActionDescriptor());
-        }
+            RequestServices = serviceProvider
+        };
+        return new ActionContext(httpContext, new RouteData(), new ActionDescriptor());
     }
 }

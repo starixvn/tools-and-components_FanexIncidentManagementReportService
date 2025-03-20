@@ -18,6 +18,6 @@ FROM hub.nexdev.net/base/dotnet/core/aspnet:6.0-alpine-25h1 AS base
 WORKDIR /app
 
 COPY --from=builder /app .
-ENV TZ="Asia/Taipei"
+ENV TZ="Etc/GMT-8"
 
 ENTRYPOINT ["dotnet", "Fanex.IncidentManagementReport.Services.dll"]

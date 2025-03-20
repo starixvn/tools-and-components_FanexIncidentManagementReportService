@@ -1,48 +1,46 @@
-﻿namespace Fanex.IncidentManagementReport.Services.Model
+﻿namespace Fanex.IncidentManagementReport.Services.Models;
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+public class IncidentDailyReportViewModel
 {
-    using Fanex.IncidentManagementReport.Service.Core;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
+    public IList<IncidentGroup> PendingIncidents { get; set; }
 
-    public class IncidentDailyReportViewModel
+    public IList<IncidentGroup> P1Incidents { get; set; }
+
+    public string RedmineUrl { get; set; }
+
+    public DateTime FromDate { get; set; }
+
+    public DateTime ToDate { get; set; }
+
+    public int PendingIncidentCount
     {
-        public IList<IncidentGroup> PendingIncidents { get; set; }
-
-        public IList<IncidentGroup> P1Incidents { get; set; }
-
-        public string RedmineUrl { get; set; }
-
-        public DateTime FromDate { get; set; }
-
-        public DateTime ToDate { get; set; }
-
-        public int PendingIncidentCount 
-        { 
-            get 
-            {
-                var count = 0;
-                foreach (IncidentGroup pendingIncident in PendingIncidents)
-                {
-                    count += pendingIncident.Incidents.Count();
-                }
-
-                return count;
-            } 
-        }
-
-        public int P1IncidentCount
+        get
         {
-            get
+            var count = 0;
+            foreach (var pendingIncident in PendingIncidents)
             {
-                var count = 0;
-                foreach (IncidentGroup priority1Incident in P1Incidents)
-                {
-                    count += priority1Incident.Incidents.Count();
-                }
-
-                return count;
+                count += pendingIncident.Incidents.Count();
             }
+
+            return count;
+        }
+    }
+
+    public int P1IncidentCount
+    {
+        get
+        {
+            var count = 0;
+            foreach (var priority1Incident in P1Incidents)
+            {
+                count += priority1Incident.Incidents.Count();
+            }
+
+            return count;
         }
     }
 }

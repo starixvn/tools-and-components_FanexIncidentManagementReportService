@@ -1,63 +1,62 @@
-﻿namespace Fanex.IncidentManagementReport.Services.Model
+﻿namespace Fanex.IncidentManagementReport.Services.Models;
+
+using Core.Extensions;
+using System;
+using System.Collections.Generic;
+
+public class IncidentReportViewModel
 {
-    using Core.Extensions;
-    using System;
-    using System.Collections.Generic;
+    public IList<IncidentReportModel> CreateNewIncidentReport { get; set; }
 
-    public class IncidentReportViewModel
+    public IList<IncidentReportModel> ClosedIncidentReport { get; set; }
+
+    public IList<IncidentReportModel> PendingIncidentReport { get; set; }
+
+    public IList<IncidentReportModel> P1IncidentReport { get; set; }
+
+    public IList<IncidentReportModel> AgingDataLastWeek { get; set; }
+
+    public IList<IncidentReportModel> AgingDataLast2Week { get; set; }
+
+    public string RedmineUrl { get; set; }
+
+    public DateTime FromDate { get; set; }
+
+    public DateTime ToDate { get; set; }
+
+    public string FromDateDisplay
     {
-        public IList<IncidentReportModel> CreateNewIncidentReport { get; set; }
+        get { return Utilities.GetDisplayShortDate(FromDate); }
+    }
 
-        public IList<IncidentReportModel> ClosedIncidentReport { get; set; }
+    public string ToDateDisplay
+    {
+        get { return Utilities.GetDisplayShortDate(ToDate); }
+    }
 
-        public IList<IncidentReportModel> PendingIncidentReport { get; set; }
+    public string FromLast2WeekDisplay
+    {
+        get { return Utilities.GetDisplayShortDate(FromDate.AddDays(-7)); }
+    }
 
-        public IList<IncidentReportModel> P1IncidentReport { get; set; }
+    public string ToLast2WeekDisplay
+    {
+        get { return Utilities.GetDisplayShortDate(ToDate.AddDays(-7)); }
+    }
 
-        public IList<IncidentReportModel> AgingDataLastWeek { get; set; }
+    public IncidentPrioritySummary CreateNewIncidentSummary { get; set; }
 
-        public IList<IncidentReportModel> AgingDataLast2Week { get; set; }
+    public IncidentPrioritySummary ClosedIncidentSummary { get; set; }
 
-        public string RedmineUrl { get; set; }
+    public IncidentPrioritySummary PendingIncidentSummary { get; set; }
 
-        public DateTime FromDate { get; set; }
+    public IncidentPrioritySummary AgingDataLastWeekSummary
+    {
+        get { return new IncidentPrioritySummary(AgingDataLastWeek); }
+    }
 
-        public DateTime ToDate { get; set; }
-
-        public string FromDateDisplay
-        {
-            get { return Utilities.GetDisplayShortDate(FromDate); }
-        }
-
-        public string ToDateDisplay
-        {
-            get { return Utilities.GetDisplayShortDate(ToDate); }
-        }
-
-        public string FromLast2WeekDisplay
-        {
-            get { return Utilities.GetDisplayShortDate(FromDate.AddDays(-7)); }
-        }
-
-        public string ToLast2WeekDisplay
-        {
-            get { return Utilities.GetDisplayShortDate(ToDate.AddDays(-7)); }
-        }
-
-        public IncidentPrioritySummary CreateNewIncidentSummary { get; set; }
-
-        public IncidentPrioritySummary ClosedIncidentSummary { get; set; }
-
-        public IncidentPrioritySummary PendingIncidentSummary { get; set; }
-
-        public IncidentPrioritySummary AgingDataLastWeekSummary
-        {
-            get { return new IncidentPrioritySummary(AgingDataLastWeek); }
-        }
-
-        public IncidentPrioritySummary AgingDataLast2WeekSummary
-        {
-            get { return new IncidentPrioritySummary(AgingDataLast2Week); }
-        }
+    public IncidentPrioritySummary AgingDataLast2WeekSummary
+    {
+        get { return new IncidentPrioritySummary(AgingDataLast2Week); }
     }
 }

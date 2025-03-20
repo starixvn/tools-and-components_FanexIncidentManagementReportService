@@ -1,28 +1,27 @@
 ﻿using Fanex.IncidentManagementReport.Services.Core.Services;
 
-namespace Fanex.IncidentManagementReport.Services.Core.Extensions
+namespace Fanex.IncidentManagementReport.Services.Core.Extensions;
+
+public class ErrorHandler
 {
-    public class ErrorHandler
+    private readonly RequestDelegate next;
+    private readonly ILogServiceProvider logService;
+
+    public ErrorHandler(RequestDelegate next, ILogServiceProvider logService)
     {
-        private readonly RequestDelegate next;
-        private readonly ILogServiceProvider logService;
+        this.next = next;
+        this.logService = logService;
+    }
 
-        public ErrorHandler(RequestDelegate next, ILogServiceProvider logService)
+    public async Task InvokeAsync(HttpContext context)
+    {
+        try
         {
-            this.next = next;
-            this.logService = logService;
+            await next(context);
         }
-
-        public async Task InvokeAsync(HttpContext context)
+        catch (Exception ex)
         {
-            try
-            {
-                await next(context);
-            }
-            catch (Exception ex)
-            {
-                await logService.ErrorSentryAsync(ex);
-            }
+            await logService.ErrorSentryAsync(ex);
         }
     }
 }

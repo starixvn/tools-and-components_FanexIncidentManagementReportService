@@ -1,11 +1,9 @@
-﻿namespace Fanex.IncidentManagementReport.Services.Model
-{
-    using Models;
-    using Newtonsoft.Json;
+﻿namespace Fanex.IncidentManagementReport.Services.Models;
 
-    public class StatusModel
-    {
-        [JsonProperty(PropertyName = "issue_statuses")]
-        public List<BaseModel> IssueStatuses { get; set; }
-    }
+using Newtonsoft.Json;
+
+public class StatusModel
+{
+    [JsonProperty(PropertyName = "issue_statuses")]
+    public List<BaseModel> IssueStatuses { get; set; }
 }

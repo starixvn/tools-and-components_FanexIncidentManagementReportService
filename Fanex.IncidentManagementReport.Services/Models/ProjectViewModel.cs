@@ -1,16 +1,15 @@
-﻿using Newtonsoft.Json;
+﻿namespace Fanex.IncidentManagementReport.Services.Models;
 
-namespace Fanex.IncidentManagementReport.Services.Model
+using Newtonsoft.Json;
+
+public class ProjectViewModel
 {
-    public class ProjectViewModel
-    {
-        [JsonProperty(PropertyName = "id")]
-        public int Id { get; set; }
+    [JsonProperty(PropertyName = "id")]
+    public int Id { get; set; }
 
-        [JsonProperty(PropertyName = "name")]
-        public string Name { get; set; }
+    [JsonProperty(PropertyName = "name")]
+    public string Name { get; set; }
 
-        [JsonProperty(PropertyName = "parent")]
-        public ProjectViewModel Parent { get; set; }       
-    }
+    [JsonProperty(PropertyName = "parent")]
+    public ProjectViewModel Parent { get; set; }       
 }
