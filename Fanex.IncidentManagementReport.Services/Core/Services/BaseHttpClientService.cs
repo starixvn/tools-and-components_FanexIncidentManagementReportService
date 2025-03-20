@@ -1,40 +1,39 @@
-﻿namespace Fanex.IncidentManagementReport.Services.Core.Services
+﻿namespace Fanex.IncidentManagementReport.Services.Core.Services;
+
+using Extensions;
+using Models;
+using Newtonsoft.Json;
+using System.Net.Http.Headers;
+using System.Text;
+
+public class BaseHttpClientService
 {
-    using System.Net.Http.Headers;
-    using System.Text;
-    using Fanex.IncidentManagementReport.Services.Core.Extensions;
-    using Fanex.IncidentManagementReport.Services.Core.Models;
-    using Newtonsoft.Json;
+    private readonly RedmineApiSettings settings;
+    private readonly IHttpClientFactory httpClientFactory;
 
-    public class BaseHttpClientService
+    public BaseHttpClientService(RedmineApiSettings settings, IHttpClientFactory httpClientFactory)
     {
-        private readonly RedmineApiSettings settings;
-        private readonly IHttpClientFactory httpClientFactory;
+        this.settings = settings;
+        this.httpClientFactory = httpClientFactory;
+    }
 
-        public BaseHttpClientService(RedmineApiSettings settings, IHttpClientFactory httpClientFactory)
-        {
-            this.settings = settings;
-            this.httpClientFactory = httpClientFactory;
-        }
+    private HttpRequestMessage CreateRequest(string endPointPath, HttpMethod method)
+    {
+        Uri url = new($"{settings.BaseUrl}{endPointPath}");
+        var request = new HttpRequestMessage(method, url);
+        var plainSecretKey = Utilities.Decrypt(settings.SecretKey);
+        request.Headers.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(Encoding.UTF8.GetBytes($"{settings.AccountId}:{plainSecretKey}")));
+        return request;
+    }
 
-        private HttpRequestMessage CreateRequest(string endPointPath, HttpMethod method)
-        {
-            Uri url = new($"{settings.BaseUrl}{endPointPath}");
-            var request = new HttpRequestMessage(method, url);
-            string plainSecretKey = Utilities.Decrypt(settings.SecretKey);
-            request.Headers.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(Encoding.UTF8.GetBytes($"{settings.AccountId}:{plainSecretKey}")));
-            return request;
-        }
-
-        public async Task<T> ExecuteAsync<T>(string endpoint)
-        {
-            var httpClient = httpClientFactory.CreateClient("ProxiedClient");
-            using var request = CreateRequest(endpoint, HttpMethod.Get);
-            using var response = await httpClient.SendAsync(request);
-            response.EnsureSuccessStatusCode();
-            string jsonValue = await response.Content.ReadAsStringAsync();
-            var result = JsonConvert.DeserializeObject<T>(jsonValue);
-            return result;
-        }
+    public async Task<T> ExecuteAsync<T>(string endpoint)
+    {
+        var httpClient = httpClientFactory.CreateClient("ProxiedClient");
+        using var request = CreateRequest(endpoint, HttpMethod.Get);
+        using var response = await httpClient.SendAsync(request);
+        response.EnsureSuccessStatusCode();
+        var jsonValue = await response.Content.ReadAsStringAsync();
+        var result = JsonConvert.DeserializeObject<T>(jsonValue);
+        return result;
     }
 }

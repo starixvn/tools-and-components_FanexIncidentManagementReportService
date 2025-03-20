@@ -1,5 +1,5 @@
 ﻿@using Fanex.IncidentManagementReport.Services.Core.Enums
-@using Fanex.IncidentManagementReport.Services.Model.Problem
+@using Fanex.IncidentManagementReport.Services.Models.Problem
 @model WeeklyProblemsReportViewModel
 
 <style type="text/css">
@@ -133,7 +133,7 @@ Please take a look at the summary table and details below for more information a
             </tr>
         </thead>
         <tbody>
-            @for (int i = 1; i < 4; i++)
+            @for (var i = 1; i < 4; i++)
             {
                 <tr class="alt">
                     @{

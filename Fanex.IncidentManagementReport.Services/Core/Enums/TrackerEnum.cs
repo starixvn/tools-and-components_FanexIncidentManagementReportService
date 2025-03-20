@@ -1,8 +1,7 @@
-﻿namespace Fanex.IncidentManagementReport.Services.Core.Enums
+﻿namespace Fanex.IncidentManagementReport.Services.Core.Enums;
+
+public enum TrackerEnum
 {
-    public enum TrackerEnum
-    {
-        Incident = 4,
-        Problem = 3
-    }
+    Incident = 4,
+    Problem = 3
 }

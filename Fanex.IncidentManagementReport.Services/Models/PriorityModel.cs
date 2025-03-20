@@ -1,11 +1,9 @@
-﻿namespace Fanex.IncidentManagementReport.Services.Model
-{
-    using Fanex.IncidentManagementReport.Services.Models;
-    using Newtonsoft.Json;
+﻿namespace Fanex.IncidentManagementReport.Services.Models;
 
-    public class PriorityModel
-    {
-        [JsonProperty(PropertyName = "issue_priorities")]
-        public List<BaseModel> Priorities { get; set; }
-    }
+using Newtonsoft.Json;
+
+public class PriorityModel
+{
+    [JsonProperty(PropertyName = "issue_priorities")]
+    public List<BaseModel> Priorities { get; set; }
 }

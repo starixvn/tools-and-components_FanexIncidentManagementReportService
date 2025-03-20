@@ -1,11 +1,10 @@
-﻿namespace Fanex.IncidentManagementReport.Services.Model
+﻿namespace Fanex.IncidentManagementReport.Services.Models;
+
+using System.Collections.Generic;
+
+public class IncidentGroup
 {
-    using System.Collections.Generic;
+    public string CategoryName { get; set; }
 
-    public class IncidentGroup
-    {
-        public string CategoryName { get; set; }
-
-        public IList<IncidentReportModel> Incidents { get; set; }
-    }
+    public IList<IncidentReportModel> Incidents { get; set; }
 }

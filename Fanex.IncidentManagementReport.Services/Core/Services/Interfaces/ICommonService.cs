@@ -1,13 +1,12 @@
-﻿namespace Fanex.IncidentManagementReport.Services.Core.Services.Interfaces
+﻿namespace Fanex.IncidentManagementReport.Services.Core.Services.Interfaces;
+
+using Fanex.IncidentManagementReport.Services.Models;
+
+internal interface ICommonService
 {
-    using Fanex.IncidentManagementReport.Services.Models;
+    Task<IList<BaseModel>> GetAllPrioritiesAsync();
 
-    internal interface ICommonService
-    {
-        Task<IList<BaseModel>> GetAllPrioritiesAsync();
+    Task<IList<BaseModel>> GetAllStatusesAsync();
 
-        Task<IList<BaseModel>> GetAllStatusesAsync();
-
-        Task<IList<BaseModel>> GetAllTrackersAsync();
-    }
+    Task<IList<BaseModel>> GetAllTrackersAsync();
 }

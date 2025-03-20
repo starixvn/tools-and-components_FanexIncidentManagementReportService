@@ -1,13 +1,12 @@
-﻿namespace Fanex.IncidentManagementReport.Services.Model.Problem
+﻿namespace Fanex.IncidentManagementReport.Services.Models.Problem;
+
+using Newtonsoft.Json;
+
+public class Project
 {
-    using Newtonsoft.Json;
+    [JsonProperty("id")]
+    public int Id { get; set; }
 
-    public class Project
-    {
-        [JsonProperty("id")]
-        public int Id { get; set; }
-
-        [JsonProperty("name")]
-        public string Name { get; set; }
-    }
+    [JsonProperty("name")]
+    public string Name { get; set; }
 }

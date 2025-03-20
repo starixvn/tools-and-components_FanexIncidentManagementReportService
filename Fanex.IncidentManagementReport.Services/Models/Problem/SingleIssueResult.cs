@@ -1,10 +1,9 @@
-﻿namespace Fanex.IncidentManagementReport.Services.Model.Problem
-{
-    using Newtonsoft.Json;
+﻿namespace Fanex.IncidentManagementReport.Services.Models.Problem;
 
-    public class SingleIssueResult
-    {
-        [JsonProperty("issue")]
-        public ProblemIssue Issue { get; set; }
-    }
+using Newtonsoft.Json;
+
+public class SingleIssueResult
+{
+    [JsonProperty("issue")]
+    public ProblemIssue Issue { get; set; }
 }

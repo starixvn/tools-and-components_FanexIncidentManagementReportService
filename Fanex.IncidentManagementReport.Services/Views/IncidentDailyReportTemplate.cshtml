@@ -1,6 +1,7 @@
-﻿@using Fanex.IncidentManagementReport.Services.Core.Enums
-@using Fanex.IncidentManagementReport.Services.Model;
+﻿@using Fanex.IncidentManagementReport.Services.Core.Constants
+@using Fanex.IncidentManagementReport.Services.Models
 @model IncidentDailyReportViewModel
+
 <style type="text/css">
     .datagrid table {
         border-collapse: collapse;
@@ -86,11 +87,17 @@
         position: fixed !important;
     }
 
+    .small-text {
+		font-size: 14px;
+    }
+
 </style>
 Dear All
 <br />
 <br />
-Please see the bellow table for more detail about the P1 and Pending issue in yesterday.
+Please see the below table for more detail about the P1 and Pending issue in yesterday.
+<br/>
+<b class="small-text">@Constants.TimezoneWarningNote</b>
 <br />
 <br />
 <div class="datagrid">

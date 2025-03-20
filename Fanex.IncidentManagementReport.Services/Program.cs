@@ -1,37 +1,39 @@
-﻿namespace Fanex.IncidentManagementReport.Services
-{
-    using System;
-    using Microsoft.AspNetCore;
-    using Microsoft.AspNetCore.Hosting;
-    using NLog;
-    using NLog.Web;
+﻿using Fanex.IncidentManagementReport.Services;
+using Fanex.IncidentManagementReport.Services.Core.Extensions;
+using Fanex.Logging;
+using Fanex.Logging.Sentry;
+using Fanex.MailDelivery.Client;
+using Sentry;
 
-    public static class Program
+var builder = WebApplication.CreateBuilder(args);
+var services = builder.Services;
+var configuration = builder.Configuration;
+
+LogManager
+    .SetDefaultLogCategory(configuration.GetValue<string>("Fanex.Logging:LogCategory"))
+    .Use(new List<ILogEngine>
     {
-        public static void Main(string[] args)
+        new SentryLogging(new SentryEngineOptions
         {
-            var logger = LogManager.Setup().LoadConfigurationFromFile("nlog.config").GetCurrentClassLogger();
-            try
-            {
-                CreateWebHostBuilder(args).Build().Run();
-            }
-            catch (Exception exception)
-            {
-                logger.Error(exception, "Stopped program because of exception");
-                throw;
-            }
-            finally
-            {
-                LogManager.Shutdown();
-            }
-        }
+            Dsn = new Dsn(configuration.GetValue<string>("Fanex.Logging:SentryEngineOptions:Dsn"))
+        })
+    });
 
-        public static IWebHostBuilder CreateWebHostBuilder(string[] args)
-        {
-            return WebHost.CreateDefaultBuilder(args)
-                .UseNLog()
-                .UseUrls($"http://*:5000")
-                .UseStartup<Startup>();
-        }
-    }
-}
+services.AddRazorPages();
+services.AddHealthChecks();
+services.AddConfigurations(configuration);
+services.RegisterHttpClientService(configuration);
+services.RegisterDependencyInjection();
+ServiceExtension.Services = services;
+MailClientHandler.Start();
+
+var app = builder.Build();
+app.UseMiddleware<ErrorHandler>();
+
+app.UseRouting();
+app.MapHealthChecks("/whoami");
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
+
+await app.RunAsync();
