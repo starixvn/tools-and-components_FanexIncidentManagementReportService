@@ -1,4 +1,5 @@
-﻿@using Fanex.IncidentManagementReport.Services.Core.Enums
+﻿@using Fanex.IncidentManagementReport.Services.Core.Constants
+@using Fanex.IncidentManagementReport.Services.Core.Enums
 @using Fanex.IncidentManagementReport.Services.Models.Problem
 @model WeeklyProblemsReportViewModel
 
@@ -97,13 +98,18 @@
     .note {
         margin-top: 5px;
     }
+
+    .small-text {
+        font-size: 14px;
+    }
 </style>
 
 Dear All
 <br />
 <br />
-Please take a look at the summary table and details below for more information about the Weekly Problem report <b>(GMT +8)</b>.
-
+Please take a look at the summary table and details below for more information about the Weekly Problem report.
+<br />
+<b class="small-text">@Constants.TimezoneWarningNote</b>
 <br />
 <br />
 <div class="datagrid">
