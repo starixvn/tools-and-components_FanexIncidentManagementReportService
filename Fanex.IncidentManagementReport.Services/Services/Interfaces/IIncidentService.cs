@@ -12,7 +12,7 @@ public interface IIncidentService
 
     Task<IList<IncidentReportModel>> GetP1IncidentWeeklyAsync(DateTime fromDate, DateTime toDate);
 
-    Task<IList<IncidentReportModel>> GetPendingIncidentDailyAsync();
+    Task<(IList<IncidentReportModel>, IList<IncidentReportModel>)> GetPendingIncidentDailyAsync();
 
     Task<IList<IncidentReportModel>> GetPendingIncidentWeeklyAsync(DateTime toDate);
 }

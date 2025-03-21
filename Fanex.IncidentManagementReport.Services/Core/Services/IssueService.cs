@@ -2,6 +2,7 @@
 
 using Enums;
 using Fanex.IncidentManagementReport.Services.Models.Problem;
+using IncidentManagementReport.Services.Models;
 using Interfaces;
 using Models;
 using System;
@@ -9,7 +10,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Net.Http;
 using System.Threading.Tasks;
-using IncidentManagementReport.Services.Models;
 
 public class IssueService : BaseHttpClientService, IIssueService
 {
@@ -79,7 +79,7 @@ public class IssueService : BaseHttpClientService, IIssueService
 
     public async Task<IList<IssuesViewModel>> GetPendingIssuesDailyAsync(TrackerEnum tracker)
     {
-        var url = $"issues.json?status_id=!5|6&priority_id=!1&limit=100&tracker_id={(int)tracker}";
+        var url = $"issues.json?status_id=!5|6&limit=100&tracker_id={(int)tracker}";
         var issueResponse = await ExecuteAsync<IssuesModel>(url);
         return issueResponse.Issues;
     }

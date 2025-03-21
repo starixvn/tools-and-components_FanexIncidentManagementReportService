@@ -138,13 +138,20 @@ public class IncidentReportManagementService : IIncidentReportManagementService
 
     private async Task<string> IncidentDailyReportGeneration(DateTime yesterday)
     {
+        var yesterdayP1Incidents = await incidentService.GetP1IncidentDailyAsync(yesterday, yesterday);
+        var (pendingIncidents, pendingP1Incidents) = await incidentService.GetPendingIncidentDailyAsync();
+        var aggP1Incidents = yesterdayP1Incidents.Concat(pendingP1Incidents).ToList();
+
+        var pendingIncidentGroups = GetPendingIncidentCategory(pendingIncidents);
+        var p1IncidentGroups = GetPendingIncidentCategory(aggP1Incidents);
+
         var model = new IncidentDailyReportViewModel()
         {
             FromDate = yesterday,
             ToDate = yesterday,
             RedmineUrl = redmineSettings.BaseUrl + "/issues/",
-            PendingIncidents = await GetPendingIncidentCategoryAsync(),
-            P1Incidents = await GetP1IncidentCategoryAsync(yesterday, yesterday)
+            PendingIncidents = pendingIncidentGroups,
+            P1Incidents = p1IncidentGroups
         };
 
         var content = await viewRenderService.RenderViewToStringAsync(DailyReportEmailTemplate, model);
@@ -152,9 +159,8 @@ public class IncidentReportManagementService : IIncidentReportManagementService
         return content;
     }
 
-    private async Task<IList<IncidentGroup>> GetPendingIncidentCategoryAsync()
+    private static IList<IncidentGroup> GetPendingIncidentCategory(IList<IncidentReportModel> pendingIncidents)
     {
-        var pendingIncidents = await incidentService.GetPendingIncidentDailyAsync();
         IList<IncidentReportModel> pendingIncidentGroupByCategory = pendingIncidents.GroupBy(t => t.CategoryName).Select(grp => grp.First()).ToList();
         IList<IncidentGroup> pendingIncidentGroups = pendingIncidentGroupByCategory.Select(t => new IncidentGroup()
         {
@@ -163,19 +169,6 @@ public class IncidentReportManagementService : IIncidentReportManagementService
         }).ToList();
 
         return pendingIncidentGroups;
-    }
-
-    private async Task<IList<IncidentGroup>> GetP1IncidentCategoryAsync(DateTime fromDate, DateTime toDate)
-    {
-        var priority1Incidents = await incidentService.GetP1IncidentDailyAsync(fromDate, toDate);
-        IList<IncidentReportModel> priority1GroupByCategory = priority1Incidents.GroupBy(t => t.CategoryName).Select(grp => grp.First()).ToList();
-        IList<IncidentGroup> priority1IncidentGroups = priority1GroupByCategory.Select(t => new IncidentGroup()
-        {
-            CategoryName = t.CategoryName,
-            Incidents = priority1Incidents.Where(x => x.CategoryName == t.CategoryName).ToList()
-        }).ToList();
-
-        return priority1IncidentGroups;
     }
 
     private bool IsAgingIncident(IncidentReportModel incident, DateTime toDate)

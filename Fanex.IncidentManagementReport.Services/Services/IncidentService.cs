@@ -4,11 +4,11 @@ using Core.Enums;
 using Fanex.IncidentManagementReport.Services.Core.Models;
 using Fanex.IncidentManagementReport.Services.Core.Services.Interfaces;
 using Interfaces;
+using Models;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
-using Models;
 
 public class IncidentService : IIncidentService
 {
@@ -36,18 +36,24 @@ public class IncidentService : IIncidentService
         return new List<IncidentReportModel>();
     }
 
-    public async Task<IList<IncidentReportModel>> GetPendingIncidentDailyAsync()
+    public async Task<(IList<IncidentReportModel>, IList<IncidentReportModel>)> GetPendingIncidentDailyAsync()
     {
         var issues = await issueService.GetPendingIssuesDailyAsync(Tracker);
         if (issues is not null)
         {
-            issues = issues.Where(t => !appSettings.IgnoredProjectIds.Contains(t.Project.Id))
+            var pendingIssues = issues.Where(t => !appSettings.IgnoredProjectIds.Contains(t.Project.Id))
                 .Where(t => !((t.CreatedDate - DateTime.Now.Date.AddDays(-1)).Days == 0 && t.Priority.Id == 1))
                 .ToList();
-            return await GenerateIncidentModel(issues);
+
+            var pendingP1 = issues.Where(i => i.Priority.Id == 1).ToList();
+
+            var pendingIncidents = await GenerateIncidentModel(pendingIssues);
+            var pendingP1Incidents = await GenerateIncidentModel(pendingP1);
+
+            return (pendingIncidents, pendingP1Incidents);
         }
 
-        return new List<IncidentReportModel>();
+        return new ValueTuple<IList<IncidentReportModel>, IList<IncidentReportModel>>();
     }
 
     public async Task<IList<IncidentReportModel>> GetClosedIncidentAsync(DateTime fromDate, DateTime toDate)
