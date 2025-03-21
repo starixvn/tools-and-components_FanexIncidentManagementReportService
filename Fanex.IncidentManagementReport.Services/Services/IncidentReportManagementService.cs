@@ -16,20 +16,14 @@ public interface IIncidentReportManagementService
     Task<string> GenerateIncidentDailyReportContent();
 }
 
-public class IncidentReportManagementService : IIncidentReportManagementService
+public class IncidentReportManagementService(
+    IIncidentService incidentService,
+    IViewRenderService viewRenderService,
+    RedmineApiSettings redmineSettings)
+    : IIncidentReportManagementService
 {
-    private readonly IIncidentService incidentService;
-    private readonly IViewRenderService viewRenderService;
-    private readonly RedmineApiSettings redmineSettings;
     private const string WeeklyReportEmailTemplate = "IncidentWeeklyReportTemplate";
     private const string DailyReportEmailTemplate = "IncidentDailyReportTemplate";
-
-    public IncidentReportManagementService(IIncidentService incidentService, IViewRenderService viewRenderService, RedmineApiSettings redmineSettings)
-    {
-        this.incidentService = incidentService;
-        this.redmineSettings = redmineSettings;
-        this.viewRenderService = viewRenderService;
-    }
 
     public async Task<string> GenerateIncidentDailyReportContent()
     {
@@ -112,7 +106,7 @@ public class IncidentReportManagementService : IIncidentReportManagementService
         IList<IncidentReportModel> closedIncidents,
         IList<IncidentReportModel> pendingIncidents)
     {
-        List<IncidentReportModel> incidents = new();
+        List<IncidentReportModel> incidents = [];
 
         incidents.AddRange(firstPriorityIncidents);
         incidents.AddRange(newIncidents.Where(t => incidents.All(x => x.IncidentId != t.IncidentId)));

@@ -10,19 +10,10 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
 
-public class IncidentService : IIncidentService
+public class IncidentService(IIssueService issueService, IProjectService projectService, AppSettings appSettings)
+    : IIncidentService
 {
-    private readonly IIssueService issueService;
-    private readonly IProjectService projectService;
-    private readonly AppSettings appSettings;
     private const TrackerEnum Tracker = TrackerEnum.Incident;
-
-    public IncidentService(IIssueService issueService, IProjectService projectService, AppSettings appSettings)
-    {
-        this.issueService = issueService;
-        this.projectService = projectService;
-        this.appSettings = appSettings;
-    }
 
     public async Task<IList<IncidentReportModel>> GetP1IncidentDailyAsync(DateTime fromDate, DateTime toDate)
     {

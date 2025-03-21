@@ -11,19 +11,13 @@ using System.Globalization;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-public class IssueService : BaseHttpClientService, IIssueService
+public class IssueService(RedmineApiSettings settings, IHttpClientFactory httpClientFactory, AppSettings appSettings)
+    : BaseHttpClientService(settings, httpClientFactory), IIssueService
 {
-    private readonly AppSettings appSettings;
-
-    public IssueService(RedmineApiSettings settings, IHttpClientFactory httpClientFactory, AppSettings appSettings) : base(settings, httpClientFactory)
-    {
-        this.appSettings = appSettings;
-    }
-
     public async Task<IList<ProblemIssue>> GetAllIssuesAsync(TrackerEnum tracker)
     {
         var url = $"issues.json?status_id=*&limit=100&tracker_id={(int)tracker}&include=relations";
-        var issueResponse = await ExecuteAsync<ProblemIssueReponse>(url);
+        var issueResponse = await ExecuteAsync<ProblemIssueResponse>(url);
         var issues = issueResponse.Issues;
         foreach (var issue in issues)
         {

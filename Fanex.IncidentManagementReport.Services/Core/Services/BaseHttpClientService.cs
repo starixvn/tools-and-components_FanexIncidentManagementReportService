@@ -6,17 +6,8 @@ using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using System.Text;
 
-public class BaseHttpClientService
+public class BaseHttpClientService(RedmineApiSettings settings, IHttpClientFactory httpClientFactory)
 {
-    private readonly RedmineApiSettings settings;
-    private readonly IHttpClientFactory httpClientFactory;
-
-    public BaseHttpClientService(RedmineApiSettings settings, IHttpClientFactory httpClientFactory)
-    {
-        this.settings = settings;
-        this.httpClientFactory = httpClientFactory;
-    }
-
     private HttpRequestMessage CreateRequest(string endPointPath, HttpMethod method)
     {
         Uri url = new($"{settings.BaseUrl}{endPointPath}");

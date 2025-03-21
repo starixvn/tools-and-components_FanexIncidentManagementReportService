@@ -7,12 +7,9 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-public class CommonService : BaseHttpClientService, ICommonService
+public class CommonService(RedmineApiSettings settings, IHttpClientFactory httpClientFactory)
+    : BaseHttpClientService(settings, httpClientFactory), ICommonService
 {
-    public CommonService(RedmineApiSettings settings, IHttpClientFactory httpClientFactory) : base(settings, httpClientFactory)
-    {
-    }
-
     public async Task<IList<BaseModel>> GetAllPrioritiesAsync()
     {
         var url = "enumerations/issue_priorities.json";

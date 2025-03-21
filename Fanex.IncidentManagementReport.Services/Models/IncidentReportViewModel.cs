@@ -24,25 +24,13 @@ public class IncidentReportViewModel
 
     public DateTime ToDate { get; set; }
 
-    public string FromDateDisplay
-    {
-        get { return Utilities.GetDisplayShortDate(FromDate); }
-    }
+    public string FromDateDisplay => Utilities.GetDisplayShortDate(FromDate);
 
-    public string ToDateDisplay
-    {
-        get { return Utilities.GetDisplayShortDate(ToDate); }
-    }
+    public string ToDateDisplay => Utilities.GetDisplayShortDate(ToDate);
 
-    public string FromLast2WeekDisplay
-    {
-        get { return Utilities.GetDisplayShortDate(FromDate.AddDays(-7)); }
-    }
+    public string FromLast2WeekDisplay => Utilities.GetDisplayShortDate(FromDate.AddDays(-7));
 
-    public string ToLast2WeekDisplay
-    {
-        get { return Utilities.GetDisplayShortDate(ToDate.AddDays(-7)); }
-    }
+    public string ToLast2WeekDisplay => Utilities.GetDisplayShortDate(ToDate.AddDays(-7));
 
     public IncidentPrioritySummary CreateNewIncidentSummary { get; set; }
 
@@ -50,13 +38,7 @@ public class IncidentReportViewModel
 
     public IncidentPrioritySummary PendingIncidentSummary { get; set; }
 
-    public IncidentPrioritySummary AgingDataLastWeekSummary
-    {
-        get { return new IncidentPrioritySummary(AgingDataLastWeek); }
-    }
+    public IncidentPrioritySummary AgingDataLastWeekSummary => new(AgingDataLastWeek);
 
-    public IncidentPrioritySummary AgingDataLast2WeekSummary
-    {
-        get { return new IncidentPrioritySummary(AgingDataLast2Week); }
-    }
+    public IncidentPrioritySummary AgingDataLast2WeekSummary => new(AgingDataLast2Week);
 }

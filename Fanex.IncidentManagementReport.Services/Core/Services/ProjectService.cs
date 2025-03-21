@@ -1,18 +1,15 @@
 ﻿namespace Fanex.IncidentManagementReport.Services.Core.Services;
 
+using IncidentManagementReport.Services.Models;
 using Interfaces;
 using Models;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
-using IncidentManagementReport.Services.Models;
 
-public class ProjectService : BaseHttpClientService, IProjectService
+public class ProjectService(RedmineApiSettings settings, IHttpClientFactory httpClientFactory)
+    : BaseHttpClientService(settings, httpClientFactory), IProjectService
 {
-    public ProjectService(RedmineApiSettings settings, IHttpClientFactory httpClientFactory) : base(settings, httpClientFactory)
-    {
-    }
-
     public async Task<IList<ProjectViewModel>> GetAllProjectsAsync()
     {
         var url = "projects.json?limit=100";

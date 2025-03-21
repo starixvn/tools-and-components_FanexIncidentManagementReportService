@@ -12,19 +12,13 @@ public interface IProblemManagementReportService
     Task<string> GenerateProblemWeeklyReportContent();
 }
 
-public class ProblemManagementReportService : IProblemManagementReportService
+public class ProblemManagementReportService(
+    IIssueService issueService,
+    IViewRenderService viewRenderService,
+    RedmineApiSettings redmineSettings)
+    : IProblemManagementReportService
 {
-    private readonly IIssueService issueService;
-    private readonly IViewRenderService viewRenderService;
-    private readonly RedmineApiSettings redmineSettings;
     private const string ProblemWeeklyReportTemplate = "ProblemWeeklyReportTemplate";
-
-    public ProblemManagementReportService(IIssueService issueService, IViewRenderService viewRenderService, RedmineApiSettings redmineSettings)
-    {
-        this.issueService = issueService;
-        this.redmineSettings = redmineSettings;
-        this.viewRenderService = viewRenderService;
-    }
 
     public async Task<string> GenerateProblemWeeklyReportContent()
     {
@@ -80,16 +74,15 @@ public class ProblemManagementReportService : IProblemManagementReportService
             new IssueGroup(
                 1,
                 issues,
-                new[] { (int)TrackerEnum.Problem },
-                new[]
-                {
+                [(int)TrackerEnum.Problem],
+                [
                     (int)StatusEnum.New,
                     (int)StatusEnum.Assigned,
                     (int)StatusEnum.Workaround,
                     (int)StatusEnum.PendingChange,
                     (int)StatusEnum.Resolved
-                },
-                "Open Problems ({0}) - Include New, Assigned, Workaround, Pending Change, Resolved status untill now"));
+                ],
+                "Open Problems ({0}) - Include New, Assigned, Workaround, Pending Change, Resolved status until now"));
 
         // Resolved
         var filteredIssue = issues.Where(x => viewModel.FromDate <= x.ResolvedDate && x.ResolvedDate <= viewModel.ToDate);
@@ -97,8 +90,8 @@ public class ProblemManagementReportService : IProblemManagementReportService
             new IssueGroup(
                 2,
                 filteredIssue,
-                new[] { (int)TrackerEnum.Problem },
-                new[] { (int)StatusEnum.Resolved },
+                [(int)TrackerEnum.Problem],
+                [(int)StatusEnum.Resolved],
                 "Resolved Problems ({0}) - Problems resolved last week"));
 
         // Closed
@@ -107,8 +100,8 @@ public class ProblemManagementReportService : IProblemManagementReportService
             new IssueGroup(
                 3,
                 filteredIssue,
-                new[] { (int)TrackerEnum.Problem },
-                new[] { (int)StatusEnum.Closed },
+                [(int)TrackerEnum.Problem],
+                [(int)StatusEnum.Closed],
                 "Closed Problems ({0}) - Problems closed last week"));
 
         // Cancelled
@@ -117,8 +110,8 @@ public class ProblemManagementReportService : IProblemManagementReportService
             new IssueGroup(
                 4,
                 filteredIssue,
-                new[] { (int)TrackerEnum.Problem },
-                new[] { (int)StatusEnum.Cancelled },
+                [(int)TrackerEnum.Problem],
+                [(int)StatusEnum.Cancelled],
                 "Cancelled Problems ({0}) - Problems cancelled last week"));
 
         // Newly Created
@@ -136,39 +129,38 @@ public class ProblemManagementReportService : IProblemManagementReportService
         viewModel.IssueGroupsByTimeSummary.Add(new IssueGroup(
             1,
             issues,
-            new[] { (int)TrackerEnum.Problem },
-            new[]
-            {
+            [(int)TrackerEnum.Problem],
+            [
                 (int)StatusEnum.New,
                 (int)StatusEnum.Assigned,
                 (int)StatusEnum.Workaround,
                 (int)StatusEnum.PendingChange,
                 (int)StatusEnum.Resolved
-            },
+            ],
             "Open (All)"));
 
-        // Lastweek
+        // Last week
         var problems = issues.Where(x => x.Tracker.Id == (int)TrackerEnum.Problem);
 
-        var lastweekIssues = new List<ProblemIssue>();
-        // Resolved Lastweek
-        lastweekIssues.AddRange(problems.Where(x => x.Status.Id == (int)StatusEnum.Resolved
+        var lastWeekIssues = new List<ProblemIssue>();
+        // Resolved Last week
+        lastWeekIssues.AddRange(problems.Where(x => x.Status.Id == (int)StatusEnum.Resolved
                                                     && x.ResolvedDate != null
                                                     && viewModel.FromDate <= x.ResolvedDate
                                                     && x.ResolvedDate <= viewModel.ToDate));
 
-        // Closed / Cancelled Lastweek
-        lastweekIssues.AddRange(problems.Where(x => (x.Status.Id == (int)StatusEnum.Closed || x.Status.Id == (int)StatusEnum.Cancelled)
+        // Closed / Cancelled Last week
+        lastWeekIssues.AddRange(problems.Where(x => (x.Status.Id == (int)StatusEnum.Closed || x.Status.Id == (int)StatusEnum.Cancelled)
                                                     && x.CloseOn != null
                                                     && viewModel.FromDate <= x.CloseOn
                                                     && x.CloseOn <= viewModel.ToDate));
 
-        // Newly created Lastweek
-        lastweekIssues.AddRange(problems.Where(x => viewModel.FromDate <= x.CreatedOn
+        // Newly created Last week
+        lastWeekIssues.AddRange(problems.Where(x => viewModel.FromDate <= x.CreatedOn
                                                     && x.CreatedOn <= viewModel.ToDate));
 
         viewModel.IssueGroupsByTimeSummary.Add(
-            new IssueGroup(2, lastweekIssues)
+            new IssueGroup(2, lastWeekIssues)
             {
                 Name = $"Last week ({viewModel.FromDate} - {viewModel.ToDate})"
             });
