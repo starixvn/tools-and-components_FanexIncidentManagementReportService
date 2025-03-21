@@ -2,7 +2,7 @@
 
 using Newtonsoft.Json;
 
-public class ProblemIssueReponse
+public class ProblemIssueResponse
 {
     [JsonProperty(PropertyName = "issues")]
     public List<ProblemIssue> Issues { get; set; }

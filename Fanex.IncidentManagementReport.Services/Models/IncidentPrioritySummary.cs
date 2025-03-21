@@ -1,8 +1,8 @@
 ﻿namespace Fanex.IncidentManagementReport.Services.Models;
 
+using Core.Enums;
 using System.Collections.Generic;
 using System.Linq;
-using Core.Enums;
 
 public class IncidentPrioritySummary
 {
@@ -21,9 +21,9 @@ public class IncidentPrioritySummary
     {
         if (incidents != null && incidents.Any())
         {
-            P1Count = incidents.Where(t => t.PriorityId == (int)Priorities.P1).Count();
-            P2Count = incidents.Where(t => t.PriorityId == (int)Priorities.P2).Count();
-            P3Count = incidents.Where(t => t.PriorityId == (int)Priorities.P3).Count();
+            P1Count = incidents.Count(t => t.PriorityId == (int)Priorities.P1);
+            P2Count = incidents.Count(t => t.PriorityId == (int)Priorities.P2);
+            P3Count = incidents.Count(t => t.PriorityId == (int)Priorities.P3);
         }
     }
 }

@@ -8,15 +8,8 @@ public interface ILogServiceProvider
     Task ErrorSentryAsync(Exception exception);
 }
 
-public class LogServiceProvider : ILogServiceProvider
+public class LogServiceProvider(Logging.ILogger logger) : ILogServiceProvider
 {
-    private readonly Logging.ILogger logger;
-
-    public LogServiceProvider(Logging.ILogger logger)
-    {
-        this.logger = logger;
-    }
-
     public async Task ErrorSentryAsync(Exception exception)
     {
         var logMessage = new LogMessage(exception.Message)

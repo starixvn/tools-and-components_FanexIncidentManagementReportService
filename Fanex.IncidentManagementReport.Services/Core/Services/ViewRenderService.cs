@@ -12,22 +12,12 @@ public interface IViewRenderService
     Task<string> RenderViewToStringAsync<TModel>(string name, TModel model);
 }
 
-public class ViewRenderService : IViewRenderService
+public class ViewRenderService(
+    IRazorViewEngine viewEngine,
+    ITempDataProvider tempDataProvider,
+    IServiceProvider serviceProvider)
+    : IViewRenderService
 {
-    private readonly IRazorViewEngine viewEngine;
-    private readonly ITempDataProvider tempDataProvider;
-    private readonly IServiceProvider serviceProvider;
-
-    public ViewRenderService(
-        IRazorViewEngine viewEngine,
-        ITempDataProvider tempDataProvider,
-        IServiceProvider serviceProvider)
-    {
-        this.viewEngine = viewEngine;
-        this.tempDataProvider = tempDataProvider;
-        this.serviceProvider = serviceProvider;
-    }
-
     public async Task<string> RenderViewToStringAsync<TModel>(string name, TModel model)
     {
         var actionContext = GetActionContext();
