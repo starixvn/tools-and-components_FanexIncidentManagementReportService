@@ -134,7 +134,7 @@ public class IncidentReportManagementService(
     {
         var yesterdayP1Incidents = await incidentService.GetP1IncidentDailyAsync(yesterday, yesterday);
         var (pendingIncidents, pendingP1Incidents) = await incidentService.GetPendingIncidentDailyAsync();
-        var aggP1Incidents = yesterdayP1Incidents.Concat(pendingP1Incidents).ToList();
+        var aggP1Incidents = yesterdayP1Incidents.Concat(pendingP1Incidents).DistinctBy(x => x.IncidentId).ToList();
 
         var pendingIncidentGroups = GetPendingIncidentCategory(pendingIncidents);
         var p1IncidentGroups = GetPendingIncidentCategory(aggP1Incidents);

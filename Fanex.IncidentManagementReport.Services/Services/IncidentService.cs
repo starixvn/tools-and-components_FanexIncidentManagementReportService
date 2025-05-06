@@ -32,11 +32,12 @@ public class IncidentService(IIssueService issueService, IProjectService project
         var issues = await issueService.GetPendingIssuesDailyAsync(Tracker);
         if (issues is not null)
         {
-            var pendingIssues = issues.Where(t => !appSettings.IgnoredProjectIds.Contains(t.Project.Id))
+            var filteredIssues = issues.Where(t => !appSettings.IgnoredProjectIds.Contains(t.Project.Id)).ToList();
+            var pendingIssues = filteredIssues
                 .Where(t => !((t.CreatedDate - DateTime.Now.Date.AddDays(-1)).Days == 0 && t.Priority.Id == 1))
                 .ToList();
 
-            var pendingP1 = issues.Where(i => i.Priority.Id == 1).ToList();
+            var pendingP1 = filteredIssues.Where(i => i.Priority.Id == 1).ToList();
 
             var pendingIncidents = await GenerateIncidentModel(pendingIssues);
             var pendingP1Incidents = await GenerateIncidentModel(pendingP1);
